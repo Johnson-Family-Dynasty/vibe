@@ -1,7 +1,7 @@
 <div align="center">
   <img src="site/images/opentutor-mark.png" alt="OpenTutor cat mark" width="120" />
   <h1>OpenTutor</h1>
-  <p><strong>An open model for homeschooling through GitHub, Discord, and a Claude-backed tutor.</strong></p>
+  <p><strong>A parent-operated collection of tools for homeschooling through GitHub, Discord, and a Claude-backed tutor.</strong></p>
   <p>
     <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
     <img src="https://img.shields.io/badge/Discord.py-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord.py">
@@ -16,7 +16,7 @@
 
 OpenTutor is a parent-operated homeschool model built from open tools rather than closed education software.
 
-- **OpenTutor** is the platform model.
+- **OpenTutor** is not a single platform. It is a collection of tools used together on purpose.
 - **Vibe** is the tutor persona inside Discord.
 - **GitHub** is the record of curriculum, schedules, assignments, and student output.
 - **Discord** is the daily classroom interface.
@@ -36,11 +36,11 @@ OpenTutor takes the opposite approach:
 - student work can accumulate as a real portfolio
 - the whole system can improve over time like software
 
-The goal is not to imitate school software. The goal is to create a flexible, reviewable, parent-run learning environment.
+The goal is not to imitate school software. The goal is to create a flexible, reviewable, parent-run learning environment that can become more adaptive, accountable, and capable than conventional school models when used well.
 
 ## System Architecture
 
-OpenTutor separates the homeschool stack into three layers:
+OpenTutor separates the homeschool stack into three layers while keeping the parent in control of the overall operating model:
 
 1. **The Assignment Hub** — GitHub stores curriculum, schedules, revisions, and student work.
 2. **The Virtual Classroom** — Discord provides subject channels, announcements, office hours, and check-ins.
@@ -49,6 +49,10 @@ OpenTutor separates the homeschool stack into three layers:
 ![OpenTutor integration map](site/images/opentutor-integration-map.png)
 
 ## Design Rationale
+
+![Connected classroom systems](<site/images/ChatGPT Image Apr 18, 2026, 02_37_49 PM.png>)
+
+Discord sits at the center of the school day, supported by GitHub structure, tutor assistance, and visible parent oversight.
 
 - **Everything stays reviewable** — Git history shows what changed and when; Discord logs show what happened in the classroom.
 - **Help shows up where the work happens** — students can ask for support in the same channel where the assignment and discussion already live.
@@ -87,7 +91,7 @@ pull assignment
 work locally
 save progress
 commit response
-push updated folder
+push updated folder back to GitHub
 ```
 
 This structure also supports long-running project work:
@@ -150,9 +154,23 @@ The white paper’s day model is built around a repeatable rhythm:
 - **Guided subject work** — move through assignments with repository-backed materials
 - **Tutor support** — ask Vibe for clarification in the active study channel
 - **Project time** — build code, websites, research, and portfolio pieces
-- **Close and recommit** — commit finished work, log progress, and prepare the next step
+- **Close and commit back** — commit finished work back into GitHub, log progress, and prepare the next step
 
 That means students are not just consuming lessons. They are learning how to operate inside modern digital workflows.
+
+## Setup Guides
+
+The site now includes direct setup references for the core systems:
+
+- **GitHub accounts** — create parent and student identities with visible ownership
+- **Discord classroom setup** — create the homeschool server and subject channels
+- **Bot installation** — stand up the Discord bot safely with the right permissions
+
+Useful links:
+
+- [View the bot repository](https://github.com/murderszn/vibe)
+- [Discord developer quick start](https://discord.com/developers/docs/quick-start/getting-started)
+- [Open the setup-guides section of the site](site/index.html#setup-guides)
 
 ## Features in This Repository
 
@@ -226,3 +244,7 @@ Then visit `http://localhost:8000`.
 ## Author
 
 Published and maintained by [@murderszn](https://github.com/murderszn).
+
+## Footer Summary
+
+OpenTutor is a parent-operated homeschool model built around GitHub, Discord, and a Claude-backed tutor layer, with visible systems, clear ownership, and durable student work.
