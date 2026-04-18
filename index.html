@@ -119,26 +119,7 @@
       color: var(--muted);
       font-size: 0.9rem;
       line-height: 1.55;
-      margin-bottom: 14px;
-    }
-
-    .sidebar-icon-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    .sidebar-icon-card {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 60px;
-      border-radius: 18px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.97) 0%, rgba(248,250,252,0.82) 100%);
-      border: 1px solid rgba(226,232,240,0.95);
-      box-shadow: 0 10px 24px rgba(148,163,184,0.08);
-      color: var(--primary);
+      margin-bottom: 0;
     }
 
     .sidebar-nav {
@@ -252,26 +233,6 @@
       .sidebar { display: none; }
     }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 6px 14px;
-      background: #f1f5f9;
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--muted);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      margin-bottom: 24px;
-    }
-    
-    .badge-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: #94a3b8; margin-right: 8px;
-    }
-
     /* ─── HERO ─── */
     .hero-section {
       margin-bottom: 120px;
@@ -342,15 +303,6 @@
       filter: contrast(1.05) brightness(1.02);
     }
 
-    .abstract-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.95fr);
-      gap: 24px;
-      margin-top: 32px;
-    }
-
-    .abstract-card,
-    .paper-note,
     .wallet-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -358,15 +310,12 @@
       box-shadow: var(--shadow-sm);
     }
 
-    .abstract-card,
-    .paper-note,
     .wallet-card {
       padding: 28px;
     }
 
-    .abstract-label,
-    .paper-note-label,
-    .wallet-label {
+    .wallet-label,
+    .hero-strip-label {
       display: inline-flex;
       padding: 5px 10px;
       border-radius: 999px;
@@ -380,32 +329,13 @@
       margin-bottom: 14px;
     }
 
-    .abstract-card p,
-    .paper-note p,
+    .wallet-label {
+      margin-bottom: 14px;
+    }
+
     .wallet-card p {
       color: var(--muted);
       font-size: 0.97rem;
-    }
-
-    .paper-note-list {
-      display: grid;
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .paper-note-item {
-      padding: 14px 16px;
-      border-radius: 14px;
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 0.93rem;
-    }
-
-    @media (max-width: 900px) {
-      .abstract-grid {
-        grid-template-columns: 1fr;
-      }
     }
 
     /* ─── HOW IT WORKS ─── */
@@ -704,10 +634,85 @@
       color: var(--primary-hover);
     }
 
+    .scan-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .scan-item {
+      padding: 18px 18px 16px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.97) 0%, rgba(248,250,252,0.86) 100%);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .scan-item strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .scan-item span {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+
+    .hero-strip {
+      margin-top: 24px;
+    }
+
+    .hero-strip-copy {
+      margin-bottom: 10px;
+      max-width: 64ch;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .section-guide,
+    .setup-flow {
+      margin-top: 18px;
+      margin-bottom: 34px;
+    }
+
+    .micro-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .micro-list span {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .micro-list span::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--primary);
+      flex-shrink: 0;
+      box-shadow: 0 0 0 4px rgba(99,102,241,0.08);
+    }
+
     .resource-links {
       display: grid;
       gap: 12px;
       margin-top: 18px;
+    }
+
+    .resource-grid {
+      margin-top: 0;
     }
 
     .resource-links .repo-link {
@@ -768,6 +773,7 @@
     }
 
     @media (max-width: 980px) {
+      .scan-strip,
       .strengths-grid,
       .timeline-gallery,
       .wallet-grid {
@@ -777,6 +783,7 @@
 
     @media (max-width: 768px) {
       .image-panel-grid,
+      .scan-strip,
       .strengths-grid,
       .timeline-gallery,
       .wallet-grid {
@@ -1101,7 +1108,7 @@
           Timeline
         </a>
         <a href="#support" class="nav-link">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h11A2.5 2.5 0 0 1 19 7.5v9A2.5 2.5 0 0 1 16.5 19h-11A2.5 2.5 0 0 1 3 16.5z"/><path d="M19 9h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-2"/><circle cx="15" cy="12" r="1.25"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17"/><path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/><path d="m2 16 6 6"/><circle cx="16" cy="9" r="2.9"/><circle cx="6" cy="5" r="3"/></svg>
           Support
         </a>
       </nav>
@@ -1109,17 +1116,6 @@
       <div class="sidebar-footer">
         <div class="sidebar-intro">
           <p>OpenTutor is the platform. Vibe is the tutor. The model combines open curriculum, supervised chat-based learning, and real-world digital tool fluency.</p>
-          <div class="sidebar-icon-grid" aria-label="OpenTutor highlights">
-            <div class="sidebar-icon-card" title="Parent-operated learning system" aria-label="Parent-operated learning system">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6"/><path d="M22 11h-6"/></svg>
-            </div>
-            <div class="sidebar-icon-card" title="GitHub, Discord, and AI tools" aria-label="GitHub, Discord, and AI tools">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="7" height="7" rx="1.5"/><rect x="14" y="4" width="7" height="7" rx="1.5"/><rect x="8.5" y="13" width="7" height="7" rx="1.5"/><path d="M10 7.5h4"/><path d="M12 11v2"/></svg>
-            </div>
-            <div class="sidebar-icon-card" title="Visible outputs and portfolio growth" aria-label="Visible outputs and portfolio growth">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>
-            </div>
-          </div>
         </div>
         <div class="sidebar-footer-actions">
           <a href="https://github.com/murderszn/vibe" target="_blank" class="github-btn">
@@ -1127,8 +1123,8 @@
             Source Repository
           </a>
           <a href="#support" class="support-btn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h11A2.5 2.5 0 0 1 19 7.5v9A2.5 2.5 0 0 1 16.5 19h-11A2.5 2.5 0 0 1 3 16.5z"/><path d="M19 9h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-2"/><circle cx="15" cy="12" r="1.25"/></svg>
-            Donate / Support
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17"/><path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/><path d="m2 16 6 6"/><circle cx="16" cy="9" r="2.9"/><circle cx="6" cy="5" r="3"/></svg>
+            Support OpenTutor
           </a>
         </div>
       </div>
@@ -1140,11 +1136,6 @@
       
       <!-- HERO -->
       <section id="overview" class="hero-section">
-        <div class="badge">
-          <span class="badge-dot"></span>
-          White Paper
-        </div>
-        
         <h1 class="hero-title">OpenTutor: an open model for homeschooling through GitHub, Discord, and a Claude-backed tutor.</h1>
         <p class="hero-subtitle">OpenTutor is the platform name. Vibe remains the tutor. This page is structured as a design white paper for a parent-operated homeschool system where curriculum lives in repositories, daily instruction lives in Discord, and AI support stays visible, supervised, and accountable.</p>
         <div class="hero-meta">
@@ -1157,22 +1148,6 @@
           <img src="modern_homeschool_flow.png" alt="Homeschool Flow Diagram" class="hero-image" />
         </div>
 
-        <div class="abstract-grid">
-          <div class="abstract-card">
-            <span class="abstract-label">Abstract</span>
-            <p>This paper proposes a lightweight homeschool operating model built from open tools rather than closed education software. GitHub acts as the record of curriculum, schedules, and student output. Discord acts as the classroom and communication layer. Vibe, backed by Claude, acts as the tutoring layer inside that environment so students can get help without leaving the parent-supervised context.</p>
-          </div>
-
-          <div class="paper-note">
-            <span class="paper-note-label">Design Principles</span>
-            <div class="paper-note-list">
-              <div class="paper-note-item">Open infrastructure instead of rented black boxes.</div>
-              <div class="paper-note-item">Parent governance over pace, access, and moderation.</div>
-              <div class="paper-note-item">Visible student portfolios instead of hidden platform data.</div>
-              <div class="paper-note-item">Early fluency with modern workplace tools and collaboration habits.</div>
-            </div>
-          </div>
-        </div>
       </section>
 
       <!-- HOW IT WORKS -->
@@ -1340,27 +1315,49 @@
       <section id="repos" class="section">
         <div class="section-header">
           <h2 class="section-title">Repository Map</h2>
-          <p class="section-subtitle">The bot repo is the first live component. The larger school model can expand into a compact repository map that remains transparent and easy to maintain.</p>
+          <p class="section-subtitle">The bot repo is live now. The broader school model expands into a small set of repositories that are easy to inspect, update, and reuse.</p>
+        </div>
+
+        <div class="section-guide">
+          <span class="hero-strip-label">Repository Roles</span>
+          <div class="scan-strip" style="margin-top: 12px;">
+            <div class="scan-item">
+              <strong>Bot Repo</strong>
+              <span>Runs Vibe inside Discord and holds the tutor logic.</span>
+            </div>
+            <div class="scan-item">
+              <strong>Curriculum Repo</strong>
+              <span>Stores subjects, units, prompts, rubrics, and readings.</span>
+            </div>
+            <div class="scan-item">
+              <strong>Schedule Repo</strong>
+              <span>Defines the weekly rhythm, pacing, and checklists.</span>
+            </div>
+            <div class="scan-item">
+              <strong>Student Work</strong>
+              <span>Lives in folders and commits that become a portfolio.</span>
+            </div>
+          </div>
         </div>
 
         <div class="repo-grid">
           <div class="repo-card">
             <div class="repo-meta live">Live Now</div>
             <h3>Vibe bot repository</h3>
-            <p>The current open source repo contains the Discord bot, Claude integration, moderation tools, conversation handling, and the logic that makes the AI tutor available inside your homeschool server.</p>
+            <p>The current open source repo contains the Discord bot, Claude integration, moderation tools, and the classroom logic that makes the tutor available inside the homeschool server.</p>
             <a class="repo-link" href="https://github.com/murderszn/vibe" target="_blank">View the bot on GitHub</a>
           </div>
 
           <div class="repo-card">
             <div class="repo-meta">Planned Next</div>
             <h3>Curriculum repository</h3>
-            <p>This can hold subject outlines, unit plans, reading lists, assignment prompts, rubrics, and project briefs. Updating the curriculum becomes as simple as editing files and tracking changes over time.</p>
+            <p>Holds subject outlines, unit plans, reading lists, assignment prompts, rubrics, and project briefs. Curriculum updates become normal file edits with visible history.</p>
           </div>
 
           <div class="repo-card">
             <div class="repo-meta">Planned Next</div>
             <h3>Schedule repository</h3>
-            <p>This repo can define the weekly rhythm of the school: calendar structure, daily checklists, pacing guides, semester goals, and special project windows. It becomes the operational layer that connects planning to execution.</p>
+            <p>Defines the weekly rhythm: calendar structure, daily checklists, pacing guides, semester goals, and project windows. It connects planning to the actual school day.</p>
           </div>
         </div>
 
@@ -1378,7 +1375,7 @@
         <div class="repo-flow-grid">
           <div class="repo-flow-card">
             <h3>Per-student repository structure</h3>
-            <p>Each student has a dedicated root folder. Inside that folder are subject folders. Inside each subject are assignment materials, working files, and submission folders that make progress visible and reviewable.</p>
+            <p>Each student gets a root folder with subjects, assignment materials, working files, and project space.</p>
             <div class="repo-flow-code">student-name/
   language-arts/
   math/
@@ -1389,17 +1386,17 @@
 
           <div class="repo-flow-card">
             <h3>Assignment workflow</h3>
-            <p>Students learn a concrete cycle: pull down the current assignment, complete the work in the correct subject area, and recommit the finished work back into the assignment folder with revisions tracked over time.</p>
+            <p>Students learn a concrete loop: pull the assignment, do the work, and recommit the result with revisions tracked over time.</p>
             <div class="repo-flow-code">pull assignment
-work locally
-save progress
+	work locally
+	save progress
 commit response
 push updated folder</div>
           </div>
 
           <div class="repo-flow-card">
             <h3>Projects alongside classwork</h3>
-            <p>The structure supports more than worksheets. Students can also maintain individual projects such as coding experiments, website design, research pieces, and multimedia work inside long-running project folders.</p>
+            <p>The structure supports more than worksheets. Students can also maintain long-running coding, website, research, and portfolio projects.</p>
             <div class="repo-flow-code">projects/
   coding/
   websites/
@@ -1417,38 +1414,87 @@ push updated folder</div>
       <section class="section">
         <div class="section-header">
           <h2 class="section-title">Knowledge Map</h2>
-          <p class="section-subtitle">The curriculum is not just a list of disconnected subjects. It is a connected map of concepts, templates, projects, and practical life knowledge that students revisit through assignments and individual work.</p>
+          <p class="section-subtitle">The curriculum is a connected map of subjects, templates, projects, and practical life knowledge instead of a disconnected stack of classes.</p>
+        </div>
+
+        <div class="scan-strip">
+          <div class="scan-item">
+            <strong>Core Academics</strong>
+            <span>Language arts, math, science, and social studies stay central.</span>
+          </div>
+          <div class="scan-item">
+            <strong>Practical Life</strong>
+            <span>Money, careers, and decision-making are part of the curriculum.</span>
+          </div>
+          <div class="scan-item">
+            <strong>Projects</strong>
+            <span>Coding, websites, and portfolio work turn study into artifacts.</span>
+          </div>
+          <div class="scan-item">
+            <strong>Reinforcement</strong>
+            <span>Students revisit concepts through assignments, reviews, and builds.</span>
+          </div>
         </div>
 
         <div class="knowledge-map-grid">
           <div class="knowledge-card">
             <h3>Language Arts</h3>
-            <p>Students move through literature, archetypes, mythology, poetry, and structured reflection. The knowledge map shows how reading assignments connect to writing templates, interpretation, and cultural context.</p>
+            <p>Literature, archetypes, mythology, poetry, and reflection tied to writing and interpretation.</p>
+            <div class="micro-list">
+              <span>reading and interpretation</span>
+              <span>writing templates</span>
+              <span>cultural context</span>
+            </div>
           </div>
 
           <div class="knowledge-card">
             <h3>Math</h3>
-            <p>Core math covers fractions, ratios, integers, geometry, statistics, measurement, and interactive visual lessons like the golden ratio and rotating or splitter tools that make abstract ideas concrete.</p>
+            <p>Fractions, ratios, integers, geometry, statistics, and measurement with visual tools that make abstract ideas concrete.</p>
+            <div class="micro-list">
+              <span>number sense</span>
+              <span>geometry and ratios</span>
+              <span>interactive visual lessons</span>
+            </div>
           </div>
 
           <div class="knowledge-card">
             <h3>STEM</h3>
-            <p>Science branches into physics, chemistry, and biology fundamentals. Students work through motion, forces, atoms, reactions, cells, photosynthesis, and systems thinking using a visible knowledge progression.</p>
+            <p>Physics, chemistry, and biology fundamentals taught as connected systems rather than isolated facts.</p>
+            <div class="micro-list">
+              <span>motion, forces, and energy</span>
+              <span>atoms, reactions, and matter</span>
+              <span>cells, life, and systems</span>
+            </div>
           </div>
 
           <div class="knowledge-card">
             <h3>Social Studies</h3>
-            <p>World facts, government basics, U.S. principles, geography, oceans, continents, and historical choke points help students build a mental map of how places, institutions, and events connect.</p>
+            <p>Geography, government, U.S. principles, and historical context that show how places, institutions, and events connect.</p>
+            <div class="micro-list">
+              <span>world facts and geography</span>
+              <span>government and institutions</span>
+              <span>historical context</span>
+            </div>
           </div>
 
           <div class="knowledge-card">
             <h3>Money &amp; Life</h3>
-            <p>Financial tools and principles, budgeting, investing basics, careers, pay, currency, and credit literacy make the curriculum more practical and future-facing than a conventional textbook sequence.</p>
+            <p>Budgeting, investing basics, careers, pay, currency, and credit literacy make the curriculum more practical and future-facing.</p>
+            <div class="micro-list">
+              <span>budgeting and money tools</span>
+              <span>careers and pay</span>
+              <span>credit and financial literacy</span>
+            </div>
           </div>
 
           <div class="knowledge-card">
             <h3>Project Studio</h3>
-            <p>Assignments are paired with real making: coding, website design, reviews, templates, and portfolio work. That helps students move from “I studied this” to “I built this and can show it.”</p>
+            <p>Coding, website design, reviews, templates, and portfolio work move students from “I studied this” to “I built this.”</p>
+            <div class="micro-list">
+              <span>coding and websites</span>
+              <span>research and reviews</span>
+              <span>portfolio-grade outputs</span>
+            </div>
           </div>
         </div>
       </section>
@@ -1456,14 +1502,36 @@ push updated folder</div>
       <section id="setup-guides" class="section">
         <div class="section-header">
           <h2 class="section-title">Setup Guides</h2>
-          <p class="section-subtitle">OpenTutor depends on a few real-world setup steps: parent and student GitHub accounts, a Discord server, and a properly installed Discord bot. These links point to the official docs so families can stand the system up on a solid foundation.</p>
+          <p class="section-subtitle">OpenTutor depends on a few real-world setup steps. These official links make it easier to stand the system up without guesswork.</p>
+        </div>
+
+        <div class="setup-flow">
+          <span class="hero-strip-label">Suggested Order</span>
+          <div class="scan-strip" style="margin-top: 12px;">
+            <div class="scan-item">
+              <strong>1. GitHub</strong>
+              <span>Create the parent and student accounts first.</span>
+            </div>
+            <div class="scan-item">
+              <strong>2. Discord</strong>
+              <span>Create the classroom server and subject channels.</span>
+            </div>
+            <div class="scan-item">
+              <strong>3. Bot App</strong>
+              <span>Create the Discord application and bot user.</span>
+            </div>
+            <div class="scan-item">
+              <strong>4. Runtime</strong>
+              <span>Install the bot, add keys, and run the repo.</span>
+            </div>
+          </div>
         </div>
 
         <div class="resource-grid">
           <div class="resource-card">
             <div class="repo-meta live">GitHub Basics</div>
             <h3>Create the parent and student GitHub accounts</h3>
-            <p>Each learner should have a real GitHub identity if they are going to pull assignments, commit their work, and build a portfolio over time. Start with the official account-creation and onboarding guides.</p>
+            <p>Each learner should have a real GitHub identity if they are going to pull assignments, commit work, and build a portfolio over time.</p>
             <div class="resource-links">
               <a class="repo-link" href="https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github" target="_blank" rel="noreferrer">Create a GitHub account</a>
               <a class="repo-link" href="https://docs.github.com/en/get-started/onboarding/getting-started-with-your-github-account" target="_blank" rel="noreferrer">Get started with a GitHub account</a>
@@ -1473,7 +1541,7 @@ push updated folder</div>
           <div class="resource-card">
             <div class="repo-meta">Education Path</div>
             <h3>Use GitHub Education and Classroom where it helps</h3>
-            <p>If you want a more formal assignment workflow, GitHub Education and GitHub Classroom can structure repositories, roster-like flows, and assignment distribution. Families can also run OpenTutor with plain repositories if they want a lighter setup.</p>
+            <p>If you want a more formal assignment workflow, GitHub Education and GitHub Classroom can add structure on top of the same core model.</p>
             <div class="resource-links">
               <a class="repo-link" href="https://docs.github.com/en/education/about-github-education/github-education-for-teachers/apply-to-github-education-as-a-teacher" target="_blank" rel="noreferrer">GitHub Education for teachers</a>
               <a class="repo-link" href="https://docs.github.com/en/education/quickstart" target="_blank" rel="noreferrer">GitHub educator quickstart</a>
@@ -1483,7 +1551,7 @@ push updated folder</div>
           <div class="resource-card">
             <div class="repo-meta">Discord Server</div>
             <h3>Create the Discord account and homeschool server</h3>
-            <p>The Discord server is the classroom layer. This is where subject channels, announcements, office hours, and check-ins live. Start by creating the parent Discord account, then create the server and organize it into clear subject and admin spaces.</p>
+            <p>The Discord server is the classroom layer. Create the parent account, then build clear subject and admin spaces.</p>
             <div class="resource-links">
               <a class="repo-link" href="https://support.discord.com/hc/en-us/articles/31676852332439-Discord-Sign-Up-and-Registration-Guide" target="_blank" rel="noreferrer">Create a Discord account</a>
               <a class="repo-link" href="https://support.discord.com/hc/en-us/articles/204849977-How-do-I-create-a-server" target="_blank" rel="noreferrer">Create a Discord server</a>
@@ -1493,7 +1561,7 @@ push updated folder</div>
           <div class="resource-card">
             <div class="repo-meta live">Discord Bot</div>
             <h3>Create the Discord application and bot user</h3>
-            <p>Vibe runs as a Discord bot application. The official Discord developer docs walk through creating the application, adding a bot user, and preparing it for installation in your server.</p>
+            <p>Vibe runs as a Discord bot application. Start by creating the application, adding the bot user, and preparing it for installation.</p>
             <div class="resource-links">
               <a class="repo-link" href="https://discord.com/developers/docs/quick-start/getting-started" target="_blank" rel="noreferrer">Discord developer quick start</a>
               <a class="repo-link" href="https://discord.com/developers/docs/resources/application" target="_blank" rel="noreferrer">Discord applications and bot docs</a>
@@ -1503,7 +1571,7 @@ push updated folder</div>
           <div class="resource-card">
             <div class="repo-meta">Install &amp; Permissions</div>
             <h3>Install the bot correctly in your server</h3>
-            <p>After creating the bot, you still need to install it into the homeschool server with the right scopes and permissions. Keep this tight: only request what the classroom actually needs.</p>
+            <p>After creating the bot, install it into the homeschool server with only the scopes and permissions the classroom actually needs.</p>
             <div class="resource-links">
               <a class="repo-link" href="https://discord.com/developers/docs/topics/oauth2" target="_blank" rel="noreferrer">Discord OAuth2 and installation</a>
               <a class="repo-link" href="https://discord.com/developers/docs/topics/permissions" target="_blank" rel="noreferrer">Discord permissions reference</a>
@@ -1513,7 +1581,7 @@ push updated folder</div>
           <div class="resource-card">
             <div class="repo-meta live">OpenTutor Runtime</div>
             <h3>Run the current Vibe bot repository</h3>
-            <p>Once GitHub and Discord are in place, the final step is configuring the bot token and Anthropic key, then running this repository so Vibe can join the homeschool server as the tutor layer.</p>
+            <p>Once GitHub and Discord are in place, configure the bot token and Anthropic key, then run this repo so Vibe can join the server.</p>
             <div class="resource-links">
               <a class="repo-link" href="https://github.com/murderszn/vibe" target="_blank" rel="noreferrer">Open the Vibe source repository</a>
             </div>
@@ -1535,23 +1603,38 @@ push updated folder</div>
       <section class="section">
         <div class="section-header">
           <h2 class="section-title">Implementation Notes</h2>
-          <p class="section-subtitle">A workable homeschool system also needs a clear operating model for assessment, parent review, and student accountability. These notes describe how the platform is intended to function in practice.</p>
+          <p class="section-subtitle">A workable homeschool system still needs a clear operating model for assessment, parent review, and accountability.</p>
         </div>
 
         <div class="context-grid">
           <div class="context-card">
             <h3>Assessment through artifacts</h3>
-            <p>OpenTutor treats commits, drafts, revisions, projects, and reflections as evidence of understanding. Progress is visible in the work itself, not only in a gradebook detached from what the student actually made.</p>
+            <p>Commits, drafts, revisions, projects, and reflections act as the evidence of learning.</p>
+            <div class="micro-list">
+              <span>progress lives in the work</span>
+              <span>revision history stays visible</span>
+              <span>artifacts matter more than hidden grades</span>
+            </div>
           </div>
 
           <div class="context-card">
             <h3>Parent review as governance</h3>
-            <p>The parent acts as editor, reviewer, moderator, and pacing guide. Because the full workflow is documented in repositories and channels, review can happen continuously rather than only at the end of a unit.</p>
+            <p>The parent acts as editor, reviewer, moderator, and pacing guide.</p>
+            <div class="micro-list">
+              <span>review happens continuously</span>
+              <span>repositories and channels stay inspectable</span>
+              <span>the parent remains the operator</span>
+            </div>
           </div>
 
           <div class="context-card">
             <h3>Digital fluency as a learning outcome</h3>
-            <p>Students are not only learning subject matter. They are also learning how to manage files, work asynchronously, respond to written feedback, version their work, and communicate in structured digital spaces.</p>
+            <p>Students learn subject matter and the digital habits that modern work increasingly expects.</p>
+            <div class="micro-list">
+              <span>file and project management</span>
+              <span>async communication</span>
+              <span>written feedback and versioned work</span>
+            </div>
           </div>
         </div>
       </section>
