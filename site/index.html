@@ -246,7 +246,7 @@
 
     /* ─── HERO ─── */
     .hero-section {
-      margin-bottom: 120px;
+      margin-bottom: 88px;
     }
 
     .hero-section,
@@ -296,14 +296,17 @@
 
     .hero-image-wrapper {
       width: 100%;
+      overflow: hidden;
+      border-radius: 20px;
+      border: 1px solid var(--border);
     }
 
     .hero-image {
       width: 100%;
-      border-radius: 20px;
       display: block;
+      aspect-ratio: 16 / 9.25;
       object-fit: cover;
-      border: 1px solid var(--border);
+      object-position: center;
       filter: contrast(1.05) brightness(1.02);
     }
 
@@ -1118,6 +1121,18 @@
       margin-top: 0;
     }
 
+    .section-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px 22px;
+      margin: 18px 0 0;
+      padding: 0 6px;
+    }
+
+    .section-links .repo-link {
+      margin-top: 0;
+    }
+
     .image-panel img {
       width: 100%;
       display: block;
@@ -1348,6 +1363,57 @@
       color: var(--muted);
       font-size: 0.92rem;
     }
+
+    .site-footer {
+      width: min(1296px, 100%);
+      margin: 72px auto 0;
+      padding: 28px 0 6px;
+      border-top: 1px solid rgba(203,213,225,0.78);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .site-footer-copy {
+      max-width: 52ch;
+    }
+
+    .site-footer-title {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .site-footer p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .site-footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 14px 20px;
+    }
+
+    .site-footer-links .repo-link {
+      margin-top: 0;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .site-footer {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .site-footer-links {
+        justify-content: flex-start;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1365,7 +1431,7 @@
       </div>
 
       <div class="sidebar-intro">
-        <p>OpenTutor is the platform. Vibe is the tutor. The model combines open curriculum, supervised chat-based learning, and real-world digital tool fluency.</p>
+        <p>OpenTutor is not a single platform. It is a parent-operated collection of tools that can produce a more adaptive, accountable, and capable education than conventional school models when used well. Vibe is the tutor inside that system.</p>
       </div>
 
       <nav class="sidebar-nav">
@@ -1500,12 +1566,13 @@
 
             <img class="diagram-image" src="images/ChatGPT Image Apr 18, 2026, 02_37_49 PM.png" alt="Systems image showing the OpenTutor homeschool model with Discord, GitHub, tutoring, and parent oversight connected visually." />
             <p class="system-map-caption">One live classroom surface, one parent operator, one curriculum layer, and one tutor layer work together without hiding how the system is actually implemented.</p>
-            <div class="diagram-links">
-              <a class="repo-link" href="https://github.com/murderszn/vibe" target="_blank" rel="noreferrer">View the bot repository</a>
-              <a class="repo-link" href="https://discord.com/developers/docs/quick-start/getting-started" target="_blank" rel="noreferrer">Discord developer quick start</a>
-              <a class="repo-link" href="#setup-guides">Open setup guides</a>
-            </div>
           </div>
+        </div>
+
+        <div class="section-links">
+          <a class="repo-link" href="https://github.com/murderszn/vibe" target="_blank" rel="noreferrer">View the bot repository</a>
+          <a class="repo-link" href="https://discord.com/developers/docs/quick-start/getting-started" target="_blank" rel="noreferrer">Discord developer quick start</a>
+          <a class="repo-link" href="#setup-guides">Open setup guides</a>
         </div>
 
         <div class="context-grid">
@@ -1684,7 +1751,7 @@
           <div class="repo-step">
             <span class="repo-step-index">02</span>
             <div class="repo-step-kicker">Assignment Loop</div>
-            <h3>Pull, work, recommit</h3>
+            <h3>Pull, work, commit back</h3>
             <p>Students learn a repeatable loop that turns schoolwork into organized digital practice instead of disconnected files.</p>
             <div class="repo-flow-code">pull assignment
 work locally
@@ -1709,7 +1776,7 @@ push updated folder</div>
 
         <div class="system-map-panel">
           <img src="images/opentutor-repo-map.png" alt="Technical repository workflow map showing student folders, subjects, assignments, and project outputs connected together" />
-          <div class="system-map-caption">Student roots, subject folders, assignment packets, project branches, and recommitted work stay organized as a visible technical workflow.</div>
+          <div class="system-map-caption">Student roots, subject folders, assignment packets, project branches, and committed work stay organized as a visible technical workflow.</div>
         </div>
       </section>
 
@@ -2021,8 +2088,8 @@ push updated folder</div>
               <span>Commit, reflect, prepare</span>
             </div>
             <div class="timeline-cell timeline-what">
-              <h3>Recommit work and plan the next step</h3>
-              <p>The day ends with students recommitting finished assignment work into the correct folders, noting what changed, and identifying what should happen next. The routine reinforces documentation, ownership, and continuity.</p>
+              <h3>Commit work back to GitHub and plan the next step</h3>
+              <p>The day ends with students committing finished assignment work back into the correct folders, noting what changed, and identifying what should happen next. The routine reinforces documentation, ownership, and continuity.</p>
             </div>
             <div class="timeline-cell timeline-output">
               <h3>A clean end-of-day record</h3>
@@ -2052,8 +2119,8 @@ push updated folder</div>
           <div class="image-panel">
             <img src="images/opentutor-review.png" alt="Pearlescent cat illustration of homeschool review and end-of-day reflection" />
             <div class="image-panel-copy">
-              <h3>Review and recommit</h3>
-              <p>Reflection and review make progress visible, discussable, and easier to improve the next day.</p>
+              <h3>Commit and review</h3>
+              <p>Finished work gets committed back into GitHub, and end-of-day review makes progress visible and easier to improve the next day.</p>
             </div>
           </div>
         </div>
@@ -2087,6 +2154,18 @@ push updated folder</div>
 
         <p class="donation-note">These addresses fund OpenTutor infrastructure, API usage, curriculum maintenance, and continued development.</p>
       </section>
+
+      <footer class="site-footer">
+        <div class="site-footer-copy">
+          <div class="site-footer-title">OpenTutor</div>
+          <p>A parent-operated homeschool model built around GitHub, Discord, and a Claude-backed tutor layer, with visible systems, clear ownership, and durable student work.</p>
+        </div>
+        <div class="site-footer-links">
+          <a class="repo-link" href="https://github.com/murderszn/vibe" target="_blank" rel="noreferrer">GitHub</a>
+          <a class="repo-link" href="#setup-guides">Setup Guides</a>
+          <a class="repo-link" href="#support">Support</a>
+        </div>
+      </footer>
 
       </div>
     </main>
