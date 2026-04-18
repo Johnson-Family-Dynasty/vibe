@@ -50,7 +50,7 @@ OpenTutor separates the homeschool stack into three layers while keeping the par
 
 ## Design Rationale
 
-![Connected classroom systems](<site/images/ChatGPT Image Apr 18, 2026, 02_37_49 PM.png>)
+![Connected classroom systems](site/images/diagram.png)
 
 Discord sits at the center of the school day, supported by GitHub structure, tutor assistance, and visible parent oversight.
 
@@ -168,9 +168,6 @@ The site now includes direct setup references for the core systems:
 
 Useful links:
 
-- [View the bot repository](https://github.com/murderszn/vibe)
-- [Discord developer quick start](https://discord.com/developers/docs/quick-start/getting-started)
-- [Open the setup-guides section of the site](site/index.html#setup-guides)
 
 ## Features in This Repository
 
