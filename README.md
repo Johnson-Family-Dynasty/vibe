@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="opentutor-mark.png" alt="OpenTutor cat mark" width="120" />
+  <img src="site/images/opentutor-mark.png" alt="OpenTutor cat mark" width="120" />
   <h1>OpenTutor</h1>
   <p><strong>An open model for homeschooling through GitHub, Discord, and a Claude-backed tutor.</strong></p>
   <p>
@@ -10,7 +10,7 @@
   </p>
 </div>
 
-![OpenTutor homeschool systems overview](modern_homeschool_flow.png)
+![OpenTutor homeschool systems overview](site/images/modern_homeschool_flow.png)
 
 ## Overview
 
@@ -46,7 +46,7 @@ OpenTutor separates the homeschool stack into three layers:
 2. **The Virtual Classroom** — Discord provides subject channels, announcements, office hours, and check-ins.
 3. **The AI Tutor** — Vibe, backed by Claude, explains concepts, breaks down assignments, and helps students keep moving.
 
-![OpenTutor integration map](opentutor-integration-map.png)
+![OpenTutor integration map](site/images/opentutor-integration-map.png)
 
 ## Design Rationale
 
@@ -100,7 +100,7 @@ projects/
   portfolio/
 ```
 
-![OpenTutor repository map](opentutor-repo-map.png)
+![OpenTutor repository map](site/images/opentutor-repo-map.png)
 
 ## Knowledge Map
 
@@ -128,7 +128,7 @@ Vibe is designed for concise, encouraging, middle-school support inside Discord.
 - **Discord-safe responses** — long outputs are chunked to fit Discord’s limits
 - **Parent-visible operation** — moderation and admin actions can be logged for review
 
-![Vibe tutoring inside the classroom](vibe-tutor-classroom.png)
+![Vibe tutoring inside the classroom](site/images/vibe-tutor-classroom.png)
 
 ## Governance and Safety
 
@@ -207,7 +207,7 @@ For auditability, create a channel named `bot-logs` so Vibe can report moderatio
 
 ## Website / White Paper
 
-This repository also includes the OpenTutor white-paper site in `index.html`.
+This repository also includes the OpenTutor white-paper site in `site/index.html`.
 
 Open the site locally with any static file server, for example:
 
@@ -226,4 +226,3 @@ Then visit `http://localhost:8000`.
 ## Author
 
 Published and maintained by [@murderszn](https://github.com/murderszn).
-

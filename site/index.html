@@ -1,0 +1,2033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenTutor — White Paper Published April 17, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Source+Serif+4:wght@600;700&amp;display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      /* Pearlescent / Monochromatic Light Theme */
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-soft: rgba(255,255,255,0.78);
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      
+      /* Accents drawn from the isometric render (soft slates/blues) */
+      --accent: #cbd5e1;
+      --primary: #475569;
+      --primary-hover: #334155;
+      --heading-font: 'Source Serif 4', serif;
+      
+      --shadow-sm: 0 1px 2px 0 rgba(15,23,42,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(15,23,42,0.06), 0 2px 4px -2px rgba(15,23,42,0.06);
+      --shadow-lg: 0 20px 40px -10px rgba(15,23,42,0.08);
+      --shadow-pearl: inset 0 0 40px rgba(255,255,255,0.7), 0 10px 40px -10px rgba(148,163,184,0.15);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+    
+    body {
+      position: relative;
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(circle at top left, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 34%),
+        radial-gradient(circle at 85% 12%, rgba(226,232,240,0.65) 0%, rgba(226,232,240,0) 28%),
+        radial-gradient(circle at 20% 78%, rgba(241,245,249,0.85) 0%, rgba(241,245,249,0) 26%),
+        linear-gradient(180deg, #f8fafc 0%, #f4f7fb 100%);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .layout-wrapper {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ─── SIDEBAR ─── */
+    .sidebar {
+      width: 272px;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.82) 48%, rgba(241,245,249,0.72) 100%);
+      border-right: 1px solid rgba(203,213,225,0.95);
+      padding: 18px 16px;
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      box-shadow: 10px 0 30px rgba(148,163,184,0.08);
+    }
+
+    .logo-container {
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .logo-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .logo-img {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(226,232,240,0.9);
+    }
+
+    .logo-text {
+      font-weight: 700;
+      font-size: 1.22rem;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    .logo-subtext {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .sidebar-intro {
+      padding: 12px 4px 14px;
+      border-top: 1px solid rgba(203,213,225,0.6);
+      border-bottom: 1px solid rgba(203,213,225,0.6);
+      margin-bottom: 10px;
+    }
+
+    .sidebar-intro p {
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.5;
+      margin-bottom: 0;
+    }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex-grow: 1;
+    }
+
+    .sidebar-section-label {
+      margin: 4px 0 6px;
+      padding: 0 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.87rem;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .nav-link:hover {
+      background: rgba(255,255,255,0.86);
+      color: var(--text);
+      border-color: rgba(226,232,240,0.95);
+      transform: translateX(2px);
+    }
+
+    .nav-link.is-active {
+      background: rgba(255,255,255,0.94);
+      color: var(--text);
+      border-color: rgba(203,213,225,0.95);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-link svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-footer {
+      border-top: 1px solid rgba(203,213,225,0.65);
+      padding-top: 12px;
+      margin-top: auto;
+      display: grid;
+      gap: 10px;
+    }
+
+    .sidebar-footer-actions {
+      display: grid;
+      gap: 8px;
+    }
+
+    .github-btn,
+    .support-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      padding: 9px 10px;
+      background: rgba(255,255,255,0.88);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .github-btn:hover,
+    .support-btn:hover {
+      background: #ffffff;
+      border-color: var(--muted);
+    }
+
+    .github-btn svg,
+    .support-btn svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+
+    .support-btn {
+      color: var(--primary);
+      background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(241,245,249,0.92) 100%);
+    }
+
+    /* ─── MAIN CONTENT ─── */
+    .main-content {
+      margin-left: 272px;
+      width: calc(100% - 272px);
+      flex-grow: 1;
+      padding: 60px clamp(32px, 4vw, 84px);
+      max-width: none;
+    }
+
+    .content-shell {
+      width: min(1460px, 100%);
+      margin: 0 auto;
+    }
+
+    @media (max-width: 1024px) {
+      .main-content {
+        width: 100%;
+        padding: 40px 24px;
+        margin-left: 0;
+      }
+      .sidebar { display: none; }
+    }
+
+    /* ─── HERO ─── */
+    .hero-section {
+      margin-bottom: 120px;
+    }
+
+    .hero-section,
+    .section {
+      width: min(1296px, 100%);
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-title {
+      font-family: var(--heading-font);
+      font-size: clamp(2.5rem, 4vw, 3.5rem);
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 1080px;
+      margin-bottom: 18px;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 14px;
+      margin-bottom: 36px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 1080px;
+    }
+
+    .hero-meta a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .hero-meta a:hover {
+      color: var(--primary-hover);
+    }
+
+    .hero-image-wrapper {
+      width: 100%;
+    }
+
+    .hero-image {
+      width: 100%;
+      border-radius: 20px;
+      display: block;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      filter: contrast(1.05) brightness(1.02);
+    }
+
+    .wallet-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .wallet-card {
+      padding: 28px;
+    }
+
+    .wallet-label,
+    .hero-strip-label {
+      display: inline-flex;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .wallet-label {
+      margin-bottom: 14px;
+    }
+
+    .wallet-card p {
+      color: var(--muted);
+      font-size: 0.97rem;
+    }
+
+    /* ─── HOW IT WORKS ─── */
+    .section {
+      margin-bottom: 120px;
+      padding-top: 32px;
+    }
+
+    .section-header {
+      margin-bottom: 50px;
+      max-width: 920px;
+    }
+
+    .section-title {
+      font-family: var(--heading-font);
+      font-size: 2.25rem;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .section-subtitle {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 760px;
+    }
+
+    .workflow-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    @media (max-width: 800px) {
+      .workflow-grid { grid-template-columns: 1fr; }
+    }
+
+    .workflow-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: var(--shadow-sm);
+      height: 100%;
+    }
+
+    .workflow-step {
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .workflow-step::after {
+      content: '';
+      flex-grow: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .workflow-icon {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      color: var(--primary);
+    }
+
+    .workflow-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .workflow-desc {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    /* ─── FEATURES ─── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+
+    @media (max-width: 768px) {
+      .features-grid { grid-template-columns: 1fr; }
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 20px;
+      padding: 32px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+
+    .feature-icon {
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .feature-content h4 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .feature-content p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .context-grid,
+    .resource-grid,
+    .repo-grid,
+    .routine-grid,
+    .repo-flow-grid,
+    .knowledge-map-grid,
+    .repo-lanes,
+    .repo-steps,
+    .knowledge-columns,
+    .setup-clusters,
+    .order-rail {
+      display: grid;
+      gap: 24px;
+    }
+
+    .context-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .resource-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .repo-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .repo-flow-grid,
+    .knowledge-map-grid {
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 28px;
+    }
+
+    .routine-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .repo-lanes,
+    .knowledge-columns,
+    .setup-clusters {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .repo-steps {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .order-rail {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    @media (max-width: 980px) {
+      .context-grid,
+      .resource-grid,
+      .repo-grid,
+      .repo-flow-grid,
+      .knowledge-map-grid,
+      .routine-grid,
+      .repo-lanes,
+      .repo-steps,
+      .knowledge-columns,
+      .setup-clusters,
+      .order-rail {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .context-grid,
+      .resource-grid,
+      .repo-grid,
+      .repo-flow-grid,
+      .knowledge-map-grid,
+      .routine-grid,
+      .repo-lanes,
+      .repo-steps,
+      .knowledge-columns,
+      .setup-clusters,
+      .order-rail {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .context-card,
+    .resource-card,
+    .repo-card,
+    .routine-card,
+    .repo-flow-card,
+    .knowledge-card {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.84) 100%);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: var(--shadow-sm);
+      height: 100%;
+    }
+
+    .context-card h3,
+    .resource-card h3,
+    .repo-card h3,
+    .routine-card h3,
+    .repo-flow-card h3,
+    .knowledge-card h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .context-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .context-card::after {
+      content: "";
+      position: absolute;
+      top: -34px;
+      right: -26px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(226,232,240,0.28) 0%, rgba(226,232,240,0) 74%);
+      pointer-events: none;
+    }
+
+    .context-icon {
+      width: 36px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      color: var(--primary);
+    }
+
+    .context-card p,
+    .resource-card p,
+    .repo-card p,
+    .routine-card p,
+    .repo-flow-card p,
+    .knowledge-card p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .repo-flow-code {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: #f8fafc;
+      border: 1px dashed var(--border-strong);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 0.84rem;
+      color: var(--primary);
+      white-space: pre-line;
+    }
+
+    .repo-lanes,
+    .knowledge-columns,
+    .setup-clusters {
+      margin-top: 28px;
+    }
+
+    .repo-lane,
+    .knowledge-cluster,
+    .setup-cluster,
+    .repo-step {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.84) 100%);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .repo-lane,
+    .setup-cluster {
+      padding: 24px;
+    }
+
+    .repo-lane-kicker,
+    .knowledge-cluster-kicker,
+    .setup-cluster-kicker,
+    .repo-step-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      color: var(--primary);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .repo-lane h3,
+    .knowledge-cluster h3,
+    .setup-cluster h3,
+    .repo-step h3 {
+      font-size: 1.08rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .repo-lane p,
+    .knowledge-cluster p,
+    .setup-cluster p,
+    .repo-step p {
+      color: var(--muted);
+      font-size: 0.93rem;
+      line-height: 1.55;
+    }
+
+    .repo-lane .repo-link,
+    .setup-cluster .repo-link {
+      margin-top: 14px;
+    }
+
+    .repo-steps {
+      margin-top: 26px;
+      gap: 18px;
+    }
+
+    .repo-step {
+      position: relative;
+      padding: 24px;
+      overflow: hidden;
+    }
+
+    .repo-step::after {
+      content: "";
+      position: absolute;
+      inset: auto -22px -30px auto;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(226,232,240,0.34) 0%, rgba(226,232,240,0) 70%);
+      pointer-events: none;
+    }
+
+    .repo-step-index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(99,102,241,0.16);
+      background: rgba(99,102,241,0.08);
+      color: var(--primary);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .knowledge-cluster {
+      padding: 24px;
+    }
+
+    .knowledge-stack {
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .knowledge-node {
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: rgba(248,250,252,0.8);
+      border: 1px solid rgba(226,232,240,0.9);
+    }
+
+    .knowledge-node strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text);
+      font-size: 0.96rem;
+      font-weight: 600;
+    }
+
+    .knowledge-node span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+
+    .order-rail {
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .order-step {
+      position: relative;
+      padding: 16px 18px 16px 62px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,0.86) 100%);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .order-step-number {
+      position: absolute;
+      top: 50%;
+      left: 18px;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: rgba(99,102,241,0.1);
+      border: 1px solid rgba(99,102,241,0.16);
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .order-step strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--text);
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .order-step span {
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+
+    .setup-cluster-links {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .repo-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .repo-meta.live {
+      color: var(--primary);
+      background: #f1f5f9;
+    }
+
+    .repo-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+
+    .repo-link:hover {
+      color: var(--primary-hover);
+    }
+
+    .scan-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .scan-item {
+      padding: 18px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.97) 0%, rgba(248,250,252,0.86) 100%);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .scan-item strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .scan-item span {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+
+    .hero-strip {
+      margin-top: 24px;
+    }
+
+    .hero-strip-copy {
+      margin-bottom: 10px;
+      max-width: 64ch;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .section-guide,
+    .setup-flow {
+      margin-top: 18px;
+      margin-bottom: 34px;
+    }
+
+    .micro-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .micro-list span {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .micro-list span::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--primary);
+      flex-shrink: 0;
+      box-shadow: 0 0 0 4px rgba(99,102,241,0.08);
+    }
+
+    .resource-links {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .resource-grid {
+      margin-top: 0;
+    }
+
+    .resource-links .repo-link {
+      margin-top: 0;
+    }
+
+    .signal-list {
+      display: grid;
+      gap: 18px;
+      margin-top: 28px;
+    }
+
+    .signal-item {
+      padding: 22px 24px;
+      border-left: 3px solid var(--accent);
+      background: var(--surface);
+      border-radius: 0 14px 14px 0;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .signal-item strong {
+      display: block;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .signal-item span {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .image-panel-grid,
+    .strengths-grid,
+    .timeline-gallery,
+    .wallet-grid {
+      display: grid;
+      gap: 24px;
+    }
+
+    .image-panel-grid {
+      grid-template-columns: repeat(2, 1fr);
+      margin-top: 32px;
+    }
+
+    .strengths-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .timeline-gallery {
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 36px;
+    }
+
+    .wallet-grid {
+      grid-template-columns: repeat(2, 1fr);
+      margin-top: 28px;
+    }
+
+    @media (max-width: 980px) {
+      .scan-strip,
+      .strengths-grid,
+      .timeline-gallery,
+      .wallet-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .image-panel-grid,
+      .scan-strip,
+      .strengths-grid,
+      .timeline-gallery,
+      .wallet-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .image-panel,
+    .strength-card {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,0.84) 100%);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .system-map-panel {
+      margin-top: 32px;
+      border-radius: 24px;
+      padding: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.9) 100%);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-pearl);
+    }
+
+    .system-map-panel img {
+      width: 100%;
+      display: block;
+      border-radius: 18px;
+      object-fit: cover;
+    }
+
+    .system-map-caption {
+      padding: 18px 10px 2px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .image-panel img {
+      width: 100%;
+      display: block;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      background: #eef2f7;
+    }
+
+    .image-panel-copy,
+    .strength-card-copy {
+      padding: 24px;
+    }
+
+    .image-panel-copy h3,
+    .strength-card-copy h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .image-panel-copy p,
+    .strength-card-copy p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .strength-kicker {
+      display: inline-flex;
+      margin-bottom: 12px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      color: var(--primary);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .timeline-board {
+      display: grid;
+      gap: 12px;
+      margin-top: 26px;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .timeline-board-header,
+    .timeline-row {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1.35fr) minmax(220px, 0.95fr);
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .timeline-board-header {
+      padding: 0 2px;
+    }
+
+    .timeline-head {
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: var(--muted);
+      font-size: 0.73rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(248,250,252,0.72);
+      border: 1px solid rgba(226,232,240,0.82);
+    }
+
+    .timeline-cell {
+      min-height: 152px;
+      padding: 20px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,0.84) 100%);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .timeline-mode {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+    }
+
+.timeline-mode strong {
+      color: var(--text);
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .timeline-mode span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .timeline-what h3,
+    .timeline-output h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .timeline-what p,
+    .timeline-output p {
+      color: var(--muted);
+      font-size: 0.93rem;
+      line-height: 1.58;
+    }
+
+    .timeline-output {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .timeline-output::after {
+      content: "";
+      position: absolute;
+      inset: auto -20px -28px auto;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(226,232,240,0.38) 0%, rgba(226,232,240,0) 72%);
+      pointer-events: none;
+    }
+
+    .timeline-tools {
+      margin-top: 12px;
+      color: var(--primary);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    @media (max-width: 1040px) {
+      .timeline-board-header,
+      .timeline-row {
+        grid-template-columns: 180px minmax(0, 1fr);
+      }
+
+      .timeline-output {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .timeline-board-header {
+        display: none;
+      }
+
+      .timeline-row {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline-cell {
+        min-height: auto;
+      }
+
+      .timeline-output {
+        grid-column: auto;
+      }
+
+      .timeline-mode {
+        padding-left: 0;
+      }
+    }
+
+    .timeline-gallery .image-panel-copy h3 {
+      margin-bottom: 8px;
+    }
+
+    .timeline-gallery .image-panel {
+      height: 100%;
+    }
+
+    .timeline-gallery .image-panel-copy {
+      min-height: 126px;
+    }
+
+    .wallet-address {
+      margin-top: 12px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      color: var(--primary);
+      font-size: 0.87rem;
+      word-break: break-all;
+    }
+
+    .wallet-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .wallet-copy-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.9);
+      color: var(--primary);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .wallet-copy-btn:hover {
+      background: #ffffff;
+      border-color: var(--primary);
+    }
+
+    .donation-note {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="layout-wrapper">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="logo-container">
+        <img src="images/opentutor-mark.png" alt="OpenTutor cat mark" class="logo-img" />
+        <div class="logo-copy">
+          <span class="logo-text">OpenTutor</span>
+        </div>
+      </div>
+
+      <div class="sidebar-intro">
+        <p>OpenTutor is the platform. Vibe is the tutor. The model combines open curriculum, supervised chat-based learning, and real-world digital tool fluency.</p>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-label">Document Map</div>
+        <a href="#overview" class="nav-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Overview
+        </a>
+        <a href="#how-it-works" class="nav-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          The Ecosystem
+        </a>
+        <a href="#features" class="nav-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Parental Controls
+        </a>
+        <a href="#repos" class="nav-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
+          Repositories
+        </a>
+        <a href="#setup-guides" class="nav-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 6v12"/><path d="M6 12h12"/><circle cx="12" cy="12" r="9"/></svg>
+          Setup Guides
+        </a>
+        <a href="#tutor" class="nav-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5Z"/><path d="M6 12v5c0 1 3 3 6 3s6-2 6-3v-5"/></svg>
+          Vibe Tutor
+        </a>
+        <a href="#routine" class="nav-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+          Timeline
+        </a>
+        <a href="#support" class="nav-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17"/><path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/><path d="m2 16 6 6"/><circle cx="16" cy="9" r="2.9"/><circle cx="6" cy="5" r="3"/></svg>
+          Support
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-footer-actions">
+          <a href="https://github.com/murderszn/vibe" target="_blank" class="github-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            Source Repo
+          </a>
+          <a href="#support" class="support-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17"/><path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/><path d="m2 16 6 6"/><circle cx="16" cy="9" r="2.9"/><circle cx="6" cy="5" r="3"/></svg>
+            Support OpenTutor
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <div class="content-shell">
+      
+      <!-- HERO -->
+      <section id="overview" class="hero-section">
+        <h1 class="hero-title">OpenTutor: an open model for homeschooling through GitHub, Discord, and a Claude-backed tutor.</h1>
+        <p class="hero-subtitle">OpenTutor is the platform name. Vibe remains the tutor. This page is structured as a design white paper for a parent-operated homeschool system where curriculum lives in repositories, daily instruction lives in Discord, and AI support stays visible, supervised, and accountable.</p>
+        <div class="hero-meta">
+          <span>Published April 17, 2026</span>
+          <span>By <a href="https://github.com/murderszn" target="_blank" rel="noreferrer">@murderszn</a></span>
+        </div>
+
+        <div class="hero-image-wrapper">
+          <img src="images/modern_homeschool_flow.png" alt="Homeschool Flow Diagram" class="hero-image" />
+        </div>
+
+      </section>
+
+      <!-- HOW IT WORKS -->
+      <section id="how-it-works" class="section">
+        <div class="section-header">
+          <h2 class="section-title">System Architecture</h2>
+          <p class="section-subtitle">OpenTutor separates the homeschool stack into three layers so each tool can do one job well without turning the family workflow into enterprise software.</p>
+        </div>
+
+        <div class="workflow-grid">
+          <div class="workflow-card">
+            <div class="workflow-step">Step 01</div>
+            <div class="workflow-icon">
+              <!-- Github Monochromatic Icon -->
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </div>
+            <h3 class="workflow-title">The Assignment Hub</h3>
+            <p class="workflow-desc">GitHub becomes the source of truth for the school itself. Curriculum can live in subject repositories, the weekly calendar can live in a schedule repo, and each student can build a visible portfolio of writing, projects, revisions, and progress over time.</p>
+          </div>
+
+          <div class="workflow-card">
+            <div class="workflow-step">Step 02</div>
+            <div class="workflow-icon">
+              <!-- Discord Icon -->
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+            </div>
+            <h3 class="workflow-title">The Virtual Classroom</h3>
+            <p class="workflow-desc">Discord is the daily interface. Subject channels, announcements, office hours, assignment check-ins, and quiet study rooms give kids one place to ask questions, receive direction, and stay connected to the rhythm of the day.</p>
+          </div>
+
+          <div class="workflow-card">
+            <div class="workflow-step">Step 03</div>
+            <div class="workflow-icon">
+              <!-- AI Sparkle/Brain Icon -->
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
+            </div>
+            <h3 class="workflow-title">The AI Tutor</h3>
+            <p class="workflow-desc">Vibe sits inside Discord and is backed by Claude to explain concepts, break down assignments, quiz students, rephrase directions, and help a stuck learner keep moving without leaving the supervised classroom environment.</p>
+          </div>
+        </div>
+
+        <div class="system-map-panel">
+          <img src="images/opentutor-integration-map.png" alt="Technical integration map showing repositories, channels, tutor layer, and parent oversight connected as one system" />
+          <div class="system-map-caption">This integration view emphasizes that OpenTutor is not a single app. It is a technical operating model connecting repositories, channels, student work surfaces, tutoring, and parent review into one coherent system.</div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Design Rationale</h2>
+          <p class="section-subtitle">The intent is not to simulate school software. The intent is to create a documentable, flexible, parent-run learning environment that can improve over time.</p>
+        </div>
+
+        <div class="context-grid">
+          <div class="context-card">
+            <div class="context-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/><path d="M16 3h5v5"/><path d="M21 3l-9 9"/><path d="M7 13h3"/><path d="M7 17h7"/></svg>
+            </div>
+            <h3>Everything stays reviewable</h3>
+            <p>Assignments, revisions, schedules, and bot behavior can all be tracked. GitHub history shows what changed and when. Discord logs show what happened in the classroom. That makes it easier to see effort, growth, and gaps without relying on memory.</p>
+          </div>
+
+          <div class="context-card">
+            <div class="context-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8"/><path d="M8 13h5"/></svg>
+            </div>
+            <h3>Help shows up where the work happens</h3>
+            <p>Kids do not need to bounce between separate portals for answers. They can ask in the same channel where the assignment was posted, where the resources live, and where the family already communicates. That reduces friction and keeps attention on the task.</p>
+          </div>
+
+          <div class="context-card">
+            <div class="context-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V7l-8-4-8 4v5c0 6 8 10 8 10Z"/><path d="M9 12l2 2 4-4"/></svg>
+            </div>
+            <h3>Parents stay in the loop</h3>
+            <p>Claude-backed tutoring is useful because it is immediate, but the system still keeps the parent in control. Roles, channels, moderation tools, and logs make the adult the operator of the environment rather than handing that control to a black box.</p>
+          </div>
+
+          <div class="context-card">
+            <div class="context-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><path d="M18 9v12"/><path d="M6 15a6 6 0 0 0 12 0"/><path d="M8 5h4"/><path d="M14 19h4"/></svg>
+            </div>
+            <h3>The curriculum can evolve like software</h3>
+            <p>Homeschool plans change. Lessons get improved, reading lists get swapped, pacing shifts, and projects get refined. Storing the school in repositories makes the curriculum editable, reusable, and easier to improve semester after semester.</p>
+          </div>
+
+          <div class="context-card">
+            <div class="context-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="7" height="7" rx="1.5"/><rect x="14" y="4" width="7" height="7" rx="1.5"/><rect x="8.5" y="13" width="7" height="7" rx="1.5"/><path d="M10 7.5h4"/><path d="M12 11v2"/></svg>
+            </div>
+            <h3>Students practice future workplace tools</h3>
+            <p>Discord, Teams, Slack, GitHub, channels, mentions, async check-ins, repository hygiene, and digital collaboration are not side benefits. They are core forms of literacy for modern digital work, and students can start learning them early in a supervised environment.</p>
+          </div>
+
+          <div class="context-card">
+            <div class="context-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </div>
+            <h3>Professional habits become normal early</h3>
+            <p>Instead of learning only isolated subjects, students also learn how to communicate in channels, document progress, manage versioned work, ask clear questions, and move projects forward using the same patterns they are likely to see later in technical, creative, or corporate settings.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURES -->
+      <section id="features" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Governance &amp; Safety</h2>
+          <p class="section-subtitle">The tutor layer only makes sense in a homeschool setting when parents retain authority over permissions, logs, discipline, and classroom structure.</p>
+        </div>
+
+        <div class="features-grid">
+          
+          <div class="feature-item">
+            <svg class="feature-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <div class="feature-content">
+              <h4>Classroom Moderation</h4>
+              <p>Parents can manage the server directly through Vibe. Kick, ban, timeout, or clean up disruptive activity with admin-gated commands instead of digging through Discord menus mid-lesson.</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <svg class="feature-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <div class="feature-content">
+              <h4>Full Parental Oversight</h4>
+              <p>Administrative actions are logged to <code>#bot-logs</code>, creating a clear audit trail for moderation and server changes. Parents can review how the classroom is being managed instead of relying on invisible automation.</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <svg class="feature-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <div class="feature-content">
+              <h4>Structured Learning Spaces</h4>
+              <p>Need a new room for algebra, writing workshop, science lab, or project review? Vibe can help set up organized channels so each subject has a dedicated place for materials, questions, and discussion.</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <svg class="feature-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            <div class="feature-content">
+              <h4>Immediate, Contextual Help</h4>
+              <p>Students ask for help by tagging the bot in the exact study space they are already using. That makes tutoring feel like part of the classroom workflow instead of a separate app they have to learn.</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <svg class="feature-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <div class="feature-content">
+              <h4>Human-in-the-Loop AI</h4>
+              <p>Claude gives explanations, examples, and scaffolding, but the parent still decides the curriculum, the pace, and the standards. The bot supports instruction; it does not become the school.</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <svg class="feature-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M12 4h9"/><path d="M4 9h16"/><path d="M4 15h16"/><path d="M8 4v16"/></svg>
+            <div class="feature-content">
+              <h4>Portfolio-Based Learning</h4>
+              <p>Because student work can live in repositories, the output of learning becomes visible: essays, notes, code, research, revisions, and project artifacts that show how understanding develops over time.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section id="repos" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Repository Map</h2>
+          <p class="section-subtitle">The bot repo is live now. The broader school model expands into a small set of repositories that are easy to inspect, update, and reuse.</p>
+        </div>
+
+        <div class="section-guide">
+          <span class="hero-strip-label">Repository Roles</span>
+          <div class="scan-strip" style="margin-top: 12px;">
+            <div class="scan-item">
+              <strong>Bot Repo</strong>
+              <span>Runs Vibe inside Discord and holds the tutor logic.</span>
+            </div>
+            <div class="scan-item">
+              <strong>Curriculum Repo</strong>
+              <span>Stores subjects, units, prompts, rubrics, and readings.</span>
+            </div>
+            <div class="scan-item">
+              <strong>Schedule Repo</strong>
+              <span>Defines the weekly rhythm, pacing, and checklists.</span>
+            </div>
+            <div class="scan-item">
+              <strong>Student Work</strong>
+              <span>Lives in folders and commits that become a portfolio.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="repo-lanes">
+          <div class="repo-lane">
+            <div class="repo-lane-kicker">Live Repo</div>
+            <h3>Vibe bot repository</h3>
+            <p>The current repo runs the Discord tutor, Claude integration, moderation flow, and parent-visible classroom logic.</p>
+            <a class="repo-link" href="https://github.com/murderszn/vibe" target="_blank" rel="noreferrer">View the bot on GitHub</a>
+          </div>
+
+          <div class="repo-lane">
+            <div class="repo-lane-kicker">Planned Repo</div>
+            <h3>Curriculum repository</h3>
+            <p>Units, readings, assignment prompts, rubrics, and project briefs live here as normal files with visible revision history.</p>
+          </div>
+
+          <div class="repo-lane">
+            <div class="repo-lane-kicker">Planned Repo</div>
+            <h3>Schedule repository</h3>
+            <p>Weekly rhythm, pacing guides, checklists, and semester planning sit in a separate planning layer that feeds the daily school flow.</p>
+          </div>
+        </div>
+
+        <div class="repo-steps">
+          <div class="repo-step">
+            <span class="repo-step-index">01</span>
+            <div class="repo-step-kicker">Student Structure</div>
+            <h3>One root per student</h3>
+            <p>Each child works inside a clear root folder with subjects, assignment materials, and project space kept together.</p>
+            <div class="repo-flow-code">student-name/
+  language-arts/
+  math/
+  stem/
+  social-studies/
+  projects/</div>
+          </div>
+
+          <div class="repo-step">
+            <span class="repo-step-index">02</span>
+            <div class="repo-step-kicker">Assignment Loop</div>
+            <h3>Pull, work, recommit</h3>
+            <p>Students learn a repeatable loop that turns schoolwork into organized digital practice instead of disconnected files.</p>
+            <div class="repo-flow-code">pull assignment
+work locally
+save progress
+commit response
+push updated folder</div>
+          </div>
+
+          <div class="repo-step">
+            <span class="repo-step-index">03</span>
+            <div class="repo-step-kicker">Project Studio</div>
+            <h3>Projects live beside coursework</h3>
+            <p>Coding, websites, research, and experiments sit inside the same system, so students build real artifacts as they learn.</p>
+            <div class="repo-flow-code">projects/
+  coding/
+  websites/
+  experiments/
+  portfolio/</div>
+          </div>
+
+        </div>
+
+        <div class="system-map-panel">
+          <img src="images/opentutor-repo-map.png" alt="Technical repository workflow map showing student folders, subjects, assignments, and project outputs connected together" />
+          <div class="system-map-caption">This repository workflow view shows the technical implementation layer: student roots, subject folders, assignment packets, project branches, and work recommitted back into organized outputs.</div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Knowledge Map</h2>
+          <p class="section-subtitle">The curriculum is a connected map of subjects, templates, projects, and practical life knowledge instead of a disconnected stack of classes.</p>
+        </div>
+
+        <div class="scan-strip">
+          <div class="scan-item">
+            <strong>Core Academics</strong>
+            <span>Language arts, math, science, and social studies stay central.</span>
+          </div>
+          <div class="scan-item">
+            <strong>Practical Life</strong>
+            <span>Money, careers, and decision-making are part of the curriculum.</span>
+          </div>
+          <div class="scan-item">
+            <strong>Projects</strong>
+            <span>Coding, websites, and portfolio work turn study into artifacts.</span>
+          </div>
+          <div class="scan-item">
+            <strong>Reinforcement</strong>
+            <span>Students revisit concepts through assignments, reviews, and builds.</span>
+          </div>
+        </div>
+
+        <div class="knowledge-columns">
+          <div class="knowledge-cluster">
+            <div class="knowledge-cluster-kicker">Foundations</div>
+            <h3>Academic core</h3>
+            <p>The base layer stays recognizable, but the subjects connect back to one another instead of living as isolated tracks.</p>
+            <div class="knowledge-stack">
+              <div class="knowledge-node">
+                <strong>Language Arts</strong>
+                <span>literature, archetypes, poetry, writing templates, interpretation</span>
+              </div>
+              <div class="knowledge-node">
+                <strong>Math</strong>
+                <span>fractions, ratios, geometry, statistics, visual lessons, number sense</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="knowledge-cluster">
+            <div class="knowledge-cluster-kicker">World Model</div>
+            <h3>Systems thinking</h3>
+            <p>The curriculum teaches how physical, civic, and financial systems work so students build context, not just recall.</p>
+            <div class="knowledge-stack">
+              <div class="knowledge-node">
+                <strong>STEM + Science</strong>
+                <span>forces, energy, reactions, cells, matter, biology and chemistry fundamentals</span>
+              </div>
+              <div class="knowledge-node">
+                <strong>Social Studies + Life</strong>
+                <span>geography, government, world facts, budgeting, careers, credit and pay</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="knowledge-cluster">
+            <div class="knowledge-cluster-kicker">Build Layer</div>
+            <h3>Artifacts and application</h3>
+            <p>Students do not only consume lessons. They create outputs that prove understanding and develop practical digital skill.</p>
+            <div class="knowledge-stack">
+              <div class="knowledge-node">
+                <strong>Project Studio</strong>
+                <span>coding, websites, reviews, research, templates, portfolio pieces</span>
+              </div>
+              <div class="knowledge-node">
+                <strong>Reinforcement</strong>
+                <span>assignments, reflections, commits, revisions, and project checkpoints</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="setup-guides" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Setup Guides</h2>
+          <p class="section-subtitle">OpenTutor depends on a few real-world setup steps. These official links make it easier to stand the system up without guesswork.</p>
+        </div>
+
+        <div class="setup-clusters">
+          <div class="setup-cluster">
+            <div class="setup-cluster-kicker">Accounts + Repos</div>
+            <h3>Start with identity and ownership</h3>
+            <p>Parents and students should have real GitHub accounts so assignments, commits, and project history map to actual people.</p>
+            <div class="micro-list">
+              <span>create the parent GitHub account</span>
+              <span>create student accounts for portfolio ownership</span>
+              <span>optionally add GitHub Education or Classroom later</span>
+            </div>
+            <div class="setup-cluster-links">
+              <a class="repo-link" href="https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github" target="_blank" rel="noreferrer">Create a GitHub account</a>
+              <a class="repo-link" href="https://docs.github.com/en/get-started/onboarding/getting-started-with-your-github-account" target="_blank" rel="noreferrer">GitHub account onboarding</a>
+              <a class="repo-link" href="https://docs.github.com/en/education/quickstart" target="_blank" rel="noreferrer">GitHub educator quickstart</a>
+            </div>
+          </div>
+
+          <div class="setup-cluster">
+            <div class="setup-cluster-kicker">Discord Classroom</div>
+            <h3>Build the classroom shell</h3>
+            <p>Discord becomes the day-to-day classroom layer, so the main job is creating a clean server with obvious subject and admin spaces.</p>
+            <div class="micro-list">
+              <span>create the parent Discord account</span>
+              <span>create the homeschool server and subject channels</span>
+              <span>reserve admin and logs channels for oversight</span>
+            </div>
+            <div class="setup-cluster-links">
+              <a class="repo-link" href="https://support.discord.com/hc/en-us/articles/31676852332439-Discord-Sign-Up-and-Registration-Guide" target="_blank" rel="noreferrer">Create a Discord account</a>
+              <a class="repo-link" href="https://support.discord.com/hc/en-us/articles/204849977-How-do-I-create-a-server" target="_blank" rel="noreferrer">Create a Discord server</a>
+            </div>
+          </div>
+
+          <div class="setup-cluster">
+            <div class="setup-cluster-kicker">Bot + Runtime</div>
+            <h3>Install the tutor safely</h3>
+            <p>Create the Discord application, install the bot with limited scopes, then run the repo with the correct bot token and Anthropic key.</p>
+            <div class="micro-list">
+              <span>create the Discord application and bot user</span>
+              <span>install with only the permissions the classroom needs</span>
+              <span>run the Vibe repo and connect it to your server</span>
+            </div>
+            <div class="setup-cluster-links">
+              <a class="repo-link" href="https://discord.com/developers/docs/quick-start/getting-started" target="_blank" rel="noreferrer">Discord developer quick start</a>
+              <a class="repo-link" href="https://discord.com/developers/docs/topics/oauth2" target="_blank" rel="noreferrer">Discord OAuth2 and installation</a>
+              <a class="repo-link" href="https://discord.com/developers/docs/topics/permissions" target="_blank" rel="noreferrer">Discord permissions reference</a>
+              <a class="repo-link" href="https://github.com/murderszn/vibe" target="_blank" rel="noreferrer">Open the Vibe source repository</a>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <section id="tutor" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Tutor Layer</h2>
+          <p class="section-subtitle">Vibe is the friendly tutor persona inside OpenTutor. Its behavior is not marketing copy; it is defined directly in the Python bot code and designed for concise, encouraging, middle-school support inside Discord.</p>
+        </div>
+
+        <div class="image-panel-grid">
+          <div class="image-panel">
+            <img src="images/vibe-tutor-classroom.png" alt="Illustration of Vibe tutoring inside a calm digital classroom" />
+            <div class="image-panel-copy">
+              <h3>Built for the classroom channel</h3>
+              <p>Vibe is designed to live inside the same subject spaces where students already work. Instead of sending kids to another tool, the tutor meets them in the study flow they are already using.</p>
+            </div>
+          </div>
+
+          <div class="image-panel">
+            <img src="images/vibe-tutor-strengths.png" alt="Illustration showing Vibe's tutoring strengths and classroom support" />
+            <div class="image-panel-copy">
+              <h3>Grounded in practical strengths</h3>
+              <p>The bot keeps recent context, knows who is speaking, stays concise, and operates with guardrails. That combination makes it more useful for homeschooling than a generic chat window.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="strengths-grid" style="margin-top: 32px;">
+          <div class="strength-card">
+            <div class="strength-card-copy">
+              <span class="strength-kicker">Teaching Style</span>
+              <h3>Clear middle-school explanations</h3>
+              <p>The system prompt explicitly positions Vibe as educational, encouraging, and good at making complex middle-school topics easy to understand without overexplaining.</p>
+            </div>
+          </div>
+
+          <div class="strength-card">
+            <div class="strength-card-copy">
+              <span class="strength-kicker">Context Memory</span>
+              <h3>Remembers the recent thread</h3>
+              <p>It keeps up to 10 recent message pairs per channel, which means follow-up questions can build on what a student already asked instead of restarting every time.</p>
+            </div>
+          </div>
+
+          <div class="strength-card">
+            <div class="strength-card-copy">
+              <span class="strength-kicker">Student Awareness</span>
+              <h3>Knows who is speaking</h3>
+              <p>User display names, roles, and mention targets are injected into the model context, so Vibe can interpret classroom conversations with much better situational awareness.</p>
+            </div>
+          </div>
+
+          <div class="strength-card">
+            <div class="strength-card-copy">
+              <span class="strength-kicker">Access Pattern</span>
+              <h3>Simple to use in real time</h3>
+              <p>Students only need to @mention Vibe in a subject channel. That keeps tutoring lightweight and makes it easy to ask for help the moment confusion happens.</p>
+            </div>
+          </div>
+
+          <div class="strength-card">
+            <div class="strength-card-copy">
+              <span class="strength-kicker">Discord Native</span>
+              <h3>Handles long answers safely</h3>
+              <p>If a response gets too long for Discord, the bot automatically splits it into clean message chunks. That keeps explanations readable without breaking the conversation flow.</p>
+            </div>
+          </div>
+
+          <div class="strength-card">
+            <div class="strength-card-copy">
+              <span class="strength-kicker">Guardrails</span>
+              <h3>Parent-first oversight</h3>
+              <p>A built-in cooldown limits spam, destructive actions are restricted to the <code>Admin</code> role, and admin actions are logged to <code>#bot-logs</code> for transparent supervision.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="routine" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Daily Flow</h2>
+          <p class="section-subtitle">A useful homeschool platform has to describe the actual shape of a day. This version is organized as a flexible sequence rather than a clock-based schedule.</p>
+        </div>
+
+        <div class="timeline-board">
+          <div class="timeline-board-header">
+            <div class="timeline-head">Learning Mode</div>
+            <div class="timeline-head">What Happens</div>
+            <div class="timeline-head">Student Output</div>
+          </div>
+
+          <div class="timeline-row">
+            <div class="timeline-cell timeline-mode">
+              <strong>Opening Block</strong>
+              <span>Orientation and planning</span>
+            </div>
+            <div class="timeline-cell timeline-what">
+              <h3>Morning check-in and assignment pull</h3>
+              <p>The day opens in Discord with the parent’s framing note, priorities, and links to the correct subject folders. Students learn to locate the day’s work, pull current assignments, and understand the shape of the day before they begin.</p>
+            </div>
+            <div class="timeline-cell timeline-output">
+              <h3>Operational readiness</h3>
+              <p>Students start with a clean view of the day’s tasks, the correct repository locations, and the expectations for what will be committed back later.</p>
+              <div class="timeline-tools">Tools: Discord channels, GitHub folders, assignment links</div>
+            </div>
+          </div>
+
+          <div class="timeline-row">
+            <div class="timeline-cell timeline-mode">
+              <strong>Core Work</strong>
+              <span>Subject-by-subject progress</span>
+            </div>
+            <div class="timeline-cell timeline-what">
+              <h3>Language arts, math, STEM, and social studies</h3>
+              <p>Students work through their subject folders and assignment materials directly. Because each child’s structure is organized by subject, the flow stays predictable even when assignments vary in type or depth.</p>
+            </div>
+            <div class="timeline-cell timeline-output">
+              <h3>Saved work in the right place</h3>
+              <p>Responses, notes, worksheets, and drafts begin accumulating inside the correct subject and assignment folders instead of being scattered across devices.</p>
+              <div class="timeline-tools">Tools: student folder, subject folders, assignment folders</div>
+            </div>
+          </div>
+
+          <div class="timeline-row">
+            <div class="timeline-cell timeline-mode">
+              <strong>Tutor Window</strong>
+              <span>Guided recovery and explanation</span>
+            </div>
+            <div class="timeline-cell timeline-what">
+              <h3>On-demand tutoring inside the classroom flow</h3>
+              <p>When confusion appears, Vibe can rephrase directions, explain a middle-school concept, or help a student recover momentum. The parent stays in control while the tutor reduces waiting and frustration.</p>
+            </div>
+            <div class="timeline-cell timeline-output">
+              <h3>Questions become forward motion</h3>
+              <p>Students learn to ask clearer questions, use async help responsibly, and keep moving instead of stalling out on one blocker for half the day.</p>
+              <div class="timeline-tools">Tools: Discord mentions, Vibe tutor, discussion history</div>
+            </div>
+          </div>
+
+          <div class="timeline-row">
+            <div class="timeline-cell timeline-mode">
+              <strong>Reset</strong>
+              <span>Pacing and review</span>
+            </div>
+            <div class="timeline-cell timeline-what">
+              <h3>Midday review of progress and blockers</h3>
+              <p>The parent can quickly review what has been completed, what is blocked, and which folders or subjects need attention in the afternoon. This turns the repository structure into a practical management surface.</p>
+            </div>
+            <div class="timeline-cell timeline-output">
+              <h3>Visible pacing decisions</h3>
+              <p>Students see that progress is measurable, revisions are normal, and work can be redirected without losing the trail of what happened earlier in the day.</p>
+              <div class="timeline-tools">Tools: repo review, channel check-ins, progress notes</div>
+            </div>
+          </div>
+
+          <div class="timeline-row">
+            <div class="timeline-cell timeline-mode">
+              <strong>Project Time</strong>
+              <span>Building and applied work</span>
+            </div>
+            <div class="timeline-cell timeline-what">
+              <h3>Coding, website design, and individual projects</h3>
+              <p>The afternoon expands beyond assignment completion into project folders for coding, design, research, and portfolio work. This is where students practice making things, not just finishing prompts.</p>
+            </div>
+            <div class="timeline-cell timeline-output">
+              <h3>Portfolio-grade artifacts</h3>
+              <p>Code, websites, creative assets, and project drafts accumulate as durable evidence of skill. Students learn that commits can represent real shipped work, not only homework responses.</p>
+              <div class="timeline-tools">Tools: project folders, commits, design files, coding files</div>
+            </div>
+          </div>
+
+          <div class="timeline-row">
+            <div class="timeline-cell timeline-mode">
+              <strong>Close</strong>
+              <span>Commit, reflect, prepare</span>
+            </div>
+            <div class="timeline-cell timeline-what">
+              <h3>Recommit work and plan the next step</h3>
+              <p>The day ends with students recommitting finished assignment work into the correct folders, noting what changed, and identifying what should happen next. The routine reinforces documentation, ownership, and continuity.</p>
+            </div>
+            <div class="timeline-cell timeline-output">
+              <h3>A clean end-of-day record</h3>
+              <p>The result is a visible trail of completed assignments, active projects, and next actions that can be reviewed by the parent and revisited by the student tomorrow.</p>
+              <div class="timeline-tools">Tools: commit messages, assignment folders, end-of-day review</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-gallery">
+          <div class="image-panel">
+            <img src="images/opentutor-morning.png" alt="Pearlescent cat illustration of the morning homeschool check-in" />
+            <div class="image-panel-copy">
+              <h3>Morning structure</h3>
+              <p>The day begins with orientation, clarity, and visible expectations rather than scattered tasks across multiple apps.</p>
+            </div>
+          </div>
+
+          <div class="image-panel">
+            <img src="images/opentutor-study.png" alt="Pearlescent cat illustration of focused homeschool study and guided work" />
+            <div class="image-panel-copy">
+              <h3>Focused study window</h3>
+              <p>Students move between subject channels, repository materials, and lightweight tutor support without losing their place.</p>
+            </div>
+          </div>
+
+          <div class="image-panel">
+            <img src="images/opentutor-review.png" alt="Pearlescent cat illustration of homeschool review and end-of-day reflection" />
+            <div class="image-panel-copy">
+              <h3>Review and closure</h3>
+              <p>Reflection is part of the operating model so progress becomes visible, discussable, and easier to improve tomorrow.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="support" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Support the Project</h2>
+          <p class="section-subtitle">OpenTutor is an open-source homeschool infrastructure project. Donations can fund API costs, curriculum maintenance, documentation, and continued development.</p>
+        </div>
+
+        <div class="wallet-grid">
+          <div class="wallet-card">
+            <span class="wallet-label">Bitcoin</span>
+            <p>Direct Bitcoin support for OpenTutor infrastructure, hosting, and ongoing development.</p>
+            <div class="wallet-address" data-wallet-value>3AWfncSFKENu47mDUhyZU1tvAULPzkSdZ8</div>
+            <div class="wallet-actions">
+              <button class="wallet-copy-btn" type="button" data-copy-wallet>Copy address</button>
+            </div>
+          </div>
+
+          <div class="wallet-card">
+            <span class="wallet-label">Ethereum / EVM</span>
+            <p>Direct EVM-compatible support for OpenTutor infrastructure, tooling, and documentation work.</p>
+            <div class="wallet-address" data-wallet-value>0x6B71F8F87F7eA31628149D70B9d178cB3E357A90</div>
+            <div class="wallet-actions">
+              <button class="wallet-copy-btn" type="button" data-copy-wallet>Copy address</button>
+            </div>
+          </div>
+        </div>
+
+        <p class="donation-note">These addresses fund OpenTutor infrastructure, API usage, curriculum maintenance, and continued development.</p>
+      </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const sectionLinks = Array.from(document.querySelectorAll('.nav-link'));
+    const sections = sectionLinks
+      .map((link) => document.querySelector(link.getAttribute('href')))
+      .filter(Boolean);
+
+    const setActiveLink = () => {
+      const currentSection = sections.find((section) => {
+        const rect = section.getBoundingClientRect();
+        return rect.top <= 160 && rect.bottom >= 160;
+      });
+
+      sectionLinks.forEach((link) => {
+        const matches = currentSection && link.getAttribute('href') === `#${currentSection.id}`;
+        link.classList.toggle('is-active', Boolean(matches));
+      });
+    };
+
+    setActiveLink();
+    window.addEventListener('scroll', setActiveLink, { passive: true });
+
+    document.querySelectorAll('[data-copy-wallet]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const value = button.closest('.wallet-card')?.querySelector('[data-wallet-value]')?.textContent?.trim();
+        if (!value) return;
+
+        try {
+          await navigator.clipboard.writeText(value);
+          const original = button.textContent;
+          button.textContent = 'Copied';
+          setTimeout(() => {
+            button.textContent = original;
+          }, 1200);
+        } catch (error) {
+          button.textContent = 'Copy failed';
+          setTimeout(() => {
+            button.textContent = 'Copy address';
+          }, 1200);
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
