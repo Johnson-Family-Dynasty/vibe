@@ -17,7 +17,7 @@
 OpenTutor is a parent-operated homeschool model built from open tools rather than closed education software.
 
 - **OpenTutor** is not a single platform. It is a collection of tools used together on purpose.
-- **Vibe** is the tutor persona inside Discord.
+- **Vibe** is the classroom tutor, teacher assistant, and server admin inside Discord.
 - **GitHub** is the record of curriculum, schedules, assignments, and student output.
 - **Discord** is the daily classroom interface.
 - **Claude** powers the tutoring layer so students can get help without leaving the supervised environment.
@@ -44,7 +44,7 @@ OpenTutor separates the homeschool stack into three layers while keeping the par
 
 1. **The Assignment Hub** — GitHub stores curriculum, schedules, revisions, and student work.
 2. **The Virtual Classroom** — Discord provides subject channels, announcements, office hours, and check-ins.
-3. **The AI Tutor** — Vibe, backed by Claude, explains concepts, breaks down assignments, and helps students keep moving.
+3. **The AI Tutor** — Vibe, backed by Claude, explains concepts, supports teachers, and helps students keep moving.
 
 ![OpenTutor integration map](site/images/opentutor-integration-map.png)
 
@@ -106,29 +106,31 @@ projects/
 
 ![OpenTutor repository map](site/images/opentutor-repo-map.png)
 
-## Knowledge Map
+## Learning Resources
 
-The curriculum is meant to be connected rather than fragmented. The current white paper frames the learning map around:
+The white paper now frames this layer as a maintained learning library rather than a fixed curriculum map.
 
-- **Language Arts** — literature, archetypes, mythology, poetry, reflection, and interpretation
-- **Math** — fractions, ratios, integers, geometry, statistics, measurement, and interactive visual lessons
-- **STEM** — physics, chemistry, biology, systems thinking, and practical scientific fundamentals
-- **Social Studies** — geography, institutions, government, world facts, and historical context
-- **Money & Life** — budgeting, investing basics, credit literacy, careers, and pay
-- **Project Studio** — coding, website design, reviews, templates, and portfolio work
+- **For parents** — organize folders like `/math`, `/science`, `/programming`, `/history`, `/reading`, and `/projects`
+- **For students** — check the library regularly and do not modify shared resources without permission
+- **Quick reference guides** — keep cheat sheets ready for measurements, world facts, finance, science basics, and history
+- **Datasets** — store usable CSV and JSON files for coding, research, and project work
+- **Essential online tools** — group tools by purpose: productivity, development, AI research, finance, design, and video
+- **Teacher + AI workflow** — parents and teachers curate the library, and AI turns it into worksheets, prompts, and review material
 
-The intent is to connect subjects to practical outputs instead of treating schoolwork as disposable.
+![OpenTutor learning resources](site/images/knowledge-resources.png)
 
-## Vibe as the Tutor
+## Vibe in the Classroom
 
-Vibe is designed for concise, encouraging, middle-school support inside Discord.
+Vibe is designed for concise, encouraging, middle-school support inside Discord, while also helping teachers and handling admin tasks safely.
 
 ### Core Strengths
 
 - **Classroom-native access** — students just `@mention` Vibe in the channel where they are already working
 - **Recent context memory** — Vibe keeps recent message context per channel so follow-up questions remain coherent
 - **Role-aware context** — names, roles, and mentions give the tutor better situational awareness
-- **Clear explanations** — the tutor is tuned for approachable middle-school explanations rather than generic long-form output
+- **Clear explanations** — the bot is tuned for approachable middle-school explanations rather than generic long-form output
+- **Teacher assistance** — Vibe can help draft directions, summaries, quizzes, and classroom copy
+- **Admin support** — server-changing actions are admin-gated and logged
 - **Discord-safe responses** — long outputs are chunked to fit Discord’s limits
 - **Parent-visible operation** — moderation and admin actions can be logged for review
 

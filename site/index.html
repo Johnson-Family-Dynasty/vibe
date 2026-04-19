@@ -353,7 +353,8 @@
 
     .section-header {
       margin-bottom: 50px;
-      max-width: 920px;
+      width: 100%;
+      max-width: 1100px;
     }
 
     .section-title {
@@ -368,7 +369,11 @@
     .section-subtitle {
       font-size: 1.05rem;
       color: var(--muted);
-      max-width: 760px;
+      width: 100%;
+      max-width: none;
+      line-height: 1.6;
+      text-wrap: pretty;
+      overflow-wrap: anywhere;
     }
 
     .workflow-grid {
@@ -762,6 +767,82 @@
       color: var(--muted);
       font-size: 0.88rem;
       line-height: 1.45;
+    }
+
+    .knowledge-radar {
+      margin-top: 34px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .knowledge-net-wrap {
+      width: 100%;
+      border-radius: 28px;
+      border: 1px solid rgba(203,213,225,0.9);
+      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.94) 44%, rgba(241,245,249,0.9) 100%);
+      box-shadow: var(--shadow-pearl);
+      overflow: hidden;
+      padding: 18px;
+    }
+
+    .knowledge-net-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 18px;
+      border: 1px solid rgba(226,232,240,0.9);
+      background: #ffffff;
+    }
+
+    .knowledge-radar-notes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .knowledge-note {
+      padding: 22px;
+      border-radius: 20px;
+      border: 1px solid rgba(203,213,225,0.92);
+      background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,0.88) 100%);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .knowledge-note strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .knowledge-note p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .knowledge-note p + p {
+      margin-top: 10px;
+    }
+
+    .knowledge-note ul {
+      margin-top: 12px;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .knowledge-note li + li {
+      margin-top: 6px;
+    }
+
+    @media (max-width: 860px) {
+      .knowledge-radar-notes {
+        grid-template-columns: 1fr;
+      }
     }
 
     .order-rail {
@@ -1620,91 +1701,10 @@
         </div>
       </section>
 
-      <!-- FEATURES -->
-      <section id="features" class="section">
-        <div class="section-header">
-          <h2 class="section-title">Governance &amp; Safety</h2>
-          <p class="section-subtitle">The tutor layer only makes sense in a homeschool setting when parents retain authority over permissions, logs, discipline, and classroom structure.</p>
-        </div>
-
-        <div class="features-grid">
-          
-          <div class="feature-item">
-            <svg class="feature-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <div class="feature-content">
-              <h4>Classroom Moderation</h4>
-              <p>Parents can manage the server directly through Vibe. Kick, ban, timeout, or clean up disruptive activity with admin-gated commands instead of digging through Discord menus mid-lesson.</p>
-            </div>
-          </div>
-
-          <div class="feature-item">
-            <svg class="feature-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-            <div class="feature-content">
-              <h4>Full Parental Oversight</h4>
-              <p>Administrative actions are logged to <code>#bot-logs</code>, creating a clear audit trail for moderation and server changes. Parents can review how the classroom is being managed instead of relying on invisible automation.</p>
-            </div>
-          </div>
-
-          <div class="feature-item">
-            <svg class="feature-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            <div class="feature-content">
-              <h4>Structured Learning Spaces</h4>
-              <p>Need a new room for algebra, writing workshop, science lab, or project review? Vibe can help set up organized channels so each subject has a dedicated place for materials, questions, and discussion.</p>
-            </div>
-          </div>
-
-          <div class="feature-item">
-            <svg class="feature-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-            <div class="feature-content">
-              <h4>Immediate, Contextual Help</h4>
-              <p>Students ask for help by tagging the bot in the exact study space they are already using. That makes tutoring feel like part of the classroom workflow instead of a separate app they have to learn.</p>
-            </div>
-          </div>
-
-          <div class="feature-item">
-            <svg class="feature-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-            <div class="feature-content">
-              <h4>Human-in-the-Loop AI</h4>
-              <p>Claude gives explanations, examples, and scaffolding, but the parent still decides the curriculum, the pace, and the standards. The bot supports instruction; it does not become the school.</p>
-            </div>
-          </div>
-
-          <div class="feature-item">
-            <svg class="feature-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M12 4h9"/><path d="M4 9h16"/><path d="M4 15h16"/><path d="M8 4v16"/></svg>
-            <div class="feature-content">
-              <h4>Portfolio-Based Learning</h4>
-              <p>Because student work can live in repositories, the output of learning becomes visible: essays, notes, code, research, revisions, and project artifacts that show how understanding develops over time.</p>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
       <section id="repos" class="section">
         <div class="section-header">
           <h2 class="section-title">Repository Map</h2>
           <p class="section-subtitle">The bot repo is live now. The broader school model expands into a small set of repositories that are easy to inspect, update, and reuse.</p>
-        </div>
-
-        <div class="section-guide">
-<div class="scan-strip" style="margin-top: 12px;">
-            <div class="scan-item">
-              <strong>Bot Repo</strong>
-              <span>Runs Vibe inside Discord and holds the tutor logic.</span>
-            </div>
-            <div class="scan-item">
-              <strong>Curriculum Repo</strong>
-              <span>Stores subjects, units, prompts, rubrics, and readings.</span>
-            </div>
-            <div class="scan-item">
-              <strong>Schedule Repo</strong>
-              <span>Defines the weekly rhythm, pacing, and checklists.</span>
-            </div>
-            <div class="scan-item">
-              <strong>Student Work</strong>
-              <span>Lives in folders and commits that become a portfolio.</span>
-            </div>
-          </div>
         </div>
 
         <div class="repo-lanes">
@@ -1776,75 +1776,49 @@ push updated folder</div>
 
       <section class="section">
         <div class="section-header">
-          <h2 class="section-title">Knowledge Map</h2>
-          <p class="section-subtitle">The curriculum is a connected map of subjects, templates, projects, and practical life knowledge instead of a disconnected stack of classes.</p>
+          <h2 class="section-title">Learning Resources</h2>
+          <p class="section-subtitle">This section is a shared resource-folder model, not a curriculum chart. It shows how parents can organize educational materials, reference documents, datasets, and useful links so students have one supervised place to read, watch, review, and build from.</p>
         </div>
 
-        <div class="scan-strip">
-          <div class="scan-item">
-            <strong>Core Academics</strong>
-            <span>Language arts, math, science, and social studies stay central.</span>
+        <div class="knowledge-radar">
+          <div class="knowledge-net-wrap">
+            <img class="knowledge-net-image" src="images/knowledge-resources.png" alt="Learning resources map showing parent guidance, student guidance, subject folders, quick reference guides, datasets, and essential online tools." />
           </div>
-          <div class="scan-item">
-            <strong>Practical Life</strong>
-            <span>Money, careers, and decision-making are part of the curriculum.</span>
-          </div>
-          <div class="scan-item">
-            <strong>Projects</strong>
-            <span>Coding, websites, and portfolio work turn study into artifacts.</span>
-          </div>
-          <div class="scan-item">
-            <strong>Reinforcement</strong>
-            <span>Students revisit concepts through assignments, reviews, and builds.</span>
-          </div>
-        </div>
 
-        <div class="knowledge-columns">
-          <div class="knowledge-cluster">
-            <div class="knowledge-cluster-kicker">Foundations</div>
-            <h3>Academic core</h3>
-            <p>The base layer stays recognizable, but the subjects connect back to one another instead of living as isolated tracks.</p>
-            <div class="knowledge-stack">
-              <div class="knowledge-node">
-                <strong>Language Arts</strong>
-                <span>literature, archetypes, poetry, writing templates, interpretation</span>
-              </div>
-              <div class="knowledge-node">
-                <strong>Math</strong>
-                <span>fractions, ratios, geometry, statistics, visual lessons, number sense</span>
-              </div>
+          <div class="knowledge-radar-notes">
+            <div class="knowledge-note">
+              <strong>For parents</strong>
+              <p>Organize clear subfolders like <code>/math</code>, <code>/science</code>, <code>/programming</code>, <code>/history</code>, <code>/reading</code>, and <code>/projects</code>.</p>
+              <p>Curate the library, monitor progress, and keep resources appropriate.</p>
             </div>
-          </div>
-
-          <div class="knowledge-cluster">
-            <div class="knowledge-cluster-kicker">World Model</div>
-            <h3>Systems thinking</h3>
-            <p>The curriculum teaches how physical, civic, and financial systems work so students build context, not just recall.</p>
-            <div class="knowledge-stack">
-              <div class="knowledge-node">
-                <strong>STEM + Science</strong>
-                <span>forces, energy, reactions, cells, matter, biology and chemistry fundamentals</span>
-              </div>
-              <div class="knowledge-node">
-                <strong>Social Studies + Life</strong>
-                <span>geography, government, world facts, budgeting, careers, credit and pay</span>
-              </div>
+            <div class="knowledge-note">
+              <strong>For students</strong>
+              <p>Check the folder regularly for things to read, watch, and review.</p>
+              <p>Do not change or delete shared resources without permission.</p>
             </div>
-          </div>
-
-          <div class="knowledge-cluster">
-            <div class="knowledge-cluster-kicker">Build Layer</div>
-            <h3>Artifacts and application</h3>
-            <p>Students do not only consume lessons. They create outputs that prove understanding and develop practical digital skill.</p>
-            <div class="knowledge-stack">
-              <div class="knowledge-node">
-                <strong>Project Studio</strong>
-                <span>coding, websites, reviews, research, templates, portfolio pieces</span>
-              </div>
-              <div class="knowledge-node">
-                <strong>Reinforcement</strong>
-                <span>assignments, reflections, commits, revisions, and project checkpoints</span>
-              </div>
+            <div class="knowledge-note">
+              <strong>Quick reference guides</strong>
+              <p>Keep practical cheat sheets ready: file types, measurements, world facts, finance, physics, chemistry, U.S. basics, and history guides.</p>
+              <p>These should be fast reopen resources, not full lessons.</p>
+            </div>
+            <div class="knowledge-note">
+              <strong>Datasets and structured materials</strong>
+              <p>Store usable files like CSV and JSON datasets for projects, coding, analysis, and research.</p>
+            </div>
+            <div class="knowledge-note">
+              <strong>Essential online tools</strong>
+              <p>Group tools by purpose, not brand.</p>
+              <ul>
+                <li>Productivity</li>
+                <li>Development</li>
+                <li>AI research</li>
+                <li>Finance, design, video</li>
+              </ul>
+            </div>
+            <div class="knowledge-note">
+              <strong>What this section implies for OpenTutor</strong>
+              <p>This is a maintained learning library, not a fixed curriculum map.</p>
+              <p>Parents and teachers curate it. AI helps turn it into worksheets, assignments, prompts, and review materials.</p>
             </div>
           </div>
         </div>
@@ -2110,6 +2084,65 @@ push updated folder</div>
               <p>Finished work gets committed back into GitHub, and end-of-day review makes progress visible and easier to improve the next day.</p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section id="features" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Governance &amp; Safety</h2>
+          <p class="section-subtitle">The tutor layer only makes sense in a homeschool setting when parents retain authority over permissions, logs, discipline, and classroom structure.</p>
+        </div>
+
+        <div class="features-grid">
+          
+          <div class="feature-item">
+            <svg class="feature-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <div class="feature-content">
+              <h4>Classroom Moderation</h4>
+              <p>Parents can manage the server directly through Vibe. Kick, ban, timeout, or clean up disruptive activity with admin-gated commands instead of digging through Discord menus mid-lesson.</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <svg class="feature-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <div class="feature-content">
+              <h4>Full Parental Oversight</h4>
+              <p>Administrative actions are logged to <code>#bot-logs</code>, creating a clear audit trail for moderation and server changes. Parents can review how the classroom is being managed instead of relying on invisible automation.</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <svg class="feature-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <div class="feature-content">
+              <h4>Structured Learning Spaces</h4>
+              <p>Need a new room for algebra, writing workshop, science lab, or project review? Vibe can help set up organized channels so each subject has a dedicated place for materials, questions, and discussion.</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <svg class="feature-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            <div class="feature-content">
+              <h4>Immediate, Contextual Help</h4>
+              <p>Students ask for help by tagging the bot in the exact study space they are already using. That makes tutoring feel like part of the classroom workflow instead of a separate app they have to learn.</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <svg class="feature-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <div class="feature-content">
+              <h4>Human-in-the-Loop AI</h4>
+              <p>Claude gives explanations, examples, and scaffolding, but the parent still decides the curriculum, the pace, and the standards. The bot supports instruction; it does not become the school.</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <svg class="feature-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M12 4h9"/><path d="M4 9h16"/><path d="M4 15h16"/><path d="M8 4v16"/></svg>
+            <div class="feature-content">
+              <h4>Portfolio-Based Learning</h4>
+              <p>Because student work can live in repositories, the output of learning becomes visible: essays, notes, code, research, revisions, and project artifacts that show how understanding develops over time.</p>
+            </div>
+          </div>
+
         </div>
       </section>
 

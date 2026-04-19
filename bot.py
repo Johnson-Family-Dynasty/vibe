@@ -17,10 +17,11 @@ MAX_HISTORY        = 10          # messages kept per channel
 COOLDOWN_SECONDS   = 5           # per-user rate limit
 MAX_RESPONSE_LEN   = 1900        # Discord limit is 2000; leave headroom
 LOG_CHANNEL_NAME   = "bot-logs"  # channel to post admin-action logs
-ADMIN_ROLE_NAME    = "Admin"     # role required for destructive tools
+ADMIN_ROLE_NAME    = "Admin"     # role required for server-changing tools
 ADMIN_TOOLS = {
-    "kick_member", "ban_member", "unban_member",
-    "purge_messages", "delete_channel"
+    "kick_member", "ban_member", "unban_member", "timeout_member",
+    "purge_messages", "create_channel", "delete_channel", "rename_channel",
+    "set_slowmode", "create_role", "assign_role", "remove_role"
 }
 
 # ──────────────────────────────────────────────
@@ -44,21 +45,38 @@ ai     = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 # ──────────────────────────────────────────────
 # SYSTEM PROMPT
 # ──────────────────────────────────────────────
-SYSTEM_PROMPT = """You are Vibe, a cool cat admin of a Discord server focused on homeschooling and middle school education.
+SYSTEM_PROMPT = """You are Vibe, the Discord classroom tutor, teacher assistant, and server admin for a homeschooling community focused on middle school education.
 
-You are running inside a Discord server. Users interact with you by @mentioning you. You have full admin rights over the server and can use your tools to manage it — when someone asks you to take an action, use your tools to actually do it, don't just say you will.
+You are running inside a Discord server. Users interact with you by @mentioning you. You can use tools to manage the server. If an authorized user asks you to take a server action, use the tool and actually do it instead of only saying you will.
 
-You speak with a laid-back, cool cat persona but are highly educational, encouraging, and great at explaining complex middle school subjects in a fun, easy-to-understand way.
+Your job has three modes:
 
-Keep responses concise and to the point. A few sentences is usually enough unless the topic genuinely needs more depth.
+1. Student tutor
+- Teach clearly at a middle school level without sounding babyish.
+- Prefer coaching over dumping answers. Help students think, work step by step, and build understanding.
+- Break hard tasks into small chunks, use simple examples, and check understanding when useful.
+- If a student seems stuck, start with the next step, not a long lecture.
+- Encourage effort, but stay practical and concise.
 
-When you mention a website, tool, or resource by name, always include a clickable Markdown hyperlink like: [Example](https://example.com). Never just name a site without linking it.
+2. Teacher assistant
+- Help teachers with lesson framing, announcements, assignment directions, study guides, quiz questions, rubrics, summaries, and rewording.
+- Optimize for classroom usefulness: clear structure, easy copy-paste, minimal fluff.
+- If a teacher asks for student-facing material, make it age-appropriate and easy to post in Discord.
 
-Use emojis sparingly — only when they genuinely add to the vibe. Avoid overusing cat emojis specifically.
+3. Server admin
+- Handle moderation and server organization responsibly.
+- Only perform server-changing actions for users who have the Admin role.
+- For destructive or high-risk actions, be explicit about what you did.
+- If a moderation request is ambiguous or risky, ask one short clarifying question before acting.
 
-Exercise admin powers responsibly. Confirm destructive actions (kick, ban, delete channel) in your reply so the requesting user knows what was done.
+Tone and style:
+- Friendly, calm, lightly cool, and confident.
+- Keep responses concise. A few sentences or a short list is usually enough unless depth is needed.
+- Do not be overly slangy, corny, or performative.
+- Use emojis sparingly. Avoid overusing cat emojis.
+- When you mention a website, tool, or resource by name, always include a clickable Markdown hyperlink like [Example](https://example.com).
 
-Each message will include a note about who is speaking and their roles. Use this to understand context."""
+You will receive context that includes who is speaking, their roles, their likely mode, and the channel name. Use that context to decide whether to act like a tutor, a teacher aide, or an admin."""
 
 # ──────────────────────────────────────────────
 # TOOLS
@@ -130,8 +148,8 @@ TOOLS = [
         "input_schema": {
             "type": "object",
             "properties": {
-                "name": {"type": "string", "enum": ["text", "voice"], "description": "Channel name"},
-                "type": {"type": "string", "description": "Channel type"}
+                "name": {"type": "string", "description": "Channel name"},
+                "type": {"type": "string", "enum": ["text", "voice"], "description": "Channel type"}
             },
             "required": ["name", "type"]
         }
@@ -239,6 +257,21 @@ def preprocess_mentions(content: str, guild: discord.Guild) -> str:
 
 def has_admin_role(member: discord.Member) -> bool:
     return any(r.name == ADMIN_ROLE_NAME for r in member.roles)
+
+
+def infer_user_mode(member_roles: list[str]) -> str:
+    lowered_roles = [role.lower() for role in member_roles]
+
+    if any("admin" in role for role in lowered_roles):
+        return "admin"
+
+    if any(keyword in role for role in lowered_roles for keyword in ("teacher", "parent", "staff", "mod", "moderator")):
+        return "teacher/staff"
+
+    if any(keyword in role for role in lowered_roles for keyword in ("student", "learner", "kid")):
+        return "student"
+
+    return "unknown"
 
 
 async def log_action(guild: discord.Guild, action: str, author: discord.Member) -> None:
@@ -429,8 +462,9 @@ async def on_message(message: discord.Message):
     if lower == "!help":
         await message.reply(
             "Hey! Here's what I can do:\n"
-            "📚 Answer questions about any middle school subject\n"
-            "🛠️ Manage the server (admins only — kick, ban, create channels, roles, etc.)\n"
+            "📚 Tutor students with step-by-step help in middle school subjects\n"
+            "🧑‍🏫 Help teachers with announcements, lesson directions, quizzes, rubrics, and summaries\n"
+            "🛠️ Manage the server (admins only — moderation, channels, roles, slowmode, and cleanup)\n"
             "💬 @mention me with any question to chat\n"
             "`!reset` — clear our conversation history\n"
             "`!help` — show this message"
@@ -456,10 +490,14 @@ async def on_message(message: discord.Message):
     # ── Inject user context ──
     roles = getattr(message.author, "roles", [])
     member_roles = [r.name for r in roles if r.name != "@everyone"]
+    likely_mode = infer_user_mode(member_roles)
+    channel_name = getattr(message.channel, "name", "direct-message")
     user_context = (
         f"[Speaking with: {message.author.display_name} "
         f"(id: {message.author.id}), "
-        f"Roles: {', '.join(member_roles) or 'none'}]\n\n"
+        f"Roles: {', '.join(member_roles) or 'none'}, "
+        f"Likely mode: {likely_mode}, "
+        f"Channel: #{channel_name}]\n\n"
     )
     full_content = user_context + clean_content
 
