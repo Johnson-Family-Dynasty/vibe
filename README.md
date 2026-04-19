@@ -3,9 +3,15 @@
   <h1>OpenTutor</h1>
   <p><strong>A parent-operated collection of tools for homeschooling through GitHub, Discord, and a Claude-backed tutor.</strong></p>
   <p>
-    <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
-    <img src="https://img.shields.io/badge/Discord.py-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord.py">
-    <img src="https://img.shields.io/badge/Anthropic_Claude-D97757?style=for-the-badge&logo=anthropic&logoColor=white" alt="Anthropic">
+    <a href="https://www.python.org/">
+      <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+    </a>
+    <a href="https://discordpy.readthedocs.io/">
+      <img src="https://img.shields.io/badge/Discord.py-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord.py">
+    </a>
+    <a href="https://www.anthropic.com/claude">
+      <img src="https://img.shields.io/badge/Anthropic_Claude-D97757?style=for-the-badge&logo=anthropic&logoColor=white" alt="Anthropic Claude">
+    </a>
     <img src="https://img.shields.io/badge/Open_Source-Homeschool_Model-0f172a?style=for-the-badge" alt="Open Source Homeschool Model">
   </p>
 </div>
