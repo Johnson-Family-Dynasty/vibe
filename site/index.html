@@ -199,6 +199,10 @@
       gap: 8px;
     }
 
+    .sidebar-footer-actions > * {
+      width: 100%;
+    }
+
     .github-btn,
     .support-btn {
       display: flex;
@@ -227,11 +231,13 @@
     .github-dropdown {
       position: relative;
       width: 100%;
+      display: block;
     }
 
     .github-dropdown summary {
       list-style: none;
       cursor: pointer;
+      justify-content: center;
     }
 
     .github-dropdown summary::-webkit-details-marker {
@@ -254,13 +260,15 @@
     }
 
     .dropdown-content a {
-      padding: 10px;
+      padding: 10px 12px;
       text-decoration: none;
       color: var(--text);
       font-size: 0.8rem;
       font-weight: 600;
       display: flex;
       align-items: center;
+      justify-content: center;
+      text-align: center;
       gap: 6px;
       border-bottom: 1px solid var(--border);
       transition: background 0.2s ease;
