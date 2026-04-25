@@ -117,11 +117,11 @@ projects/
 The white paper now frames this layer as a maintained learning library rather than a fixed curriculum map.
 
 - **For parents** — organize folders like `/math`, `/science`, `/programming`, `/history`, `/reading`, and `/projects`
-- **For students** — check the library regularly and do not modify shared resources without permission
-- **Quick reference guides** — keep cheat sheets ready for measurements, world facts, finance, science basics, and history
+- **For students** — check the library regularly and do not modify shared resources without permission; keep subject-specific cheat sheets, step-by-step skill guides, and vocabulary lists by subject/grade level easy to find
+- **Quick reference guides** — keep cheat sheets ready for formulas, grammar rules, writing frameworks, measurements, world facts, finance, science basics, and history
 - **Datasets** — store usable CSV and JSON files for coding, research, and project work
 - **Essential online tools** — group tools by purpose: productivity, development, AI research, finance, design, and video
-- **Teacher + AI workflow** — parents and teachers curate the library, and AI turns it into worksheets, prompts, and review material
+- **Teacher + AI workflow** — parents and teachers curate the library, and AI turns it into rubric templates, lesson plan outlines, ready-to-post Discord announcements/assignment prompts, assessment question banks, worksheets, and review material
 
 ![OpenTutor learning resources](site/images/knowledge-resources.png)
 
@@ -135,9 +135,9 @@ Vibe is designed for concise, encouraging, middle-school support inside Discord,
 - **Recent context memory** — Vibe keeps recent message context per channel so follow-up questions remain coherent
 - **Role-aware context** — names, roles, and mentions give the tutor better situational awareness
 - **Clear explanations** — the bot is tuned for approachable middle-school explanations rather than generic long-form output
-- **Teacher assistance** — Vibe can help draft directions, summaries, quizzes, and classroom copy
+- **Teacher assistance** — Vibe can help draft rubric templates, lesson plan outlines, ready-to-post announcements, assignment prompts, assessment question banks, directions, summaries, quizzes, and classroom copy
 - **Admin support** — server-changing actions are admin-gated and logged
-- **Discord-safe responses** — long outputs are chunked to fit Discord’s limits
+- **Discord-safe responses** — replies stay within Discord limits while keeping each request to a single bot reply
 - **Parent-visible operation** — moderation and admin actions can be logged for review
 
 ![Vibe tutoring inside the classroom](site/images/vibe-tutor-classroom.png)

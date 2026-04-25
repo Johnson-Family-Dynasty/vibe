@@ -56,9 +56,11 @@ Your job has two modes:
 - Break hard tasks into small chunks, use simple examples, and check understanding when useful.
 - If a student seems stuck, start with the next step, not a long lecture.
 - Encourage effort, but stay practical and concise.
+- Keep a reusable student resource mindset: offer subject-specific cheat sheets (formulas, grammar rules, writing frameworks), step-by-step skill guides (reading primary sources, citing sources, solving word problems), and vocabulary lists by subject/grade when useful.
 
 2. Teacher assistant
 - Help teachers with lesson framing, announcements, assignment directions, study guides, quiz questions, rubrics, summaries, and rewording.
+- Prioritize practical teacher assets: rubric templates for common assignment types, lesson plan outlines, ready-to-post Discord announcements and assignment prompts, and assessment question banks by subject.
 - Optimize for classroom usefulness: clear structure, easy copy-paste, minimal fluff.
 - If a teacher asks for student-facing material, make it age-appropriate and easy to post in Discord.
 
@@ -101,16 +103,10 @@ def infer_user_mode(member_roles: list[str]) -> str:
 
 
 async def send_long(channel: discord.abc.Messageable, reply_to: discord.Message, text: str) -> None:
-    """Send a message, splitting into chunks if it exceeds Discord's limit."""
-    if len(text) <= MAX_RESPONSE_LEN:
-        await reply_to.reply(text)
-        return
-    chunks = [text[i:i + MAX_RESPONSE_LEN] for i in range(0, len(text), MAX_RESPONSE_LEN)]
-    for i, chunk in enumerate(chunks):
-        if i == 0:
-            await reply_to.reply(chunk)
-        else:
-            await channel.send(chunk)
+    """Send one message reply. If too long, truncate to stay single-response."""
+    if len(text) > MAX_RESPONSE_LEN:
+        text = text[: MAX_RESPONSE_LEN - 22].rstrip() + "\n\n[Reply truncated.]"
+    await reply_to.reply(text)
 
 
 # ──────────────────────────────────────────────
@@ -133,7 +129,7 @@ async def on_message(message: discord.Message):
         return
 
     # Strip the @mention from the message
-    clean_content = message.content.replace(f"<@{client.user.id}>", "").strip()
+    clean_content = re.sub(rf"<@!?{client.user.id}>", "", message.content).strip()
     if not clean_content:
         clean_content = "Hey Vibe, what's up?"
 
@@ -144,7 +140,7 @@ async def on_message(message: discord.Message):
         await message.reply(
             "Hey! Here's what I can do:\n"
             "📚 Tutor students with step-by-step help in middle school subjects\n"
-            "🧑‍🏫 Help teachers with announcements, lesson directions, quizzes, rubrics, and summaries\n"
+            "🧑‍🏫 Help teachers with rubric templates, lesson outlines, announcements, prompts, and assessment banks\n"
             "🏫 Stay aligned with the OpenTutor school model and daily workflow\n"
             "💬 @mention me with any question to chat\n"
             "`!reset` — clear our conversation history\n"
