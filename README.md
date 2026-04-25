@@ -173,8 +173,17 @@ The site now includes direct setup references for the core systems:
 - **GitHub accounts** — create parent and student identities with visible ownership
 - **Discord classroom setup** — create the homeschool server and subject channels
 - **Bot installation** — stand up the Discord bot safely with the right permissions
+- **Agentic coding layer** — use Codex-style agents to help draft curriculum, maintain assignments, and accelerate parent feedback while keeping parents as final decision makers
 
 Useful links:
+
+- [Create a GitHub account](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github)
+- [GitHub account onboarding](https://docs.github.com/en/get-started/onboarding/getting-started-with-your-github-account)
+- [Create a Discord server](https://support.discord.com/hc/en-us/articles/204849977-How-do-I-create-a-server)
+- [Discord OAuth2 and installation](https://discord.com/developers/docs/topics/oauth2)
+- [Cursor editor](https://cursor.com)
+- [Antigravity (VS Code-based)](https://antigravity.google/)
+- [OpenAI Codex docs](https://platform.openai.com/docs/codex)
 
 
 ## Features in This Repository
