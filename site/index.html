@@ -1276,6 +1276,47 @@
       margin-top: 0;
     }
 
+    .logo-marquee {
+      margin: 0 0 24px;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.86);
+      overflow: hidden;
+    }
+
+    .logo-track {
+      display: flex;
+      gap: 12px;
+      width: max-content;
+      animation: logo-scroll 36s linear infinite;
+    }
+
+    .logo-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      font-size: 0.82rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .logo-pill img {
+      width: 16px;
+      height: 16px;
+      object-fit: contain;
+    }
+
+    @keyframes logo-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
     .image-panel img {
       width: 100%;
       display: block;
@@ -1770,6 +1811,14 @@
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           Overview
         </a>
+        <a href="#thesis" class="nav-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18"/><path d="M3 12h18"/></svg>
+          Thesis
+        </a>
+        <a href="#who-for" class="nav-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="7" r="3"/><path d="M2 21c0-3 3-5 7-5"/><path d="M12 21c0-3 2-5 5-5"/></svg>
+          Who This Is For
+        </a>
         <a href="#how-it-works" class="nav-link">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           System Architecture
@@ -1846,6 +1895,27 @@
           <img src="images/modern_homeschool_flow.png" alt="Homeschool Flow Diagram" class="hero-image" />
         </div>
 
+      </section>
+
+      <section id="thesis" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Thesis: A Supervised Learning Operating System</h2>
+          <p class="section-subtitle">OpenTutor proposes that the future education platform is not a single app. It is a supervised learning operating system where curriculum, collaboration, tutoring, assessment, and student portfolios are connected through open, auditable tools.</p>
+        </div>
+        <p>Framing: this is a white paper and operating model for AI-assisted, parent-supervised education. GitHub is the durable learning record. Discord is the classroom interface. Vibe/Claude is the supervised AI tutor.</p>
+      </section>
+
+      <section id="who-for" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Who This Is For</h2>
+          <p class="section-subtitle">OpenTutor is intentionally positioned for families and educators who want reviewable, human-governed AI learning workflows.</p>
+        </div>
+        <ul class="setup-bullets">
+          <li><strong>Primary audience:</strong> Parent-led homeschool families using visible, reviewable AI-assisted workflows.</li>
+          <li><strong>Secondary audience:</strong> Microschools, learning pods, tutors, and alternative education programs.</li>
+          <li><strong>Future audience:</strong> Schools piloting AI-supervised, project-based, portfolio-driven learning.</li>
+        </ul>
+        <p>OpenTutor v1.0 is best understood as an experimental operating model, not a turnkey accredited school or compliance platform.</p>
       </section>
 
       <!-- HOW IT WORKS -->
@@ -2052,6 +2122,35 @@ teachers/sites/mind-map/</div>
         <div class="section-header">
           <h2 class="section-title">Setup Guides</h2>
           <p class="section-subtitle">OpenTutor depends on a few real-world setup steps. These official links make it easier to stand the system up without guesswork, then layer in agentic coding workflows where the parent stays in the loop as curriculum architect, assignment maintainer, and feedback lead.</p>
+        </div>
+
+        <div class="logo-marquee" aria-label="Tools used in the OpenTutor workflow">
+          <div class="logo-track">
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/github/334155" alt="" />GitHub</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/discord/334155" alt="" />Discord</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/visualstudiocode/334155" alt="" />VS Code</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/googlecolab/334155" alt="" />Google Colab</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/googlesheets/334155" alt="" />Google Sheets</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/googledocs/334155" alt="" />Google Docs</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/googledrive/334155" alt="" />Google Drive</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/tradingview/334155" alt="" />TradingView</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/khanacademy/334155" alt="" />Khan Academy</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/audible/334155" alt="" />Audible</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/spotify/334155" alt="" />Spotify</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/github/334155" alt="" />GitHub</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/discord/334155" alt="" />Discord</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/visualstudiocode/334155" alt="" />VS Code</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/googlecolab/334155" alt="" />Google Colab</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/googlesheets/334155" alt="" />Google Sheets</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/googledocs/334155" alt="" />Google Docs</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/googledrive/334155" alt="" />Google Drive</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/tradingview/334155" alt="" />TradingView</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/khanacademy/334155" alt="" />Khan Academy</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/audible/334155" alt="" />Audible</span>
+            <span class="logo-pill"><img src="https://cdn.simpleicons.org/spotify/334155" alt="" />Spotify</span>
+            <span class="logo-pill">Antigravity</span>
+            <span class="logo-pill">Cursor</span>
+          </div>
         </div>
 
         <div class="setup-clusters">
@@ -2424,7 +2523,8 @@ teachers/sites/mind-map/</div>
   </div>
 
   <script>
-    const sectionLinks = Array.from(document.querySelectorAll('.nav-link'));
+    const sectionLinks = Array.from(document.querySelectorAll('.nav-link'))
+      .filter((link) => (link.getAttribute('href') || '').startsWith('#'));
     const sections = sectionLinks
       .map((link) => document.querySelector(link.getAttribute('href')))
       .filter(Boolean);
