@@ -1,7 +1,32 @@
-from config import CLASSROOM_NAME, LEARNING_CENTER_FULL_NAME, LEARNING_CENTER_OWNER, LEARNING_CENTER_REPO
+from config import (
+    CLASSROOM_NAME,
+    CLASSROOM_TIMEZONE,
+    LEARNING_CENTER_FULL_NAME,
+    LEARNING_CENTER_OWNER,
+    LEARNING_CENTER_REPO,
+)
 
 
 TOOLS = [
+    {
+        "name": "get_current_time",
+        "description": (
+            f"Get the current date and time. Defaults to the classroom timezone ({CLASSROOM_TIMEZONE}). "
+            "Use this when the user asks what time it is, what day/date it is, or needs the current timestamp."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "timezone": {
+                    "type": "string",
+                    "description": (
+                        f"Optional IANA timezone like America/Chicago or UTC. "
+                        f"Defaults to {CLASSROOM_TIMEZONE}."
+                    ),
+                }
+            },
+        },
+    },
     {
         "name": "web_search",
         "description": (

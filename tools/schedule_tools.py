@@ -5,6 +5,7 @@ from urllib.parse import quote
 
 from config import CLASSROOM_STUDENTS
 from config import student_matches
+from config import today_in_classroom_timezone
 from tools.common import truncate
 from tools.github_tools import decode_github_file, github_get, github_target
 
@@ -55,7 +56,7 @@ def _resolve_schedule_target_date(weekday=None, target_date=None):
         if parsed:
             return parsed, _format_date(parsed)
 
-    today = date.today()
+    today = today_in_classroom_timezone()
     text = (weekday or "").strip().lower()
     if not text:
         return None, "upcoming schedule rows"
@@ -117,7 +118,7 @@ def tool_get_classroom_schedule(students=None, weekday=None, target_date=None, s
     if unknown:
         lines.append(f"Unknown student aliases ignored: {', '.join(unknown)}")
 
-    today = date.today()
+    today = today_in_classroom_timezone()
     for student in selected_students:
         rows, source_url = _read_student_schedule(student, owner, repo)
         if target:

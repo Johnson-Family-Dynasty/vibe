@@ -134,6 +134,7 @@ Vibe is designed for concise, encouraging, middle-school support inside Discord,
 - **Classroom-native access** — students just `@mention` Vibe in the channel where they are already working
 - **Recent context memory** — Vibe keeps recent message context per channel so follow-up questions remain coherent
 - **Role-aware context** — names, roles, and mentions give the tutor better situational awareness
+- **Current time awareness** — each request includes the classroom date/time in the configured timezone
 - **Clear explanations** — the bot is tuned for approachable middle-school explanations rather than generic long-form output
 - **Teacher assistance** — Vibe can help draft rubric templates, lesson plan outlines, ready-to-post announcements, assignment prompts, assessment question banks, directions, summaries, quizzes, and classroom copy
 - **Admin support** — server-changing actions are admin-gated and logged
@@ -192,6 +193,7 @@ Useful links:
 - JFD classroom profile for Caleb, Elijah, Glory, Josh, Lonisa, and Vibe
 - family productivity helper for planning, routines, projects, research, and quick organization
 - one-call schedule lookup for Caleb, Elijah, Glory, and Caleb's `creativegt` alias
+- current classroom date/time awareness with a configurable timezone
 - live web search, URL reading, and weather lookups through Claude tools
 - GitHub repo reading/search for the default learning center repo
 - per-channel conversation memory
@@ -203,6 +205,7 @@ Useful links:
 ## Commands
 
 - `@Vibe [question]` — ask Vibe for help in a server channel
+- `@Vibe what time is it?` — answer using the configured classroom timezone
 - `@Vibe what's the weather in Chicago?` — live weather lookup
 - `@Vibe what should Elijah and creativegt do on Monday?` — read the student schedule CSVs
 - `@Vibe summarize https://example.com/page` — fetch and read a live webpage
@@ -230,7 +233,7 @@ The bot is split so prompt behavior and tool code can evolve separately:
 - `skills/SKILLS.md` — index of trusted local skills.
 - `skills/*.md` — discrete behavior skills for classroom identity, tutoring, teacher help, schedules, GitHub, live web, and family productivity.
 - `tools/schemas.py` — Anthropic tool schema definitions.
-- `tools/*_tools.py` — Python implementations for web, weather, GitHub, and schedule lookups.
+- `tools/*_tools.py` — Python implementations for time, web, weather, GitHub, and schedule lookups.
 
 Only skills listed in `prompting.py` can be loaded into the prompt.
 
@@ -265,9 +268,12 @@ LEARNING_CENTER_GITHUB_REPO=learning-center
 # Optional: override classroom labels used in the prompt
 CLASSROOM_NAME=JFD Learning Center
 CLASSROOM_GROUP_NAME=Johnson Family Dynasty
+CLASSROOM_TIMEZONE=America/Chicago
 ```
 
 `GITHUB_TOKEN` is optional for public repositories, but recommended. It is required if `Johnson-Family-Dynasty/learning-center` is private and also improves GitHub API limits and code search access. For a fine-grained token, grant read access to the selected `learning-center` repository.
+
+`CLASSROOM_TIMEZONE` should be an IANA timezone name such as `America/Chicago`. It defaults to `America/Chicago` if omitted.
 
 Run the bot:
 

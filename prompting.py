@@ -2,6 +2,7 @@ import re
 from pathlib import Path
 
 from config import LEARNING_CENTER_FULL_NAME
+from config import format_current_time_context
 from config import format_classroom_profile
 
 SKILLS_DIR = Path(__file__).resolve().parent / "skills"
@@ -30,12 +31,16 @@ OpenTutor school model and daily operations:
 
 You are running inside a Discord server. Users interact with you by @mentioning you.
 You are not a server administrator and must not offer, suggest, or perform moderation/server-management actions.
+The system prompt includes current classroom date/time context. Use it for time-aware answers, relative dates like today/tomorrow, and classroom scheduling.
 
 You have live tools available:
+- get_current_time: get the current date/time, defaulting to the classroom timezone.
 - web_search / fetch_webpage: look up current information or read a URL the user pastes.
 - get_weather: get live weather and short forecast information for a requested location.
 - get_classroom_schedule: read Caleb, Elijah, or Glory's schedule.csv files for a requested date or weekday.
 - github: read files, search code, summarize repository structure, list commits, and look up issues or pull requests in GitHub.
+
+When the user asks what time it is, what day it is, today's date, or a similar time question, answer directly from the current classroom time context or use `get_current_time`. Do not tell the user to check a website, clock, phone, or watch.
 
 Default GitHub classroom repository:
 - {learning_center}
@@ -163,6 +168,8 @@ def build_system_prompt(message_text: str = "") -> str:
         BASE_PROMPT.format(learning_center=LEARNING_CENTER_FULL_NAME)
         + "\n\n"
         + format_classroom_profile()
+        + "\n\n"
+        + format_current_time_context()
         + "\n\nLoaded local skills:\n"
         + skill_text
     )

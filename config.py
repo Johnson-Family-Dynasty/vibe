@@ -1,6 +1,8 @@
 import os
 import re
-from datetime import date
+from datetime import date, datetime
+from typing import Optional
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from dotenv import load_dotenv
 
@@ -25,6 +27,7 @@ LEARNING_CENTER_FULL_NAME = f"{LEARNING_CENTER_OWNER}/{LEARNING_CENTER_REPO}"
 
 CLASSROOM_NAME = os.getenv("CLASSROOM_NAME", "JFD Learning Center")
 CLASSROOM_GROUP_NAME = os.getenv("CLASSROOM_GROUP_NAME", "Johnson Family Dynasty")
+CLASSROOM_TIMEZONE = os.getenv("CLASSROOM_TIMEZONE", "America/Chicago")
 
 REQUEST_HEADERS = {
     "User-Agent": "OpenTutor-VibeBot/1.0 (+https://discord-vibe-bot.vercel.app/site/)",
@@ -87,8 +90,35 @@ VIBE_FAMILY_ROLE = (
 )
 
 
+def classroom_timezone():
+    try:
+        return ZoneInfo(CLASSROOM_TIMEZONE)
+    except (ZoneInfoNotFoundError, ValueError):
+        return datetime.now().astimezone().tzinfo
+
+
+def now_in_classroom_timezone() -> datetime:
+    return datetime.now(classroom_timezone())
+
+
+def today_in_classroom_timezone() -> date:
+    return now_in_classroom_timezone().date()
+
+
+def format_current_time_context(now: Optional[datetime] = None) -> str:
+    now = now or now_in_classroom_timezone()
+    timezone_name = getattr(now.tzinfo, "key", None) or now.tzname() or CLASSROOM_TIMEZONE
+    return (
+        "Current classroom time:\n"
+        f"- Local date: {now.strftime('%A, %B')} {now.day}, {now.year}\n"
+        f"- Local time: {now.strftime('%I:%M %p').lstrip('0')} {now.tzname() or ''}\n"
+        f"- Timezone: {timezone_name}\n"
+        f"- ISO timestamp: {now.isoformat()}"
+    )
+
+
 def calculate_age(birthday: date, today=None) -> int:
-    today = today or date.today()
+    today = today or today_in_classroom_timezone()
     birthday_this_year = birthday.replace(year=today.year)
     return today.year - birthday.year - (today < birthday_this_year)
 

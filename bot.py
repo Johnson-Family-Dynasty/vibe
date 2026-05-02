@@ -22,6 +22,7 @@ from prompting import build_system_prompt
 from tools.github_tools import tool_github
 from tools.schedule_tools import tool_get_classroom_schedule
 from tools.schemas import TOOLS
+from tools.time_tools import tool_get_current_time
 from tools.web_tools import tool_fetch_webpage, tool_get_weather, tool_web_search
 
 # ──────────────────────────────────────────────
@@ -53,6 +54,8 @@ async def dispatch_tool(name: str, inputs: dict) -> str:
             return await loop.run_in_executor(TOOL_EXECUTOR, tool_fetch_webpage, inputs["url"])
         if name == "get_weather":
             return await loop.run_in_executor(TOOL_EXECUTOR, tool_get_weather, inputs["location"])
+        if name == "get_current_time":
+            return await loop.run_in_executor(TOOL_EXECUTOR, lambda: tool_get_current_time(inputs.get("timezone")))
         if name == "get_classroom_schedule":
             return await loop.run_in_executor(TOOL_EXECUTOR, lambda: tool_get_classroom_schedule(**inputs))
         if name == "github":
