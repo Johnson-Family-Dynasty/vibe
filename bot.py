@@ -3,6 +3,7 @@ import concurrent.futures
 import os
 import re
 import time
+import json
 from collections import defaultdict
 from dataclasses import dataclass
 
@@ -12,9 +13,12 @@ import discord
 from config import (
     CLASSROOM_NAME,
     COOLDOWN_SECONDS,
+    ENABLE_TWO_STAGE_RESPONDER,
     LEARNING_CENTER_FULL_NAME,
+    ALLOW_SARCASM,
     MAX_HISTORY,
     MAX_RESPONSE_LEN,
+    MAX_SUMMARY_LENGTH,
     MAX_TOOL_ROUNDS,
     MAX_TOOL_ROUNDS_FRESH_FACTS,
     MAX_TOOL_ROUNDS_REPO,
@@ -34,6 +38,8 @@ from tools.web_tools import tool_fetch_webpage, tool_get_weather, tool_web_searc
 # STATE
 # ──────────────────────────────────────────────
 conversation_histories: dict[int, list] = defaultdict(list)
+conversation_summaries: dict[int, str] = defaultdict(str)
+summary_refresh_counts: dict[int, int] = defaultdict(int)
 user_last_message: dict[int, float] = defaultdict(float)
 TOOL_EXECUTOR = concurrent.futures.ThreadPoolExecutor(max_workers=6)
 
@@ -87,6 +93,52 @@ intents.voice_states = True
 
 client = discord.Client(intents=intents)
 ai = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+
+STAGE_A_PROMPT = """Create a compact Stage A control object for the user's message.
+Return JSON only with fields:
+- intent: short string
+- tone: one of [supportive, neutral, playful, firm, celebratory]
+- need_tools: boolean
+- response_plan: short bullet-style string (max 2 steps)
+Do not include any answer to the user and do not mention Stage A/Stage B."""
+
+
+def parse_stage_a(raw: str) -> dict:
+    fallback = {
+        "intent": "general_help",
+        "tone": "supportive",
+        "need_tools": False,
+        "response_plan": "1) Answer directly\n2) Offer one helpful next step",
+    }
+    try:
+        data = json.loads(raw)
+        tone = data.get("tone", "supportive")
+        if tone not in {"supportive", "neutral", "playful", "firm", "celebratory"}:
+            tone = "supportive"
+        return {
+            "intent": str(data.get("intent", fallback["intent"]))[:80],
+            "tone": tone,
+            "need_tools": bool(data.get("need_tools", False)),
+            "response_plan": str(data.get("response_plan", fallback["response_plan"]))[:220],
+        }
+    except Exception:
+        return fallback
+
+
+def build_stage_b_system_prompt(base_prompt: str, stage_a: dict) -> str:
+    sarcasm_allowed = ALLOW_SARCASM and stage_a.get("tone") == "playful"
+    return (
+        base_prompt
+        + "\n\nInternal response controls (do not reveal):\n"
+        + f"- Intent: {stage_a.get('intent', 'general_help')}\n"
+        + f"- Tone: {stage_a.get('tone', 'supportive')}\n"
+        + f"- Need tools: {stage_a.get('need_tools', False)}\n"
+        + "- Plan:\n"
+        + f"{stage_a.get('response_plan', '')}\n"
+        + f"- Sarcasm gate: {'enabled' if sarcasm_allowed else 'disabled'}\n"
+        + "When sarcasm gate is disabled, avoid sarcasm entirely. When enabled, keep it very mild and friendly. "
+          "Never mention internal stages or controls in the final response."
+    )
 
 
 async def dispatch_tool(name: str, inputs: dict) -> str:
@@ -168,6 +220,8 @@ async def on_message(message: discord.Message):
 
     if lower == "!reset":
         conversation_histories[message.channel.id] = []
+        conversation_summaries[message.channel.id] = ""
+        summary_refresh_counts[message.channel.id] = 0
         await message.reply("Fresh start! Conversation history cleared. 🐱")
         return
 
@@ -197,11 +251,10 @@ async def on_message(message: discord.Message):
 
     history = conversation_histories[message.channel.id]
     history.append({"role": "user", "content": full_content})
-    if len(history) > MAX_HISTORY * 2:
-        history = history[-(MAX_HISTORY * 2):]
-        conversation_histories[message.channel.id] = history
 
     system_prompt = build_system_prompt(full_content)
+    await maybe_refresh_summary(message.channel.id, history, system_prompt)
+    history = conversation_histories[message.channel.id]
 
     async with message.channel.typing():
         try:

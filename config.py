@@ -12,6 +12,9 @@ load_dotenv()
 # RUNTIME CONFIG
 # ──────────────────────────────────────────────
 MAX_HISTORY = 10
+SUMMARY_TRIGGER_THRESHOLD = 16
+MAX_SUMMARY_LENGTH = 1200
+SUMMARY_REFRESH_CADENCE = 4
 COOLDOWN_SECONDS = 5
 MAX_RESPONSE_LEN = 1900
 MAX_TOOL_RESULT = 3000
@@ -24,6 +27,8 @@ MAX_TOOL_ROUNDS_REPO = 3
 MAX_TOOL_ROUNDS_SCHEDULE = 2
 TOOL_CALL_TIMEOUT_SECONDS = 8
 HTTP_TIMEOUT = 12
+ENABLE_TWO_STAGE_RESPONDER = os.getenv("ENABLE_TWO_STAGE_RESPONDER", "true").lower() in {"1", "true", "yes", "on"}
+ALLOW_SARCASM = os.getenv("ALLOW_SARCASM", "false").lower() in {"1", "true", "yes", "on"}
 
 LEARNING_CENTER_OWNER = os.getenv("LEARNING_CENTER_GITHUB_OWNER", "Johnson-Family-Dynasty")
 LEARNING_CENTER_REPO = os.getenv("LEARNING_CENTER_GITHUB_REPO", "learning-center")
