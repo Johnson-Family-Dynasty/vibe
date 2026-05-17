@@ -1,6 +1,9 @@
 import re
 from pathlib import Path
 
+from skill_router import INTENT_TO_SKILLS
+from skill_router import classify_intent
+
 from config import LEARNING_CENTER_FULL_NAME
 from config import format_current_time_context
 from config import format_classroom_profile
@@ -79,84 +82,52 @@ def select_skills(message_text: str) -> list[str]:
     text = message_text or ""
     selected = list(BASE_SKILLS)
 
-    if _has_any(text, [
-        r"\bcaleb\b",
-        r"\belijah\b",
-        r"\bglory\b",
-        r"\bcreativegt\b",
-        r"\bstudent\b",
-        r"\btutor\b",
-        r"\bhomework\b",
-        r"\bschoolwork\b",
-        r"\bmath\b",
-        r"\bstem\b",
-        r"\bscience\b",
-        r"\blanguage arts\b",
-        r"\breading\b",
-        r"\bsocial studies\b",
-        r"\bquiz\b",
-        r"\bexplain\b",
-        r"likely mode:\s*student",
-    ]):
-        selected.append("tutor")
+    intent_result = classify_intent(text)
+    intent_skills = INTENT_TO_SKILLS.get(intent_result.intent, [])
 
-    if _has_any(text, [
-        r"\bteacher\b",
-        r"\bparent\b",
-        r"\brubric\b",
-        r"\blesson\b",
-        r"\bannouncement\b",
-        r"\bassessment\b",
-        r"\bstudy guide\b",
-        r"\bquestion bank\b",
-        r"\bassignment prompt\b",
-        r"\bplan\b",
-        r"likely mode:\s*teacher/staff",
-    ]):
-        selected.append("teacher-assistant")
+    # Prioritize minimal, intent-relevant skills.
+    selected.extend(intent_skills)
 
-    if _has_any(text, [
-        r"\bschedule\b",
-        r"\bschoolwork\b",
-        r"\btimeline\b",
-        r"\bwhat should\b.*\b(do|study|school|schoolwork|assignment|schedule)\b",
-        r"\btoday\b",
-        r"\btomorrow\b",
-        r"\bmonday\b",
-        r"\btuesday\b",
-        r"\bwednesday\b",
-        r"\bthursday\b",
-        r"\bfriday\b",
-    ]):
-        selected.append("schedule")
+    # Fallback regex routing only when intent signal is weak.
+    if intent_result.confidence < 0.65:
+        if _has_any(text, [r"\bskills?\b", r"\bwhat can you do\b"]):
+            selected.append("index")
 
-    if _has_any(text, [
-        r"\bgithub\b",
-        r"\brepo\b",
-        r"\blearning center\b",
-        r"\bassignment\b",
-        r"\bstudent folder\b",
-        r"\bresources?\b",
-        r"github\.com",
-    ]):
-        selected.append("github")
+        if _has_any(text, [
+            r"\bteacher\b",
+            r"\bparent\b",
+            r"\brubric\b",
+            r"\blesson\b",
+            r"\bannouncement\b",
+            r"\bassessment\b",
+            r"\bstudy guide\b",
+            r"\bquestion bank\b",
+            r"\bassignment prompt\b",
+            r"likely mode:\s*teacher/staff",
+        ]):
+            selected.append("teacher-assistant")
 
-    if _has_any(text, [r"\bskills?\b", r"\bwhat can you do\b"]):
-        selected.append("index")
+        if _has_any(text, [
+            r"\bgithub\b",
+            r"\brepo\b",
+            r"\blearning center\b",
+            r"github\.com",
+        ]):
+            selected.append("github")
 
-    if _has_any(text, [
-        r"https?://",
-        r"\bweather\b",
-        r"\btemperature\b",
-        r"\bforecast\b",
-        r"\bcurrent\b",
-        r"\blive\b",
-        r"\bsearch\b",
-        r"\blook up\b",
-        r"\bnews\b",
-        r"\blatest\b",
-    ]):
-        selected.append("web-live")
+        if _has_any(text, [
+            r"https?://",
+            r"\bweather\b",
+            r"\btemperature\b",
+            r"\bforecast\b",
+            r"\bcurrent\b",
+            r"\blive\b",
+            r"\bsearch\b",
+            r"\blook up\b",
+            r"\bnews\b",
+            r"\blatest\b",
+        ]):
+            selected.append("web-live")
 
     deduped = []
     for name in selected:

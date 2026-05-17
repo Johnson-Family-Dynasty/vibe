@@ -12,6 +12,9 @@ load_dotenv()
 # RUNTIME CONFIG
 # ──────────────────────────────────────────────
 MAX_HISTORY = 10
+SUMMARY_TRIGGER_THRESHOLD = 16
+MAX_SUMMARY_LENGTH = 1200
+SUMMARY_REFRESH_CADENCE = 4
 COOLDOWN_SECONDS = 5
 MAX_RESPONSE_LEN = 1900
 MAX_TOOL_RESULT = 3000
@@ -20,6 +23,8 @@ MAX_GITHUB_RESULTS = 10
 MAX_GITHUB_TREE = 150
 MAX_TOOL_ROUNDS = 8
 HTTP_TIMEOUT = 12
+ENABLE_TWO_STAGE_RESPONDER = os.getenv("ENABLE_TWO_STAGE_RESPONDER", "true").lower() in {"1", "true", "yes", "on"}
+ALLOW_SARCASM = os.getenv("ALLOW_SARCASM", "false").lower() in {"1", "true", "yes", "on"}
 
 # Tone / frustration detection
 TONE_FRUSTRATION_SENSITIVITY = float(os.getenv("TONE_FRUSTRATION_SENSITIVITY", "1.0"))
