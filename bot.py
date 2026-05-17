@@ -3,6 +3,7 @@ import concurrent.futures
 import os
 import re
 import time
+import json
 from collections import defaultdict
 
 import anthropic
@@ -11,7 +12,9 @@ import discord
 from config import (
     CLASSROOM_NAME,
     COOLDOWN_SECONDS,
+    ENABLE_TWO_STAGE_RESPONDER,
     LEARNING_CENTER_FULL_NAME,
+    ALLOW_SARCASM,
     MAX_HISTORY,
     MAX_RESPONSE_LEN,
     MAX_TOOL_ROUNDS,
@@ -43,6 +46,52 @@ intents.voice_states = True
 
 client = discord.Client(intents=intents)
 ai = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+
+STAGE_A_PROMPT = """Create a compact Stage A control object for the user's message.
+Return JSON only with fields:
+- intent: short string
+- tone: one of [supportive, neutral, playful, firm, celebratory]
+- need_tools: boolean
+- response_plan: short bullet-style string (max 2 steps)
+Do not include any answer to the user and do not mention Stage A/Stage B."""
+
+
+def parse_stage_a(raw: str) -> dict:
+    fallback = {
+        "intent": "general_help",
+        "tone": "supportive",
+        "need_tools": False,
+        "response_plan": "1) Answer directly\n2) Offer one helpful next step",
+    }
+    try:
+        data = json.loads(raw)
+        tone = data.get("tone", "supportive")
+        if tone not in {"supportive", "neutral", "playful", "firm", "celebratory"}:
+            tone = "supportive"
+        return {
+            "intent": str(data.get("intent", fallback["intent"]))[:80],
+            "tone": tone,
+            "need_tools": bool(data.get("need_tools", False)),
+            "response_plan": str(data.get("response_plan", fallback["response_plan"]))[:220],
+        }
+    except Exception:
+        return fallback
+
+
+def build_stage_b_system_prompt(base_prompt: str, stage_a: dict) -> str:
+    sarcasm_allowed = ALLOW_SARCASM and stage_a.get("tone") == "playful"
+    return (
+        base_prompt
+        + "\n\nInternal response controls (do not reveal):\n"
+        + f"- Intent: {stage_a.get('intent', 'general_help')}\n"
+        + f"- Tone: {stage_a.get('tone', 'supportive')}\n"
+        + f"- Need tools: {stage_a.get('need_tools', False)}\n"
+        + "- Plan:\n"
+        + f"{stage_a.get('response_plan', '')}\n"
+        + f"- Sarcasm gate: {'enabled' if sarcasm_allowed else 'disabled'}\n"
+        + "When sarcasm gate is disabled, avoid sarcasm entirely. When enabled, keep it very mild and friendly. "
+          "Never mention internal stages or controls in the final response."
+    )
 
 
 async def dispatch_tool(name: str, inputs: dict) -> str:
@@ -163,12 +212,24 @@ async def on_message(message: discord.Message):
         try:
             messages = list(history)
             tool_rounds = 0
+            active_system_prompt = system_prompt
+
+            if ENABLE_TWO_STAGE_RESPONDER:
+                stage_a_response = ai.messages.create(
+                    model="claude-sonnet-4-6",
+                    max_tokens=220,
+                    system=STAGE_A_PROMPT,
+                    messages=[{"role": "user", "content": clean_content}],
+                )
+                stage_a_text = next((block.text for block in stage_a_response.content if hasattr(block, "text")), "{}")
+                stage_a = parse_stage_a(stage_a_text)
+                active_system_prompt = build_stage_b_system_prompt(system_prompt, stage_a)
 
             while True:
                 response = ai.messages.create(
                     model="claude-sonnet-4-6",
                     max_tokens=2048,
-                    system=system_prompt,
+                    system=active_system_prompt,
                     tools=TOOLS,
                     messages=messages,
                 )
