@@ -17,7 +17,10 @@ from config import (
     ALLOW_SARCASM,
     MAX_HISTORY,
     MAX_RESPONSE_LEN,
+    MAX_SUMMARY_LENGTH,
     MAX_TOOL_ROUNDS,
+    SUMMARY_REFRESH_CADENCE,
+    SUMMARY_TRIGGER_THRESHOLD,
     describe_known_classroom_member,
     infer_user_mode,
 )
@@ -32,8 +35,85 @@ from tools.web_tools import tool_fetch_webpage, tool_get_weather, tool_web_searc
 # STATE
 # ──────────────────────────────────────────────
 conversation_histories: dict[int, list] = defaultdict(list)
+conversation_summaries: dict[int, str] = defaultdict(str)
+summary_refresh_counts: dict[int, int] = defaultdict(int)
 user_last_message: dict[int, float] = defaultdict(float)
 TOOL_EXECUTOR = concurrent.futures.ThreadPoolExecutor(max_workers=6)
+
+PINNED_MEMORY_HEADER = (
+    "Pinned memory rules:\n"
+    "- Treat user preferences and ongoing tasks as persistent.\n"
+    "- Do not treat tool errors, timeouts, or failed calls as facts.\n"
+)
+
+
+def _message_text_for_summary(message: dict) -> str:
+    role = message.get("role", "unknown")
+    content = message.get("content", "")
+    if isinstance(content, str):
+        return f"{role.upper()}: {content}"
+    if isinstance(content, list):
+        parts = []
+        for item in content:
+            if isinstance(item, dict) and item.get("type") == "tool_result":
+                block = str(item.get("content", ""))
+                if block.lower().startswith("tool error"):
+                    continue
+                parts.append(f"TOOL_RESULT: {block}")
+        return f"{role.upper()}: " + "\n".join(parts)
+    return f"{role.upper()}: {content}"
+
+
+async def maybe_refresh_summary(channel_id: int, history: list, system_prompt: str) -> None:
+    if len(history) < SUMMARY_TRIGGER_THRESHOLD:
+        return
+
+    summary_refresh_counts[channel_id] += 1
+    should_force = not conversation_summaries[channel_id]
+    if not should_force and summary_refresh_counts[channel_id] % SUMMARY_REFRESH_CADENCE != 0:
+        return
+
+    keep_recent = max(4, MAX_HISTORY)
+    if len(history) <= keep_recent:
+        return
+
+    old_window = history[: -keep_recent]
+    existing_summary = conversation_summaries[channel_id]
+    serialized = "\n\n".join(_message_text_for_summary(m) for m in old_window)
+    summarizer_prompt = (
+        "Update the rolling channel memory.\n"
+        "Return concise markdown with exactly these sections:\n"
+        "## Facts\n## Preferences\n## Ongoing Tasks\n## Unresolved Questions\n"
+        "Rules:\n"
+        "- Never claim tool errors as facts.\n"
+        "- Preserve user preferences and ongoing tasks if still relevant.\n"
+        "- Prefer stable, durable information.\n"
+        f"- Keep total response under {MAX_SUMMARY_LENGTH} characters."
+    )
+
+    response = await asyncio.get_running_loop().run_in_executor(
+        TOOL_EXECUTOR,
+        lambda: ai.messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=600,
+            system=system_prompt,
+            messages=[
+                {
+                    "role": "user",
+                    "content": (
+                        f"Existing summary:\n{existing_summary or '[none]'}\n\n"
+                        f"{PINNED_MEMORY_HEADER}\n"
+                        f"Older conversation window:\n{serialized}\n\n"
+                        f"{summarizer_prompt}"
+                    ),
+                }
+            ],
+        ),
+    )
+    summary_text = next((block.text for block in response.content if hasattr(block, "text")), "").strip()
+    if summary_text:
+        conversation_summaries[channel_id] = summary_text[:MAX_SUMMARY_LENGTH]
+        conversation_histories[channel_id] = history[-keep_recent:]
 
 # ──────────────────────────────────────────────
 # DISCORD + ANTHROPIC CLIENTS
@@ -173,6 +253,8 @@ async def on_message(message: discord.Message):
 
     if lower == "!reset":
         conversation_histories[message.channel.id] = []
+        conversation_summaries[message.channel.id] = ""
+        summary_refresh_counts[message.channel.id] = 0
         await message.reply("Fresh start! Conversation history cleared. 🐱")
         return
 
@@ -202,15 +284,27 @@ async def on_message(message: discord.Message):
 
     history = conversation_histories[message.channel.id]
     history.append({"role": "user", "content": full_content})
-    if len(history) > MAX_HISTORY * 2:
-        history = history[-(MAX_HISTORY * 2):]
-        conversation_histories[message.channel.id] = history
 
     system_prompt = build_system_prompt(full_content)
+    await maybe_refresh_summary(message.channel.id, history, system_prompt)
+    history = conversation_histories[message.channel.id]
 
     async with message.channel.typing():
         try:
             messages = list(history)
+            channel_summary = conversation_summaries[message.channel.id]
+            if channel_summary:
+                messages = [
+                    {
+                        "role": "user",
+                        "content": (
+                            "Rolling channel memory (long-term context):\n"
+                            f"{channel_summary}\n\n"
+                            f"{PINNED_MEMORY_HEADER}"
+                        ),
+                    },
+                    *messages,
+                ]
             tool_rounds = 0
             active_system_prompt = system_prompt
 
