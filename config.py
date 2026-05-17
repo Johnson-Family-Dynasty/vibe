@@ -20,6 +20,16 @@ MAX_GITHUB_RESULTS = 10
 MAX_GITHUB_TREE = 150
 MAX_TOOL_ROUNDS = 8
 HTTP_TIMEOUT = 12
+VIBE_PERSONA_MODE = os.getenv("VIBE_PERSONA_MODE", "balanced")
+VIBE_SARCASM_LEVEL = max(0, min(3, int(os.getenv("VIBE_SARCASM_LEVEL", "1"))))
+VIBE_SARCASM_BLOCKLIST_CONTEXTS = tuple(
+    context.strip().lower()
+    for context in os.getenv(
+        "VIBE_SARCASM_BLOCKLIST_CONTEXTS",
+        "safety-sensitive,sensitive topics,frustrated,confused,upset,grief,mental health,self-harm,medical,legal,crisis",
+    ).split(",")
+    if context.strip()
+)
 
 LEARNING_CENTER_OWNER = os.getenv("LEARNING_CENTER_GITHUB_OWNER", "Johnson-Family-Dynasty")
 LEARNING_CENTER_REPO = os.getenv("LEARNING_CENTER_GITHUB_REPO", "learning-center")
