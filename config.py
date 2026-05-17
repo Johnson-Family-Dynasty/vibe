@@ -21,6 +21,28 @@ MAX_GITHUB_TREE = 150
 MAX_TOOL_ROUNDS = 8
 HTTP_TIMEOUT = 12
 
+# Tone / frustration detection
+TONE_FRUSTRATION_SENSITIVITY = float(os.getenv("TONE_FRUSTRATION_SENSITIVITY", "1.0"))
+TONE_FRUSTRATED_THRESHOLD = float(os.getenv("TONE_FRUSTRATED_THRESHOLD", "2.5"))
+TONE_NEUTRAL_THRESHOLD = float(os.getenv("TONE_NEUTRAL_THRESHOLD", "1.0"))
+TONE_FRUSTRATION_PHRASES = [
+    phrase.strip().lower()
+    for phrase in os.getenv(
+        "TONE_FRUSTRATION_PHRASES",
+        "this is stupid,i don't get it,i dont get it,why is this so hard,this makes no sense,"
+        "i'm confused,im confused,this sucks,wtf,what the heck",
+    ).split(",")
+    if phrase.strip()
+]
+TONE_NEGATIVE_MARKERS = [
+    marker.strip().lower()
+    for marker in os.getenv(
+        "TONE_NEGATIVE_MARKERS",
+        "stupid,dumb,annoying,frustrated,mad,angry,upset,confused,stuck,can't,can't figure",
+    ).split(",")
+    if marker.strip()
+]
+
 LEARNING_CENTER_OWNER = os.getenv("LEARNING_CENTER_GITHUB_OWNER", "Johnson-Family-Dynasty")
 LEARNING_CENTER_REPO = os.getenv("LEARNING_CENTER_GITHUB_REPO", "learning-center")
 LEARNING_CENTER_FULL_NAME = f"{LEARNING_CENTER_OWNER}/{LEARNING_CENTER_REPO}"
