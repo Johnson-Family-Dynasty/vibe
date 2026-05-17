@@ -20,6 +20,8 @@ MAX_GITHUB_RESULTS = 10
 MAX_GITHUB_TREE = 150
 MAX_TOOL_ROUNDS = 8
 HTTP_TIMEOUT = 12
+ENABLE_TWO_STAGE_RESPONDER = os.getenv("ENABLE_TWO_STAGE_RESPONDER", "true").lower() in {"1", "true", "yes", "on"}
+ALLOW_SARCASM = os.getenv("ALLOW_SARCASM", "false").lower() in {"1", "true", "yes", "on"}
 
 LEARNING_CENTER_OWNER = os.getenv("LEARNING_CENTER_GITHUB_OWNER", "Johnson-Family-Dynasty")
 LEARNING_CENTER_REPO = os.getenv("LEARNING_CENTER_GITHUB_REPO", "learning-center")
