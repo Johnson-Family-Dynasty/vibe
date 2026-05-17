@@ -5,6 +5,7 @@ import re
 import time
 import json
 from collections import defaultdict
+from dataclasses import dataclass
 
 import anthropic
 import discord
@@ -19,8 +20,10 @@ from config import (
     MAX_RESPONSE_LEN,
     MAX_SUMMARY_LENGTH,
     MAX_TOOL_ROUNDS,
-    SUMMARY_REFRESH_CADENCE,
-    SUMMARY_TRIGGER_THRESHOLD,
+    MAX_TOOL_ROUNDS_FRESH_FACTS,
+    MAX_TOOL_ROUNDS_REPO,
+    MAX_TOOL_ROUNDS_SCHEDULE,
+    TOOL_CALL_TIMEOUT_SECONDS,
     describe_known_classroom_member,
     infer_user_mode,
 )
@@ -40,80 +43,44 @@ summary_refresh_counts: dict[int, int] = defaultdict(int)
 user_last_message: dict[int, float] = defaultdict(float)
 TOOL_EXECUTOR = concurrent.futures.ThreadPoolExecutor(max_workers=6)
 
-PINNED_MEMORY_HEADER = (
-    "Pinned memory rules:\n"
-    "- Treat user preferences and ongoing tasks as persistent.\n"
-    "- Do not treat tool errors, timeouts, or failed calls as facts.\n"
-)
+
+@dataclass
+class RequestTelemetry:
+    tool_calls: int = 0
+    tool_rounds: int = 0
+    started_at: float = 0.0
+
+    def latency_bucket(self) -> str:
+        elapsed = time.time() - self.started_at
+        if elapsed < 2:
+            return "<2s"
+        if elapsed < 5:
+            return "2-5s"
+        if elapsed < 10:
+            return "5-10s"
+        return "10s+"
 
 
-def _message_text_for_summary(message: dict) -> str:
-    role = message.get("role", "unknown")
-    content = message.get("content", "")
-    if isinstance(content, str):
-        return f"{role.upper()}: {content}"
-    if isinstance(content, list):
-        parts = []
-        for item in content:
-            if isinstance(item, dict) and item.get("type") == "tool_result":
-                block = str(item.get("content", ""))
-                if block.lower().startswith("tool error"):
-                    continue
-                parts.append(f"TOOL_RESULT: {block}")
-        return f"{role.upper()}: " + "\n".join(parts)
-    return f"{role.upper()}: {content}"
-
-
-async def maybe_refresh_summary(channel_id: int, history: list, system_prompt: str) -> None:
-    if len(history) < SUMMARY_TRIGGER_THRESHOLD:
-        return
-
-    summary_refresh_counts[channel_id] += 1
-    should_force = not conversation_summaries[channel_id]
-    if not should_force and summary_refresh_counts[channel_id] % SUMMARY_REFRESH_CADENCE != 0:
-        return
-
-    keep_recent = max(4, MAX_HISTORY)
-    if len(history) <= keep_recent:
-        return
-
-    old_window = history[: -keep_recent]
-    existing_summary = conversation_summaries[channel_id]
-    serialized = "\n\n".join(_message_text_for_summary(m) for m in old_window)
-    summarizer_prompt = (
-        "Update the rolling channel memory.\n"
-        "Return concise markdown with exactly these sections:\n"
-        "## Facts\n## Preferences\n## Ongoing Tasks\n## Unresolved Questions\n"
-        "Rules:\n"
-        "- Never claim tool errors as facts.\n"
-        "- Preserve user preferences and ongoing tasks if still relevant.\n"
-        "- Prefer stable, durable information.\n"
-        f"- Keep total response under {MAX_SUMMARY_LENGTH} characters."
+def should_enable_tools(user_text: str) -> tuple[bool, str]:
+    lowered = (user_text or "").lower()
+    fresh_fact_keywords = (
+        "weather", "forecast", "temperature", "news", "today", "live", "current",
+        "latest", "breaking", "stock", "price", "score", "web", "search", "url", "website",
     )
+    if any(keyword in lowered for keyword in fresh_fact_keywords):
+        return True, "fresh_facts"
+    return False, "conversational"
 
-    response = await asyncio.get_running_loop().run_in_executor(
-        TOOL_EXECUTOR,
-        lambda: ai.messages.create(
-            model="claude-sonnet-4-6",
-            max_tokens=600,
-            system=system_prompt,
-            messages=[
-                {
-                    "role": "user",
-                    "content": (
-                        f"Existing summary:\n{existing_summary or '[none]'}\n\n"
-                        f"{PINNED_MEMORY_HEADER}\n"
-                        f"Older conversation window:\n{serialized}\n\n"
-                        f"{summarizer_prompt}"
-                    ),
-                }
-            ],
-        ),
-    )
-    summary_text = next((block.text for block in response.content if hasattr(block, "text")), "").strip()
-    if summary_text:
-        conversation_summaries[channel_id] = summary_text[:MAX_SUMMARY_LENGTH]
-        conversation_histories[channel_id] = history[-keep_recent:]
+
+def resolve_tool_round_limit(user_text: str, tool_intent: str) -> int:
+    lowered = (user_text or "").lower()
+    if "github" in lowered or "repo" in lowered or "readme" in lowered:
+        return MAX_TOOL_ROUNDS_REPO
+    if "schedule" in lowered or "calendar" in lowered:
+        return MAX_TOOL_ROUNDS_SCHEDULE
+    if tool_intent == "fresh_facts":
+        return MAX_TOOL_ROUNDS_FRESH_FACTS
+    return MAX_TOOL_ROUNDS
 
 # ──────────────────────────────────────────────
 # DISCORD + ANTHROPIC CLIENTS
@@ -292,63 +259,77 @@ async def on_message(message: discord.Message):
     async with message.channel.typing():
         try:
             messages = list(history)
-            channel_summary = conversation_summaries[message.channel.id]
-            if channel_summary:
-                messages = [
-                    {
-                        "role": "user",
-                        "content": (
-                            "Rolling channel memory (long-term context):\n"
-                            f"{channel_summary}\n\n"
-                            f"{PINNED_MEMORY_HEADER}"
-                        ),
-                    },
-                    *messages,
-                ]
-            tool_rounds = 0
-            active_system_prompt = system_prompt
-
-            if ENABLE_TWO_STAGE_RESPONDER:
-                stage_a_response = ai.messages.create(
-                    model="claude-sonnet-4-6",
-                    max_tokens=220,
-                    system=STAGE_A_PROMPT,
-                    messages=[{"role": "user", "content": clean_content}],
-                )
-                stage_a_text = next((block.text for block in stage_a_response.content if hasattr(block, "text")), "{}")
-                stage_a = parse_stage_a(stage_a_text)
-                active_system_prompt = build_stage_b_system_prompt(system_prompt, stage_a)
+            use_tools, tool_intent = should_enable_tools(clean_content)
+            max_tool_rounds = resolve_tool_round_limit(clean_content, tool_intent)
+            telemetry = RequestTelemetry(started_at=time.time())
 
             while True:
-                response = ai.messages.create(
-                    model="claude-sonnet-4-6",
-                    max_tokens=2048,
-                    system=active_system_prompt,
-                    tools=TOOLS,
-                    messages=messages,
-                )
+                request_kwargs = {
+                    "model": "claude-sonnet-4-6",
+                    "max_tokens": 2048,
+                    "system": system_prompt,
+                    "messages": messages,
+                }
+                if use_tools:
+                    request_kwargs["tools"] = TOOLS
+                response = ai.messages.create(**request_kwargs)
 
                 if response.stop_reason == "tool_use":
                     tool_blocks = [block for block in response.content if block.type == "tool_use"]
-                    tool_rounds += 1
-                    if tool_rounds > MAX_TOOL_ROUNDS:
+                    telemetry.tool_rounds += 1
+                    telemetry.tool_calls += len(tool_blocks)
+                    if telemetry.tool_rounds > max_tool_rounds:
                         text = "I hit my tool-use limit for this question. Try narrowing the request or asking for one repo/file/site at a time."
                         conversation_histories[message.channel.id].append({"role": "assistant", "content": text})
                         await send_long(message.channel, message, text)
+                        print(
+                            f"[telemetry] tool_calls={telemetry.tool_calls} "
+                            f"tool_rounds={telemetry.tool_rounds} "
+                            f"latency_bucket={telemetry.latency_bucket()} "
+                            f"intent={tool_intent} use_tools={use_tools}"
+                        )
                         break
 
                     messages.append({"role": "assistant", "content": response.content})
                     results = await asyncio.gather(
-                        *(dispatch_tool(block.name, block.input) for block in tool_blocks)
+                        *(
+                            asyncio.wait_for(
+                                dispatch_tool(block.name, block.input),
+                                timeout=TOOL_CALL_TIMEOUT_SECONDS,
+                            )
+                            for block in tool_blocks
+                        ),
+                        return_exceptions=True,
                     )
+                    normalized_results = []
+                    tool_timed_out = False
+                    for result in results:
+                        if isinstance(result, asyncio.TimeoutError):
+                            tool_timed_out = True
+                            normalized_results.append("Tool timed out.")
+                        elif isinstance(result, Exception):
+                            normalized_results.append(f"Tool error: {result}")
+                        else:
+                            normalized_results.append(result)
                     tool_results = [
                         {
                             "type": "tool_result",
                             "tool_use_id": block.id,
                             "content": result,
                         }
-                        for block, result in zip(tool_blocks, results)
+                        for block, result in zip(tool_blocks, normalized_results)
                     ]
+                    if tool_timed_out:
+                        text = "Tools are running slow. I can answer now with what I know or keep searching—your call."
+                        conversation_histories[message.channel.id].append({"role": "assistant", "content": text})
+                        await send_long(message.channel, message, text)
+                        print(
+                            f"[telemetry] tool_calls={telemetry.tool_calls} "
+                            f"tool_rounds={telemetry.tool_rounds} "
+                            f"latency_bucket={telemetry.latency_bucket()} "
+                            f"intent={tool_intent} use_tools={use_tools}"
+                        )
+                        break
                     messages.append({"role": "user", "content": tool_results})
                     continue
 
@@ -356,6 +337,12 @@ async def on_message(message: discord.Message):
                 if text:
                     conversation_histories[message.channel.id].append({"role": "assistant", "content": text})
                     await send_long(message.channel, message, text)
+                print(
+                    f"[telemetry] tool_calls={telemetry.tool_calls} "
+                    f"tool_rounds={telemetry.tool_rounds} "
+                    f"latency_bucket={telemetry.latency_bucket()} "
+                    f"intent={tool_intent} use_tools={use_tools}"
+                )
                 break
 
         except Exception as exc:
