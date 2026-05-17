@@ -27,30 +27,16 @@ MAX_TOOL_ROUNDS_REPO = 3
 MAX_TOOL_ROUNDS_SCHEDULE = 2
 TOOL_CALL_TIMEOUT_SECONDS = 8
 HTTP_TIMEOUT = 12
-ENABLE_TWO_STAGE_RESPONDER = os.getenv("ENABLE_TWO_STAGE_RESPONDER", "true").lower() in {"1", "true", "yes", "on"}
-ALLOW_SARCASM = os.getenv("ALLOW_SARCASM", "false").lower() in {"1", "true", "yes", "on"}
-
-# Tone / frustration detection
-TONE_FRUSTRATION_SENSITIVITY = float(os.getenv("TONE_FRUSTRATION_SENSITIVITY", "1.0"))
-TONE_FRUSTRATED_THRESHOLD = float(os.getenv("TONE_FRUSTRATED_THRESHOLD", "2.5"))
-TONE_NEUTRAL_THRESHOLD = float(os.getenv("TONE_NEUTRAL_THRESHOLD", "1.0"))
-TONE_FRUSTRATION_PHRASES = [
-    phrase.strip().lower()
-    for phrase in os.getenv(
-        "TONE_FRUSTRATION_PHRASES",
-        "this is stupid,i don't get it,i dont get it,why is this so hard,this makes no sense,"
-        "i'm confused,im confused,this sucks,wtf,what the heck",
+VIBE_PERSONA_MODE = os.getenv("VIBE_PERSONA_MODE", "balanced")
+VIBE_SARCASM_LEVEL = max(0, min(3, int(os.getenv("VIBE_SARCASM_LEVEL", "1"))))
+VIBE_SARCASM_BLOCKLIST_CONTEXTS = tuple(
+    context.strip().lower()
+    for context in os.getenv(
+        "VIBE_SARCASM_BLOCKLIST_CONTEXTS",
+        "safety-sensitive,sensitive topics,frustrated,confused,upset,grief,mental health,self-harm,medical,legal,crisis",
     ).split(",")
-    if phrase.strip()
-]
-TONE_NEGATIVE_MARKERS = [
-    marker.strip().lower()
-    for marker in os.getenv(
-        "TONE_NEGATIVE_MARKERS",
-        "stupid,dumb,annoying,frustrated,mad,angry,upset,confused,stuck,can't,can't figure",
-    ).split(",")
-    if marker.strip()
-]
+    if context.strip()
+)
 
 LEARNING_CENTER_OWNER = os.getenv("LEARNING_CENTER_GITHUB_OWNER", "Johnson-Family-Dynasty")
 LEARNING_CENTER_REPO = os.getenv("LEARNING_CENTER_GITHUB_REPO", "learning-center")
