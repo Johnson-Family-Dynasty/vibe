@@ -20,10 +20,11 @@ from config import (
     MAX_RESPONSE_LEN,
     MAX_SUMMARY_LENGTH,
     MAX_TOOL_ROUNDS,
-    MAX_TOOL_ROUNDS_FRESH_FACTS,
-    MAX_TOOL_ROUNDS_REPO,
-    MAX_TOOL_ROUNDS_SCHEDULE,
-    TOOL_CALL_TIMEOUT_SECONDS,
+    TONE_FRUSTRATED_THRESHOLD,
+    TONE_FRUSTRATION_PHRASES,
+    TONE_FRUSTRATION_SENSITIVITY,
+    TONE_NEGATIVE_MARKERS,
+    TONE_NEUTRAL_THRESHOLD,
     describe_known_classroom_member,
     infer_user_mode,
 )
@@ -196,6 +197,35 @@ def help_text() -> str:
     )
 
 
+def detect_tone_state(message_text: str) -> str:
+    text = (message_text or "").strip().lower()
+    if not text:
+        return "calm"
+
+    score = 0.0
+
+    if any(phrase in text for phrase in TONE_FRUSTRATION_PHRASES):
+        score += 2.0
+
+    negative_hits = sum(1 for marker in TONE_NEGATIVE_MARKERS if marker in text)
+    score += min(2.0, negative_hits * 0.6)
+
+    repeated_punctuation_hits = len(re.findall(r"([!?])\1{1,}", text))
+    score += min(1.2, repeated_punctuation_hits * 0.6)
+
+    uppercase_words = re.findall(r"\b[A-Z]{3,}\b", message_text or "")
+    if uppercase_words:
+        score += 0.4
+
+    score *= max(0.1, TONE_FRUSTRATION_SENSITIVITY)
+
+    if score >= TONE_FRUSTRATED_THRESHOLD:
+        return "frustrated"
+    if score >= TONE_NEUTRAL_THRESHOLD:
+        return "neutral"
+    return "calm"
+
+
 @client.event
 async def on_ready():
     print(f"Cool cat {client.user} has logged in and is ready to vibe!")
@@ -238,6 +268,7 @@ async def on_message(message: discord.Message):
     member_roles = [role.name for role in roles if role.name != "@everyone"]
     known_member = describe_known_classroom_member(message.author.display_name)
     likely_mode = infer_user_mode(member_roles, known_member)
+    tone_state = detect_tone_state(clean_content)
     channel_name = getattr(message.channel, "name", "direct-message")
     user_context = (
         f"[Speaking with: {message.author.display_name} "
@@ -245,6 +276,7 @@ async def on_message(message: discord.Message):
         f"Roles: {', '.join(member_roles) or 'none'}, "
         f"Known JFD member: {known_member}, "
         f"Likely mode: {likely_mode}, "
+        f"tone_state: {tone_state}, "
         f"Channel: #{channel_name}]\n\n"
     )
     full_content = user_context + clean_content
