@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>OpenTutor + Vibe | Modular AI Homeschooling with GitHub, Discord &amp; Claude</title>
   <meta name="description" content="OpenTutor is a parent-supervised AI homeschool model using GitHub for records, Discord for classroom flow, and a modular Claude-backed assistant named Vibe." />
-  <meta name="author" content="@murderszn" />
+  <meta name="author" content="Josh Johnson" />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
   <meta name="theme-color" content="#f8fafc" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
@@ -95,7 +95,7 @@
   <style>
     :root {
       /* Pearlescent / Monochromatic Light Theme */
-      --bg: #f8fafc;
+      --bg: #f1f3f5;
       --surface: #ffffff;
       --surface-soft: rgba(255,255,255,0.78);
       --text: #0f172a;
@@ -123,11 +123,7 @@
     body {
       position: relative;
       background-color: var(--bg);
-      background-image:
-        radial-gradient(circle at top left, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 34%),
-        radial-gradient(circle at 85% 12%, rgba(226,232,240,0.65) 0%, rgba(226,232,240,0) 28%),
-        radial-gradient(circle at 20% 78%, rgba(241,245,249,0.85) 0%, rgba(241,245,249,0) 26%),
-        linear-gradient(180deg, #f8fafc 0%, #f4f7fb 100%);
+      background-image: none;
       color: var(--text);
       font-family: 'Inter', sans-serif;
       line-height: 1.6;
@@ -145,8 +141,7 @@
       width: 272px;
       position: fixed;
       top: 0; left: 0; bottom: 0;
-      background:
-        radial-gradient(circle at top, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.82) 48%, rgba(241,245,249,0.72) 100%);
+      background: rgba(241,243,245,0.96);
       border-right: 1px solid rgba(203,213,225,0.95);
       padding: 18px 16px;
       display: flex;
@@ -646,7 +641,7 @@
       border-radius: 18px;
       background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.88) 100%);
       box-shadow: var(--shadow-sm);
-      padding: 28px;
+      padding: 24px;
     }
 
     .runtime-summary-card h3,
@@ -677,9 +672,9 @@
 
     .runtime-feature-list li {
       display: grid;
-      grid-template-columns: minmax(130px, 0.35fr) 1fr;
-      gap: 14px;
-      padding: 13px 0;
+      grid-template-columns: minmax(82px, 0.22fr) 1fr;
+      gap: 12px;
+      padding: 12px 0;
       border-top: 1px solid rgba(226,232,240,0.9);
     }
 
@@ -701,7 +696,7 @@
     }
 
     .runtime-steps {
-      gap: 17px;
+      gap: 14px;
     }
 
     .runtime-steps li {
@@ -729,7 +724,7 @@
       margin: 0;
       color: var(--muted);
       font-size: 0.94rem;
-      line-height: 1.6;
+      line-height: 1.5;
     }
 
     .runtime-examples {
@@ -1948,8 +1943,8 @@
     }
 
     .timeline-cell {
-      min-height: 152px;
-      padding: 20px;
+      min-height: 112px;
+      padding: 18px;
       border-radius: 18px;
       border: 1px solid var(--border);
       background:
@@ -1987,7 +1982,7 @@
     .timeline-output p {
       color: var(--muted);
       font-size: 0.93rem;
-      line-height: 1.58;
+      line-height: 1.48;
     }
 
     .timeline-output {
@@ -2430,6 +2425,404 @@
         font-size: 0.78rem;
       }
     }
+
+    /* ─── EDITORIAL / CONTAINERLESS PASS ─── */
+    body {
+      background-color: #f1f3f5;
+      background-image: none;
+    }
+
+    .content-shell {
+      width: min(1180px, 100%);
+    }
+
+    .hero-section,
+    .section,
+    .site-footer {
+      width: min(1080px, 100%);
+    }
+
+    .section {
+      margin-bottom: 118px;
+      padding-top: 96px;
+      border-top: 1px solid rgba(203,213,225,0.72);
+      scroll-margin-top: 32px;
+    }
+
+    .hero-section + .section {
+      border-top: 0;
+      padding-top: 40px;
+    }
+
+    .section-header {
+      max-width: 760px;
+      margin: 0 auto 48px;
+      text-align: center;
+    }
+
+    .section-banner {
+      width: 100%;
+      margin: 0 auto 34px;
+    }
+
+    .section-banner img {
+      display: block;
+      width: 100%;
+      height: clamp(230px, 30vw, 360px);
+      object-fit: cover;
+      object-position: center;
+      border-radius: 12px;
+      border: 1px solid rgba(203,213,225,0.72);
+      box-shadow: 0 18px 42px -30px rgba(15,23,42,0.38);
+      background: #eef2f7;
+    }
+
+    #rationale .section-banner img {
+      height: auto;
+      aspect-ratio: 3 / 2;
+      object-fit: contain;
+    }
+
+    #how-it-works .section-banner img {
+      height: clamp(300px, 38vw, 480px);
+      object-position: center 58%;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 3.3vw, 3.05rem);
+      line-height: 1.12;
+      margin-bottom: 14px;
+    }
+
+    .section-subtitle,
+    .section-note {
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.72;
+    }
+
+    .section-subtitle-detail {
+      margin-top: 10px;
+    }
+
+    .hero-title,
+    .hero-subtitle,
+    .hero-meta {
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+
+    .hero-title {
+      max-width: 1000px;
+      font-size: clamp(2.55rem, 4.8vw, 4.6rem);
+      line-height: 1.05;
+    }
+
+    .hero-subtitle,
+    .hero-meta {
+      max-width: 820px;
+    }
+
+    .hero-meta,
+    .share-actions {
+      justify-content: center;
+    }
+
+    .hero-image-wrapper,
+    .system-map-panel,
+    .diagram-card,
+    .knowledge-net-wrap {
+      border: 0;
+      border-radius: 0;
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+      overflow: visible;
+    }
+
+    .hero-image-wrapper {
+      margin-top: 34px;
+    }
+
+    .hero-image,
+    .section-banner img,
+    .system-map-panel img,
+    .diagram-image,
+    .knowledge-net-image {
+      border-radius: 12px;
+      border: 1px solid rgba(203,213,225,0.72);
+      box-shadow: 0 18px 42px -30px rgba(15,23,42,0.38);
+      background: #eef2f7;
+    }
+
+    .system-map-panel,
+    .diagram-pair,
+    .knowledge-radar {
+      margin-top: 42px;
+    }
+
+    .system-map-caption {
+      max-width: 760px;
+      margin: 14px auto 0;
+      padding: 0;
+      text-align: center;
+      font-size: 0.92rem;
+      line-height: 1.62;
+    }
+
+    .diagram-card-header {
+      justify-content: center;
+      padding: 0 0 20px;
+      text-align: center;
+    }
+
+    .diagram-card-header p {
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .thesis-pillars,
+    .audience-grid,
+    .workflow-grid,
+    .context-grid,
+    .repo-steps,
+    .knowledge-radar-notes,
+    .runtime-clean,
+    .strengths-grid,
+    .features-grid,
+    .github-support-grid,
+    .wallet-grid {
+      gap: 28px 34px;
+    }
+
+    .thesis-pillars li,
+    .audience-card,
+    .workflow-card,
+    .context-card,
+    .resource-card,
+    .repo-card,
+    .routine-card,
+    .repo-flow-card,
+    .knowledge-card,
+    .repo-step,
+    .knowledge-note,
+    .setup-cluster,
+    .runtime-summary-card,
+    .strength-card,
+    .feature-item,
+    .github-support-card,
+    .wallet-card {
+      background: transparent;
+      border: 0;
+      border-top: 1px solid rgba(203,213,225,0.82);
+      border-radius: 0;
+      box-shadow: none;
+      padding: 24px 0 0;
+      overflow: visible;
+    }
+
+    .context-card::after,
+    .repo-step::after,
+    .timeline-output::after {
+      display: none;
+    }
+
+    .thesis-pillar-icon,
+    .audience-card-icon,
+    .workflow-icon,
+    .context-icon {
+      margin-bottom: 16px;
+      color: #334155;
+    }
+
+    .workflow-step {
+      margin-bottom: 18px;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+    }
+
+    .workflow-title,
+    .context-card h3,
+    .repo-step h3,
+    .knowledge-note strong,
+    .runtime-summary-card h3,
+    .feature-content h4,
+    .github-support-card h3,
+    .wallet-label {
+      letter-spacing: -0.01em;
+    }
+
+    .repo-flow-code,
+    .wallet-address,
+    .runtime-command {
+      border: 0;
+      border-left: 2px solid rgba(71,85,105,0.36);
+      border-radius: 0;
+      background: rgba(241,245,249,0.62);
+      box-shadow: none;
+    }
+
+    .runtime-feature-list li {
+      grid-template-columns: minmax(74px, 0.2fr) 1fr;
+    }
+
+    .runtime-examples {
+      border-top: 1px solid rgba(203,213,225,0.82);
+      padding-top: 26px;
+    }
+
+    .image-panel,
+    .strength-card {
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .image-panel img {
+      border-radius: 12px;
+      border: 1px solid rgba(203,213,225,0.72);
+      box-shadow: 0 18px 42px -30px rgba(15,23,42,0.38);
+    }
+
+    .image-panel-copy,
+    .strength-card-copy {
+      padding: 20px 0 0;
+    }
+
+    .image-panel-copy p,
+    .strength-card-copy p {
+      max-width: 34rem;
+    }
+
+    .strength-kicker,
+    .repo-step-kicker,
+    .runtime-kicker,
+    .github-support-kicker,
+    .wallet-label {
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+    }
+
+    .timeline-board {
+      gap: 0;
+      margin-top: 34px;
+      border-top: 1px solid rgba(203,213,225,0.86);
+    }
+
+    .timeline-board-header,
+    .timeline-row {
+      grid-template-columns: 190px minmax(0, 1.2fr) minmax(220px, 0.9fr);
+      gap: 28px;
+      border-bottom: 1px solid rgba(203,213,225,0.82);
+    }
+
+    .timeline-board-header {
+      padding: 0;
+    }
+
+    .timeline-head {
+      padding: 13px 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+    }
+
+    .timeline-cell {
+      min-height: auto;
+      padding: 22px 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .timeline-mode {
+      justify-content: flex-start;
+    }
+
+    .timeline-mode strong {
+      font-family: var(--heading-font);
+      font-size: 1.1rem;
+    }
+
+    .timeline-mode span {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .timeline-what h3,
+    .timeline-output h3 {
+      font-size: 1rem;
+    }
+
+    .logo-marquee {
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      border-top: 1px solid rgba(203,213,225,0.7);
+      border-bottom: 1px solid rgba(203,213,225,0.7);
+    }
+
+    .logo-pill {
+      border: 0;
+      background: transparent;
+    }
+
+    .github-support-icon {
+      border-radius: 0;
+      background: transparent;
+      color: var(--text);
+    }
+
+    @media (max-width: 1040px) {
+      .timeline-board-header,
+      .timeline-row {
+        grid-template-columns: 160px minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .section {
+        margin-bottom: 88px;
+        padding-top: 72px;
+      }
+
+      .section-header {
+        margin-bottom: 34px;
+      }
+
+      .section-title {
+        font-size: clamp(1.9rem, 8vw, 2.55rem);
+      }
+
+      .timeline-row {
+        gap: 0;
+        grid-template-columns: 1fr;
+      }
+
+      .timeline-cell {
+        padding: 10px 0;
+      }
+
+      .timeline-mode {
+        padding-top: 20px;
+      }
+
+      .timeline-output {
+        padding-bottom: 22px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -2442,7 +2835,7 @@
         <img src="images/opentutor-mark.png" alt="OpenTutor cat mark" class="logo-img" width="1024" height="1024" decoding="async" />
         <div class="logo-copy">
           <span class="logo-text">OpenTutor</span>
-          <span class="logo-subtext">v1.0</span>
+          <span class="logo-subtext">v1.0.2</span>
         </div>
       </div>
 
@@ -2503,7 +2896,7 @@
           </summary>
           <div class="dropdown-content">
             <a href="https://github.com/murderszn/vibe" target="_blank">Vibe Bot Repo</a>
-            <a href="https://github.com/Johnson-Family-Dynasty/learning-center" target="_blank">Learning Center Repo</a>
+            <a href="https://github.com/murderszn/open-tutor" target="_blank">OpenTutor Repo</a>
           </div>
         </details>
       </div>
@@ -2519,7 +2912,7 @@
         <p class="hero-subtitle">OpenTutor is the platform. Vibe is the classroom assistant. The current runtime combines a Claude-backed tutor with allowlisted Markdown skills, GitHub access, live web and weather tools, student schedule lookup, and a family profile that keeps support personal without hiding how it works.</p>
         <div class="hero-meta">
           <span>Runtime update — May 2026</span>
-          <span>By <a href="https://github.com/murderszn" target="_blank" rel="noreferrer">@murderszn</a></span>
+          <span>By <a href="https://resume-jj.web.app/" target="_blank" rel="noreferrer">Josh Johnson</a></span>
         </div>
 
         <div class="share-actions" aria-label="Share OpenTutor">
@@ -2543,30 +2936,6 @@
 
         <div class="hero-image-wrapper">
           <img src="images/modern_homeschool_flow.png" alt="OpenTutor homeschool flow diagram connecting GitHub, Discord, Vibe, and parent oversight" class="hero-image" width="1024" height="1024" decoding="async" fetchpriority="high" />
-        </div>
-
-        <div class="release-panel">
-          <article class="release-card">
-            <div class="release-kicker">Current Runtime</div>
-            <h2>Vibe now works from skills, tools, and family-aware context.</h2>
-            <p>The bot has been refactored so the Discord loop stays small, behavior lives in editable Markdown skills, tool schemas stay explicit, and Python modules handle live web, weather, GitHub, and classroom schedule lookups.</p>
-            <div class="release-badges" aria-label="Vibe runtime capabilities">
-              <span class="release-badge">Schedule CSV lookup</span>
-              <span class="release-badge">Markdown skills</span>
-              <span class="release-badge">GitHub repo access</span>
-              <span class="release-badge">Live weather</span>
-              <span class="release-badge">Web search + URL reading</span>
-            </div>
-          </article>
-
-          <article class="runtime-panel">
-            <div>
-              <div class="runtime-kicker">Example Prompt</div>
-              <h3>One classroom question, one targeted tool call.</h3>
-              <p>Vibe can resolve a student alias and use the schedule skill before hunting through the repo.</p>
-            </div>
-            <div class="runtime-command"><strong>@Vibe</strong> tell us what the schedule says two students should do for schoolwork on Monday</div>
-          </article>
         </div>
 
       </section>
@@ -2639,9 +3008,13 @@
 
       <!-- HOW IT WORKS -->
       <section id="how-it-works" class="section">
+        <div class="section-banner">
+          <img src="images/opentutor-integration-map.png" alt="Technical integration map showing repositories, channels, tutor layer, and parent oversight connected as one system" width="1536" height="1024" loading="lazy" decoding="async" />
+        </div>
         <div class="section-header">
           <h2 class="section-title">System Architecture</h2>
-          <p class="section-subtitle">OpenTutor separates the homeschool stack into three layers so each tool can do one job well without turning the family workflow into enterprise software.</p>
+          <p class="section-subtitle">OpenTutor uses three layers: GitHub for durable work, Discord for the classroom, and Vibe for guided help.</p>
+          <p class="section-subtitle section-subtitle-detail">The system connects records, classroom channels, student work, tutoring, and parent review without hiding the underlying tools.</p>
         </div>
 
         <div class="workflow-grid">
@@ -2652,7 +3025,7 @@
               <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
             </div>
             <h3 class="workflow-title">The Assignment Hub</h3>
-            <p class="workflow-desc">GitHub becomes the source of truth for the school itself. Curriculum can live in subject repositories, the weekly calendar can live in a schedule repo, and each student can build a visible portfolio of writing, projects, revisions, and progress over time.</p>
+            <p class="workflow-desc">GitHub holds curriculum, schedules, assignments, revisions, and student portfolios in one reviewable record.</p>
           </div>
 
           <div class="workflow-card">
@@ -2662,7 +3035,7 @@
               <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
             </div>
             <h3 class="workflow-title">The Virtual Classroom</h3>
-            <p class="workflow-desc">Discord is the daily interface. Subject channels, announcements, office hours, assignment check-ins, and quiet study rooms give kids one place to ask questions, receive direction, and stay connected to the rhythm of the day.</p>
+            <p class="workflow-desc">Discord is the daily classroom: subject channels, announcements, check-ins, and study rooms in one familiar space.</p>
           </div>
 
           <div class="workflow-card">
@@ -2672,36 +3045,20 @@
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
             </div>
             <h3 class="workflow-title">The AI Tutor</h3>
-            <p class="workflow-desc">Vibe sits inside Discord and is backed by Claude to explain concepts, break down assignments, quiz students, rephrase directions, and help a stuck learner keep moving without leaving the supervised classroom environment.</p>
+            <p class="workflow-desc">Vibe answers inside Discord with explanations, assignment help, quizzes, and next steps under parent oversight.</p>
           </div>
-        </div>
-
-        <div class="system-map-panel">
-          <img src="images/opentutor-integration-map.png" alt="Technical integration map showing repositories, channels, tutor layer, and parent oversight connected as one system" width="1536" height="1024" loading="lazy" decoding="async" />
-          <div class="system-map-caption">Repositories, classroom channels, student work surfaces, tutoring, and parent review connect as one operating model rather than a stack of separate apps.</div>
         </div>
       </section>
 
       <section id="rationale" class="section">
+        <div class="section-banner">
+          <img src="images/diagram.png" alt="Systems image showing the OpenTutor homeschool model with Discord, GitHub, tutoring, and parent oversight connected visually." width="1536" height="1024" loading="lazy" decoding="async" />
+        </div>
         <div class="section-header">
           <h2 class="section-title">Design Rationale</h2>
-          <p class="section-subtitle">The model is simple on purpose: Discord is the classroom center, GitHub holds the work, Vibe supports instruction, and the parent remains the operator.</p>
+          <p class="section-subtitle">The model keeps the operating roles clear: Discord hosts the day, GitHub stores the work, Vibe supports instruction, and the parent stays in control.</p>
+          <p class="section-subtitle section-subtitle-detail">A small set of transparent tools replaces the usual hidden dashboard.</p>
         </div>
-
-        <div class="diagram-pair">
-          <div class="diagram-card">
-            <div class="diagram-card-header">
-              <div>
-                <h3>Connected classroom systems</h3>
-                <p>Discord sits at the center of the school day, supported by GitHub structure, tutor assistance, and visible parent oversight.</p>
-              </div>
-            </div>
-
-            <img class="diagram-image" src="images/diagram.png" alt="Systems image showing the OpenTutor homeschool model with Discord, GitHub, tutoring, and parent oversight connected visually." width="1536" height="1024" loading="lazy" decoding="async" />
-            <p class="system-map-caption">One live classroom surface, one parent operator, one curriculum layer, and one tutor layer work together without hiding how the system is actually implemented.</p>
-          </div>
-        </div>
-
 
         <div class="context-grid">
           <div class="context-card">
@@ -2709,7 +3066,7 @@
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/><path d="M16 3h5v5"/><path d="M21 3l-9 9"/><path d="M7 13h3"/><path d="M7 17h7"/></svg>
             </div>
             <h3>Everything stays reviewable</h3>
-            <p>Assignments, revisions, schedules, and bot behavior can all be tracked. GitHub history shows what changed and when. Discord logs show what happened in the classroom. That makes it easier to see effort, growth, and gaps without relying on memory.</p>
+            <p>Assignments, schedules, revisions, and bot behavior leave a trail. GitHub shows what changed; Discord shows the classroom flow.</p>
           </div>
 
           <div class="context-card">
@@ -2717,7 +3074,7 @@
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8"/><path d="M8 13h5"/></svg>
             </div>
             <h3>Help shows up where the work happens</h3>
-            <p>Kids do not need to bounce between separate portals for answers. They can ask in the same channel where the assignment was posted, where the resources live, and where the family already communicates. That reduces friction and keeps attention on the task.</p>
+            <p>Students ask in the same place assignments, resources, and family communication already live.</p>
           </div>
 
           <div class="context-card">
@@ -2725,7 +3082,7 @@
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V7l-8-4-8 4v5c0 6 8 10 8 10Z"/><path d="M9 12l2 2 4-4"/></svg>
             </div>
             <h3>Parents stay in the loop</h3>
-            <p>Claude-backed tutoring is useful because it is immediate, but the system still keeps the parent in control. Roles, channels, visible prompt files, and reviewable tool code make the adult the operator of the environment rather than handing that control to a black box.</p>
+            <p>Roles, channels, visible prompt files, and reviewable code keep adults in the operator seat.</p>
           </div>
 
           <div class="context-card">
@@ -2733,7 +3090,7 @@
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><path d="M18 9v12"/><path d="M6 15a6 6 0 0 0 12 0"/><path d="M8 5h4"/><path d="M14 19h4"/></svg>
             </div>
             <h3>The curriculum can evolve like software</h3>
-            <p>Homeschool plans change. Lessons get improved, reading lists get swapped, pacing shifts, and projects get refined. Storing the school in repositories makes the curriculum editable, reusable, and easier to improve semester after semester.</p>
+            <p>Lessons, reading lists, pacing, and projects can be revised like any other versioned work.</p>
           </div>
 
           <div class="context-card">
@@ -2741,7 +3098,7 @@
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="7" height="7" rx="1.5"/><rect x="14" y="4" width="7" height="7" rx="1.5"/><rect x="8.5" y="13" width="7" height="7" rx="1.5"/><path d="M10 7.5h4"/><path d="M12 11v2"/></svg>
             </div>
             <h3>Students practice future workplace tools</h3>
-            <p>Discord, Teams, Slack, GitHub, channels, mentions, async check-ins, repository hygiene, and digital collaboration are not side benefits. They are core forms of literacy for modern digital work, and students can start learning them early in a supervised environment.</p>
+            <p>Students practice channels, mentions, async check-ins, version history, and digital collaboration early.</p>
           </div>
 
           <div class="context-card">
@@ -2749,23 +3106,27 @@
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
             </div>
             <h3>Professional habits become normal early</h3>
-            <p>Instead of learning only isolated subjects, students also learn how to communicate in channels, document progress, manage versioned work, ask clear questions, and move projects forward using the same patterns they are likely to see later in technical, creative, or corporate settings.</p>
+            <p>Clear questions, documented progress, and versioned work become part of the learning routine.</p>
           </div>
         </div>
       </section>
 
       <section id="learning-resources" class="section">
         <span id="repos" class="section-anchor" aria-hidden="true"></span>
+        <div class="section-banner">
+          <img src="images/opentutor-repo-map.png" alt="Technical repository workflow map showing student folders, subjects, assignments, and project outputs connected together" width="1536" height="1024" loading="lazy" decoding="async" />
+        </div>
         <div class="section-header">
           <h2 class="section-title">Learning Resources</h2>
-          <p class="section-subtitle">Learning resources and repository structure belong together. The repo holds assignments, student workspaces, teacher tools, reference documents, datasets, and useful links so students have one supervised place to read, watch, review, and build from.</p>
+          <p class="section-subtitle">The repo keeps resources close to the work: assignments, student folders, teacher tools, references, datasets, and useful links.</p>
+          <p class="section-subtitle section-subtitle-detail">Shared assignments feed student workspaces; teacher prompts and dashboards keep planning visible.</p>
         </div>
 
         <div class="repo-steps">
           <div class="repo-step">
             <div class="repo-step-kicker">Learning Center Example</div>
             <h3>The repo is split by function</h3>
-            <p>The live <code>learning-center</code> structure separates shared materials, student workspaces, teacher tools, and dashboards so the system stays readable as it grows.</p>
+            <p>The <code>learning-center</code> repo separates shared material, student work, teacher tools, and dashboards.</p>
             <div class="repo-flow-code">learning-center/
   assignments/
   resources/
@@ -2777,7 +3138,7 @@
           <div class="repo-step">
             <div class="repo-step-kicker">Teacher Layer</div>
             <h3>Adults stage the program from real folders</h3>
-            <p>Teachers can build from actual directories like assignment packs, reference guides, AI assistant prompts, and site dashboards instead of relying on hidden platform menus.</p>
+            <p>Assignments, references, prompts, and dashboards live in folders adults can inspect and edit.</p>
             <div class="repo-flow-code">assignments/social-studies/
 resources/un_countries.csv
 teachers/ai-assistants/
@@ -2788,7 +3149,7 @@ teachers/sites/mind-map/</div>
           <div class="repo-step">
             <div class="repo-step-kicker">Student Workspace</div>
             <h3>Each learner gets a durable working folder</h3>
-            <p>Students can have a named workspace with grade-level subjects, a schedule file, and a README hub so daily work and long-term portfolio pieces stay in one place.</p>
+            <p>Each student gets a named workspace for subjects, schedule files, and portfolio work.</p>
             <div class="repo-flow-code">students/student-name/
   grade-5/
     math/
@@ -2799,12 +3160,6 @@ teachers/sites/mind-map/</div>
   README.md</div>
           </div>
         </div>
-
-        <div class="system-map-panel">
-          <img src="images/opentutor-repo-map.png" alt="Technical repository workflow map showing student folders, subjects, assignments, and project outputs connected together" width="1536" height="1024" loading="lazy" decoding="async" />
-          <div class="system-map-caption">The diagram matches the live OpenTutor pattern: shared assignments and resources feed student workspaces, while teacher dashboards and prompts keep planning visible and editable.</div>
-        </div>
-
         <div class="knowledge-radar">
           <div class="knowledge-net-wrap">
             <img class="knowledge-net-image" src="images/knowledge-resources.png" alt="Learning resources map showing parent guidance, student guidance, subject folders, quick reference guides, datasets, and essential online tools." width="2682" height="1630" loading="lazy" decoding="async" />
@@ -2813,18 +3168,18 @@ teachers/sites/mind-map/</div>
           <div class="knowledge-radar-notes">
             <div class="knowledge-note">
               <strong>For parents and students</strong>
-              <p>Organize clear subfolders like <code>/math</code>, <code>/science</code>, <code>/programming</code>, <code>/history</code>, <code>/reading</code>, and <code>/projects</code>.</p>
-              <p>Parents curate the library, monitor progress, and keep resources appropriate. Students check it regularly for subject cheat sheets, step-by-step skill guides, and vocabulary lists by grade without changing shared materials.</p>
+              <p>Use clear folders like <code>/math</code>, <code>/science</code>, <code>/programming</code>, <code>/history</code>, <code>/reading</code>, and <code>/projects</code>.</p>
+              <p>Parents curate the library; students use it for subject guides, vocabulary, and references.</p>
             </div>
             <div class="knowledge-note">
               <strong>Reference materials</strong>
-              <p>Keep practical cheat sheets ready: formulas, grammar rules, writing frameworks, measurements, world facts, finance, physics, chemistry, U.S. basics, and history guides.</p>
-              <p>Store reusable CSV and JSON datasets for projects, coding, analysis, and research. Group online tools by purpose, not brand.</p>
+              <p>Keep formulas, grammar rules, writing frameworks, measurements, history guides, and datasets ready.</p>
+              <p>Group online tools by purpose so students can find the right aid quickly.</p>
             </div>
             <div class="knowledge-note">
               <strong>What this means for OpenTutor</strong>
               <p>This is a maintained learning library, not a fixed curriculum map.</p>
-              <p>Parents and teachers curate it. AI helps turn it into rubric templates, lesson plan outlines, ready-to-post Discord announcements, assignment prompts, assessment banks, worksheets, and review materials.</p>
+              <p>AI helps turn resources into rubrics, lesson outlines, announcements, worksheets, and review materials.</p>
             </div>
           </div>
         </div>
@@ -2851,7 +3206,6 @@ teachers/sites/mind-map/</div>
               <span class="logo-pill"><img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/audible.svg" alt="" />Audible</span>
               <span class="logo-pill"><img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/spotify.svg" alt="" />Spotify</span>
               <span class="logo-pill">Antigravity</span>
-              <span class="logo-pill">Cursor</span>
             </div>
             <div class="logo-track-group" aria-hidden="true">
               <span class="logo-pill"><img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/github.svg" alt="" />GitHub</span>
@@ -2866,7 +3220,6 @@ teachers/sites/mind-map/</div>
               <span class="logo-pill"><img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/audible.svg" alt="" />Audible</span>
               <span class="logo-pill"><img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/spotify.svg" alt="" />Spotify</span>
               <span class="logo-pill">Antigravity</span>
-              <span class="logo-pill">Cursor</span>
             </div>
           </div>
         </div>
@@ -2921,7 +3274,6 @@ teachers/sites/mind-map/</div>
               <li>Use AI coding agents to co-author unit plans, assignment templates, and project prompts.</li>
               <li>Keep the parent as final reviewer, approver, and standards owner at each step.</li>
               <li>Reuse agent skills to maintain documentation, grading notes, and revision history.</li>
-              <li><a class="repo-link" href="https://cursor.com" target="_blank" rel="noreferrer">Cursor editor</a></li>
               <li><a class="repo-link" href="https://antigravity.google/" target="_blank" rel="noreferrer">Antigravity (VS Code-based)</a></li>
               <li><a class="repo-link" href="https://platform.openai.com/docs/codex" target="_blank" rel="noreferrer">OpenAI Codex docs</a></li>
             </ul>
@@ -2934,30 +3286,28 @@ teachers/sites/mind-map/</div>
         <span id="tutor" class="section-anchor" aria-hidden="true"></span>
         <div class="section-header">
           <h2 class="section-title">Vibe: Tutor + Family Helper</h2>
-          <p class="section-subtitle">Vibe is the classroom tutor and family helper inside OpenTutor. The runtime gives that personality a few trusted abilities: schedule lookup, GitHub reading, live web access, weather, and practical planning support.</p>
-          <p class="section-subtitle section-subtitle-detail">The technical pieces are separated behind the scenes, but the experience stays simple: ask in Discord, Vibe chooses the right skill, checks the right source, and answers with a useful next step.</p>
+          <p class="section-subtitle">Vibe is the classroom tutor and family helper inside OpenTutor. It checks schedules, GitHub files, web results, weather, and family context when the answer depends on them.</p>
         </div>
 
         <div class="runtime-clean">
           <article class="runtime-summary-card">
             <span class="runtime-kicker">What Vibe does</span>
-            <h3>One assistant for learning and daily flow</h3>
-            <p>Vibe helps students get unstuck, helps parents steer the day, and checks the right source before answering questions that depend on schedules, repo files, or current information.</p>
+            <h3>One assistant, four jobs</h3>
             <ul class="runtime-feature-list">
-              <li><strong>Classroom help</strong><span>Age-aware support for each student in the classroom.</span></li>
-              <li><strong>Schedule lookup</strong><span>Finds the right student work before giving an answer.</span></li>
-              <li><strong>GitHub answers</strong><span>Reads the learning center repo when the question is about assignments, docs, or code.</span></li>
-              <li><strong>Live information</strong><span>Uses web search, pasted URLs, and weather when current facts matter.</span></li>
+              <li><strong>Teach</strong><span>Explain, quiz, rephrase, and scaffold schoolwork.</span></li>
+              <li><strong>Orient</strong><span>Find the right student, schedule, folder, or assignment.</span></li>
+              <li><strong>Read</strong><span>Use GitHub files when questions depend on repo content.</span></li>
+              <li><strong>Update</strong><span>Use web, URL, and weather tools when facts may have changed.</span></li>
             </ul>
           </article>
 
           <aside class="runtime-summary-card">
             <span class="runtime-kicker">How it works</span>
-            <h3>A simple path from question to answer</h3>
+            <h3>Ask, check, answer</h3>
             <ol class="runtime-steps">
-              <li><span>1</span><p><strong>You ask Vibe in Discord.</strong> It checks who is asking, who was mentioned, and what kind of help is needed.</p></li>
-              <li><span>2</span><p><strong>Vibe checks the right source.</strong> It may read a schedule, GitHub file, website, or weather result.</p></li>
-              <li><span>3</span><p><strong>Vibe answers plainly.</strong> It keeps the reply short and includes links or file paths when useful.</p></li>
+              <li><span>1</span><p><strong>Ask in Discord.</strong> Vibe reads the speaker, channel, and request.</p></li>
+              <li><span>2</span><p><strong>Check source.</strong> It calls the schedule, GitHub, web, URL, or weather tool only when needed.</p></li>
+              <li><span>3</span><p><strong>Reply plainly.</strong> It gives the next step, with links or paths when useful.</p></li>
             </ol>
           </aside>
         </div>
@@ -2965,8 +3315,8 @@ teachers/sites/mind-map/</div>
         <div class="runtime-examples">
           <div class="runtime-example-heading">
             <span class="runtime-kicker">Try asking</span>
-            <h3>Useful family prompts</h3>
-            <p>These are the everyday jobs this runtime is designed to handle without making the family think about files, APIs, or tool names.</p>
+            <h3>Useful prompts</h3>
+            <p>Everyday requests should feel like classroom language, not tool commands.</p>
           </div>
           <div class="runtime-prompt-list">
             <code>@Vibe what should the students do on Monday?</code>
@@ -2980,7 +3330,7 @@ teachers/sites/mind-map/</div>
           <div class="runtime-subheader">
             <span class="runtime-kicker">Tutor behavior</span>
             <h3>Friendly help that fits the classroom</h3>
-            <p>Vibe is not just a tool router. It also carries the tutor style, student awareness, recent context, and guardrails that make the assistant useful in a homeschool Discord instead of feeling like a generic chat window.</p>
+            <p>Vibe combines tutor style, student awareness, recent context, and guardrails so replies fit the classroom.</p>
           </div>
 
           <div class="image-panel-grid">
@@ -3032,7 +3382,7 @@ teachers/sites/mind-map/</div>
       <section id="routine" class="section">
         <div class="section-header">
           <h2 class="section-title">Daily Flow</h2>
-          <p class="section-subtitle">A useful homeschool platform has to describe the actual shape of a day. This version is organized as a flexible sequence rather than a clock-based schedule.</p>
+          <p class="section-subtitle">Daily Flow is a flexible sequence: orient, work, get help, review, build, and close the loop.</p>
         </div>
 
         <div class="timeline-board">
@@ -3045,90 +3395,90 @@ teachers/sites/mind-map/</div>
           <div class="timeline-row">
             <div class="timeline-cell timeline-mode">
               <strong>Opening Block</strong>
-              <span>Orientation and planning</span>
+              <span>Orient</span>
             </div>
             <div class="timeline-cell timeline-what">
-              <h3>Morning check-in and assignment pull</h3>
-              <p>The day opens in Discord with the parent’s framing note, priorities, and links to the correct subject folders. Students learn to locate the day’s work, pull current assignments, and understand the shape of the day before they begin.</p>
+              <h3>Morning check-in</h3>
+              <p>Parent posts priorities and links to the right subject folders.</p>
             </div>
             <div class="timeline-cell timeline-output">
-              <h3>Operational readiness</h3>
-              <p>Students start with a clean view of the day’s tasks, the correct repository locations, and the expectations for what will be committed back later.</p>
+              <h3>Ready to work</h3>
+              <p>Students know today’s tasks, locations, and expected commits.</p>
             </div>
           </div>
 
           <div class="timeline-row">
             <div class="timeline-cell timeline-mode">
               <strong>Core Work</strong>
-              <span>Subject-by-subject progress</span>
+              <span>Work</span>
             </div>
             <div class="timeline-cell timeline-what">
-              <h3>Language arts, math, STEM, and social studies</h3>
-              <p>Students work through their subject folders and assignment materials directly. Because each child’s structure is organized by subject, the flow stays predictable even when assignments vary in type or depth.</p>
+              <h3>Subject work</h3>
+              <p>Students move through subject folders and assignment materials.</p>
             </div>
             <div class="timeline-cell timeline-output">
-              <h3>Saved work in the right place</h3>
-              <p>Responses, notes, worksheets, and drafts begin accumulating inside the correct subject and assignment folders instead of being scattered across devices.</p>
+              <h3>Organized evidence</h3>
+              <p>Notes, drafts, and responses land in the right folders.</p>
             </div>
           </div>
 
           <div class="timeline-row">
             <div class="timeline-cell timeline-mode">
               <strong>Tutor Window</strong>
-              <span>Guided recovery and explanation</span>
+              <span>Get help</span>
             </div>
             <div class="timeline-cell timeline-what">
-              <h3>On-demand tutoring inside the classroom flow</h3>
-              <p>When confusion appears, Vibe can rephrase directions, explain a middle-school concept, or help a student recover momentum. The parent stays in control while the tutor reduces waiting and frustration.</p>
+              <h3>On-demand tutoring</h3>
+              <p>Vibe rephrases directions, explains concepts, and helps students restart.</p>
             </div>
             <div class="timeline-cell timeline-output">
-              <h3>Questions become forward motion</h3>
-              <p>Students learn to ask clearer questions, use async help responsibly, and keep moving instead of stalling out on one blocker for half the day.</p>
+              <h3>Less stalled time</h3>
+              <p>Questions become clearer next steps instead of long blockers.</p>
             </div>
           </div>
 
           <div class="timeline-row">
             <div class="timeline-cell timeline-mode">
               <strong>Reset</strong>
-              <span>Pacing and review</span>
+              <span>Review</span>
             </div>
             <div class="timeline-cell timeline-what">
-              <h3>Midday review of progress and blockers</h3>
-              <p>The parent can quickly review what has been completed, what is blocked, and which folders or subjects need attention in the afternoon. This turns the repository structure into a practical management surface.</p>
+              <h3>Progress review</h3>
+              <p>Parent checks completed work, blockers, and afternoon priorities.</p>
             </div>
             <div class="timeline-cell timeline-output">
-              <h3>Visible pacing decisions</h3>
-              <p>Students see that progress is measurable, revisions are normal, and work can be redirected without losing the trail of what happened earlier in the day.</p>
+              <h3>Visible pacing</h3>
+              <p>Work can be redirected without losing the day’s trail.</p>
             </div>
           </div>
 
           <div class="timeline-row">
             <div class="timeline-cell timeline-mode">
               <strong>Project Time</strong>
-              <span>Building and applied work</span>
+              <span>Build</span>
             </div>
             <div class="timeline-cell timeline-what">
-              <h3>Coding, website design, and individual projects</h3>
-              <p>The afternoon expands beyond assignment completion into project folders for coding, design, research, and portfolio work. This is where students practice making things, not just finishing prompts.</p>
+              <h3>Projects and applied work</h3>
+              <p>Students shift into coding, design, research, or portfolio projects.</p>
             </div>
             <div class="timeline-cell timeline-output">
-              <h3>Portfolio-grade artifacts</h3>
-              <p>Code, websites, creative assets, and project drafts accumulate as durable evidence of skill. Students learn that commits can represent real shipped work, not only homework responses.</p>
+              <h3>Portfolio artifacts</h3>
+              <p>Code, websites, drafts, and assets become durable evidence.</p>
             </div>
           </div>
 
           <div class="timeline-row">
             <div class="timeline-cell timeline-mode">
               <strong>Close</strong>
-              <span>Commit, reflect, prepare</span>
+              <span>Commit</span>
             </div>
             <div class="timeline-cell timeline-what">
-              <h3>Commit work back to GitHub and plan the next step</h3>
-              <p>The day ends with students committing finished assignment work back into the correct folders, noting what changed, and identifying what should happen next. The routine reinforces documentation, ownership, and continuity.</p>
+              <h3>Commit and plan</h3>
+              <p>Students save finished work, note changes, and identify the next step.</p>
             </div>
             <div class="timeline-cell timeline-output">
-              <h3>A clean end-of-day record</h3>
-              <p>The result is a visible trail of completed assignments, active projects, and next actions that can be reviewed by the parent and revisited by the student tomorrow.</p>
+              <h3>Clean day record</h3>
+              <p>The parent can review completed work and tomorrow’s next actions.</p>
             </div>
           </div>
         </div>
@@ -3138,7 +3488,7 @@ teachers/sites/mind-map/</div>
             <img src="images/opentutor-morning.png" alt="Pearlescent cat illustration of the morning homeschool check-in" width="1536" height="1024" loading="lazy" decoding="async" />
             <div class="image-panel-copy">
               <h3>Morning check-in</h3>
-              <p>Orientation, clarity, and visible expectations establish the day before work begins.</p>
+              <p>Priorities and expectations start the day.</p>
             </div>
           </div>
 
@@ -3146,7 +3496,7 @@ teachers/sites/mind-map/</div>
             <img src="images/opentutor-study.png" alt="Pearlescent cat illustration of focused homeschool study and guided work" width="1536" height="1024" loading="lazy" decoding="async" />
             <div class="image-panel-copy">
               <h3>Focused study</h3>
-              <p>Subject channels, repository materials, and lightweight tutor support stay connected during focused work.</p>
+              <p>Subjects, repo materials, and tutor help stay connected.</p>
             </div>
           </div>
 
@@ -3154,7 +3504,7 @@ teachers/sites/mind-map/</div>
             <img src="images/opentutor-review.png" alt="Pearlescent cat illustration of homeschool review and end-of-day reflection" width="1536" height="1024" loading="lazy" decoding="async" />
             <div class="image-panel-copy">
               <h3>Commit and review</h3>
-              <p>Finished work gets committed back into GitHub, and end-of-day review makes progress visible and easier to improve the next day.</p>
+              <p>Finished work and next actions stay visible.</p>
             </div>
           </div>
         </div>
